@@ -23,7 +23,52 @@ export class Main {
         return n(data.settings.current_section) ? data.settings.current_section : 'actions';
     }
 
+    private options: i_inputs.Options = {};
     public sections: o_inputs.Section[] | i_inputs.Sections = [];
+
+    public init_options = (): void =>
+        err(() => {
+            this.options = {
+                actions: [],
+                main_action: [],
+                action_type: [
+                    new o_inputs.Option({ name: 'close' }),
+                    new o_inputs.Option({ name: 'pin' }),
+                    new o_inputs.Option({ name: 'unpin' }),
+                ],
+                which_windows_to_perform_action_on: [
+                    new o_inputs.Option({ name: 'current_window' }),
+                    new o_inputs.Option({ name: 'all_windows' }),
+                    new o_inputs.Option({ name: 'other_windows' }),
+                ],
+                which_tabs_to_perform_action_on: [
+                    new o_inputs.Option({ name: 'current_tab' }),
+                    new o_inputs.Option({ name: 'all_tabs' }),
+                    new o_inputs.Option({ name: 'other_tabs' }),
+                    new o_inputs.Option({ name: 'tabs_to_right' }),
+                    new o_inputs.Option({ name: 'tabs_to_left' }),
+                ],
+                pinned_tabs: [
+                    new o_inputs.Option({ name: 'any' }),
+                    new o_inputs.Option({ name: 'only_on_pinned' }),
+                    new o_inputs.Option({ name: 'only_on_unpinned' }),
+                ],
+                grouped_tabs: [
+                    new o_inputs.Option({ name: 'any' }),
+                    new o_inputs.Option({ name: 'only_on_grouped' }),
+                    new o_inputs.Option({ name: 'only_on_ungrouped' }),
+                ],
+                domains: [
+                    new o_inputs.Option({ name: 'any_domain' }),
+                    new o_inputs.Option({
+                        name: 'with_current_domain',
+                    }),
+                    new o_inputs.Option({
+                        name: 'any_domain_except_current',
+                    }),
+                ],
+            };
+        }, 'cnt_1268');
 
     public init_sections = (): void =>
         err(() => {
@@ -32,8 +77,90 @@ export class Main {
                     new o_inputs.Section({
                         name: 'actions',
                         inputs: [
+                            new o_inputs.Select({
+                                name: 'actions',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Select({
+                                name: 'main_action',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Group({
+                                name: 'action_btns',
+                                event_callback: () => undefined,
+                                inputs: [
+                                    new o_inputs.Btn({
+                                        name: 'create_action',
+                                        event_callback: () => {},
+                                    }),
+                                    new o_inputs.Btn({
+                                        name: 'update_action',
+                                        event_callback: () => {},
+                                    }),
+                                    new o_inputs.Btn({
+                                        name: 'delete_action',
+                                        event_callback: () => {},
+                                    }),
+                                ],
+                            }),
+                            new o_inputs.Hr({
+                                name: 'hr_1',
+                            }),
+                            new o_inputs.Text({
+                                name: 'action_name',
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Text({
+                                name: 'action_position',
+                                text_type: 'number',
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Select({
+                                name: 'action_type',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Select({
+                                name: 'which_windows_to_perform_action_on',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Select({
+                                name: 'which_tabs_to_perform_action_on',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Select({
+                                name: 'pinned_tabs',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Select({
+                                name: 'grouped_tabs',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Select({
+                                name: 'domains',
+                                options: this.options,
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Textarea({
+                                name: 'domain_whitelist',
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Textarea({
+                                name: 'domain_blacklist',
+                                event_callback: d_sections.Val.i().change,
+                            }),
                             new o_inputs.Checkbox({
-                                name: 'tab_counter_is_visible',
+                                name: 'open_new_tab_after_action',
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Textarea({
+                                name: 'urls_after_action',
                                 event_callback: d_sections.Val.i().change,
                             }),
                         ],
