@@ -36,12 +36,12 @@ export class Main {
                     new o_inputs.Option({ name: 'pin' }),
                     new o_inputs.Option({ name: 'unpin' }),
                 ],
-                which_windows_to_perform_action_on: [
+                windows_to_affect: [
                     new o_inputs.Option({ name: 'current_window' }),
                     new o_inputs.Option({ name: 'all_windows' }),
                     new o_inputs.Option({ name: 'other_windows' }),
                 ],
-                which_tabs_to_perform_action_on: [
+                tabs_to_affect: [
                     new o_inputs.Option({ name: 'current_tab' }),
                     new o_inputs.Option({ name: 'all_tabs' }),
                     new o_inputs.Option({ name: 'other_tabs' }),
@@ -49,20 +49,20 @@ export class Main {
                     new o_inputs.Option({ name: 'tabs_to_left' }),
                 ],
                 pinned_tabs: [
-                    new o_inputs.Option({ name: 'any' }),
-                    new o_inputs.Option({ name: 'only_on_pinned' }),
-                    new o_inputs.Option({ name: 'only_on_unpinned' }),
+                    new o_inputs.Option({ name: 'pinned_and_unpinned' }),
+                    new o_inputs.Option({ name: 'pinned' }),
+                    new o_inputs.Option({ name: 'unpinned' }),
                 ],
                 grouped_tabs: [
-                    new o_inputs.Option({ name: 'any' }),
-                    new o_inputs.Option({ name: 'only_on_grouped' }),
-                    new o_inputs.Option({ name: 'only_on_ungrouped' }),
+                    new o_inputs.Option({ name: 'grouped_and_ungrouped' }),
+                    new o_inputs.Option({ name: 'grouped' }),
+                    new o_inputs.Option({ name: 'ungrouped' }),
                 ],
                 domains: [
-                    new o_inputs.Option({ name: 'any_domain' }),
                     new o_inputs.Option({
-                        name: 'with_current_domain',
+                        name: 'current_domain',
                     }),
+                    new o_inputs.Option({ name: 'any_domain' }),
                     new o_inputs.Option({
                         name: 'any_domain_except_current',
                     }),
@@ -126,15 +126,15 @@ export class Main {
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
-                                name: 'which_windows_to_perform_action_on',
+                                name: 'windows_to_affect',
                                 options: this.options,
-                                val_accessor: 'main_action.which_windows_to_perform_action_on',
+                                val_accessor: 'main_action.windows_to_affect',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
-                                name: 'which_tabs_to_perform_action_on',
+                                name: 'tabs_to_affect',
                                 options: this.options,
-                                val_accessor: 'main_action.which_tabs_to_perform_action_on',
+                                val_accessor: 'main_action.tabs_to_affect',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({

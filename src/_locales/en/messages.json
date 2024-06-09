@@ -35,20 +35,20 @@
     "delete_action_btn_text": {
         "message": "Delete action"
     },
-    "which_windows_to_perform_action_on_label_text": {
-        "message": "Which windows to perform the action on"
+    "windows_to_affect_label_text": {
+        "message": "Which windows to affect"
     },
-    "which_tabs_to_perform_action_on_label_text": {
-        "message": "Which tabs to perform the action on"
+    "tabs_to_affect_label_text": {
+        "message": "Which tabs to affect"
     },
     "pinned_tabs_label_text": {
-        "message": "Pinned tabs"
+        "message": "Affect tabs by pin state"
     },
     "grouped_tabs_label_text": {
-        "message": "Grouped tabs"
+        "message": "Affect tabs by group state"
     },
     "domains_label_text": {
-        "message": "Domains"
+        "message": "Affect tabs by domain"
     },
     "domain_whitelist_label_text": {
         "message": "Domain whitelist"
@@ -57,10 +57,10 @@
         "message": "Domain blacklist"
     },
     "open_new_tab_after_action_label_text": {
-        "message": "Open new tab after action"
+        "message": "Open new tab after the action"
     },
     "urls_after_action_label_text": {
-        "message": "Open the following urls after action"
+        "message": "URLs to be opened after the action"
     },
     "tab_counter_is_visible_label_text": {
         "message": "Show tab counter"
@@ -73,6 +73,15 @@
     },
     "unpin_option_text": {
         "message": "Unpin"
+    },
+    "current_window_option_text": {
+        "message": "Current window"
+    },
+    "all_windows_option_text": {
+        "message": "All windows"
+    },
+    "other_windows_option_text": {
+        "message": "Other windows"
     },
     "current_tab_option_text": {
         "message": "Current tab"
@@ -89,38 +98,32 @@
     "tabs_to_left_option_text": {
         "message": "Tabs to the left"
     },
-    "current_window_option_text": {
-        "message": "Current window"
+    "pinned_and_unpinned_option_text": {
+        "message": "Pinned + unpinned"
     },
-    "all_windows_option_text": {
-        "message": "All windows"
+    "pinned_option_text": {
+        "message": "Pinned"
     },
-    "other_windows_option_text": {
-        "message": "Other windows"
+    "unpinned_option_text": {
+        "message": "Unpinned"
     },
-    "any_option_text": {
-        "message": "Perform action on any tabs"
+    "grouped_and_ungrouped_option_text": {
+        "message": "Grouped + ungrouped"
     },
-    "only_on_pinned_option_text": {
-        "message": "Perform action only on pinned tabs"
+    "grouped_option_text": {
+        "message": "Grouped"
     },
-    "only_on_unpinned_option_text": {
-        "message": "Perform action only on unpinned tabs"
+    "ungrouped_option_text": {
+        "message": "Ungrouped"
     },
-    "only_on_grouped_option_text": {
-        "message": "Perform action only on grouped tabs"
-    },
-    "only_on_ungrouped_option_text": {
-        "message": "Perform action only on ungrouped tabs"
+    "current_domain_option_text": {
+        "message": "Current domain"
     },
     "any_domain_option_text": {
-        "message": "Perform action on tabs with any domain"
-    },
-    "with_current_domain_option_text": {
-        "message": "Perform action only on tabs with current domain"
+        "message": "Any domain"
     },
     "any_domain_except_current_option_text": {
-        "message": "Perform action only on any domain except current"
+        "message": "Any domain except current"
     },
     "advanced_extension_reloader_chrome_link_text": {
         "message": "⚗️ Close Other Tabs Extended for Chrome"

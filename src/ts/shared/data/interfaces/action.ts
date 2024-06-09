@@ -2,8 +2,8 @@ export interface Action {
     action_name: string;
     action_position: number;
     action_type: string;
-    which_windows_to_perform_action_on: string;
-    which_tabs_to_perform_action_on: string;
+    windows_to_affect: string;
+    tabs_to_affect: string;
     pinned_tabs: string;
     grouped_tabs: string;
     domains: string;
