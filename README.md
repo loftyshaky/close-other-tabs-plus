@@ -1,0 +1,2 @@
+# close-other-tabs-extended
+ 

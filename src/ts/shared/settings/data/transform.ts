@@ -1,0 +1,52 @@
+import _ from 'lodash';
+import { runInAction } from 'mobx';
+
+import { d_settings } from '@loftyshaky/shared';
+
+export class Transform {
+    private static i0: Transform;
+
+    public static i(): Transform {
+        // eslint-disable-next-line no-return-assign
+        return this.i0 || (this.i0 = new this());
+    }
+
+    // eslint-disable-next-line no-useless-constructor, no-empty-function
+    private constructor() {}
+
+    public set_transformed = ({ settings = undefined }: { settings?: any } = {}): Promise<void> =>
+        err_async(async () => {
+            let settings_final: any;
+
+            if (_.isEmpty(settings)) {
+                const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
+
+                settings_final = default_settings;
+            } else {
+                settings_final = settings;
+            }
+
+            runInAction((): void => {
+                data.settings = settings_final;
+            });
+
+            ext.send_msg({ msg: 'react_to_change' });
+        }, 'cot_1035');
+
+    public set_transformed_from_storage = (): Promise<void> =>
+        err_async(async () => {
+            const settings = await ext.storage_get();
+            const settings_are_corrupt: boolean = !n(settings.enable_cut_features);
+
+            if (_.isEmpty(settings) || settings_are_corrupt) {
+                const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
+
+                await ext.storage_set(default_settings);
+                await d_settings.Main.i().set({ settings: default_settings, settings_are_corrupt });
+            }
+
+            if (!settings_are_corrupt) {
+                this.set_transformed({ settings });
+            }
+        }, 'cot_1036');
+}

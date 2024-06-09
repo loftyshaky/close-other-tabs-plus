@@ -1,0 +1,32 @@
+{
+    "description": {
+        "message": ""
+    },
+    "actions_section_text": {
+        "message": "Действия"
+    },
+    "tab_counter_section_text": {
+        "message": "Счетчик вкладок"
+    },
+    "tab_counter_is_visible_label_text": {
+        "message": "Показывать счетчик вкладок"
+    },
+    "advanced_extension_reloader_chrome_link_text": {
+        "message": "⚗️ Close Other Tabs Extended для Chrome"
+    },
+    "advanced_extension_reloader_edge_link_text": {
+        "message": "⚗️ Close Other Tabs Extended для Edge"
+    },
+    "github_link_text": {
+        "message": "😼 Close Other Tabs Extended на Github"
+    },
+    "hotkey_1": {
+        "message": "Действие 1"
+    },
+    "hotkey_2": {
+        "message": "Действие 2"
+    },
+    "hotkey_3": {
+        "message": "Действие 3"
+    }
+}

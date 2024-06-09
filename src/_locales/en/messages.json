@@ -1,0 +1,44 @@
+{
+    "name": {
+        "message": "Close Other Tabs Extended"
+    },
+    "description": {
+        "message": ""
+    },
+    "actions_section_text": {
+        "message": "Actions"
+    },
+    "tab_counter_section_text": {
+        "message": "Tab counter"
+    },
+    "tab_counter_is_visible_label_text": {
+        "message": "Show tab counter"
+    },
+    "advanced_extension_reloader_chrome_link_text": {
+        "message": "⚗️ Close Other Tabs Extended for Chrome"
+    },
+    "advanced_extension_reloader_edge_link_text": {
+        "message": "⚗️ Close Other Tabs Extended for Edge"
+    },
+    "github_link_text": {
+        "message": "😼 Close Other Tabs Extended on Github"
+    },
+    "rate_chrome_link_href": {
+        "message": "https://chromewebstore.google.com/detail/higiahnfphokonkjalljdfgjhafdjbil/reviews"
+    },
+    "rate_edge_link_href": {
+        "message": "https://microsoftedge.microsoft.com/addons/detail/higiahnfphokonkjalljdfgjhafdjbil"
+    },
+    "github_link_href": {
+        "message": "https://github.com/loftyshaky/close-other-tabs-extended"
+    },
+    "hotkey_1": {
+        "message": "Action 1"
+    },
+    "hotkey_2": {
+        "message": "Action 2"
+    },
+    "hotkey_3": {
+        "message": "Action 3"
+    }
+}
