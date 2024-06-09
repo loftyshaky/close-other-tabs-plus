@@ -65,7 +65,13 @@ export class Restore {
             if (_.isEmpty(settings)) {
                 const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
 
-                settings_final = { ...default_settings, ...this.get_unchanged_settings() };
+                settings_final = {
+                    ...default_settings,
+                    settings: {
+                        ...default_settings.settings,
+                        ...this.get_unchanged_settings().settings,
+                    },
+                };
             } else if (n(settings)) {
                 settings_final = settings;
             }
@@ -82,8 +88,10 @@ export class Restore {
     public get_unchanged_settings = (): t.AnyRecord =>
         err(
             () => ({
-                current_section: data.settings.current_section,
-                show_color_help: data.settings.show_color_help,
+                settings: {
+                    current_section: data.settings.current_section,
+                    show_color_help: data.settings.show_color_help,
+                },
             }),
             'cot_1019',
         );

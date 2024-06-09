@@ -110,57 +110,69 @@ export class Main {
                             }),
                             new o_inputs.Text({
                                 name: 'action_name',
+                                val_accessor: 'main_action.action_name',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Text({
                                 name: 'action_position',
                                 text_type: 'number',
+                                val_accessor: 'main_action.action_position',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'action_type',
                                 options: this.options,
+                                val_accessor: 'main_action.action_type',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'which_windows_to_perform_action_on',
                                 options: this.options,
+                                val_accessor: 'main_action.which_windows_to_perform_action_on',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'which_tabs_to_perform_action_on',
                                 options: this.options,
+                                val_accessor: 'main_action.which_tabs_to_perform_action_on',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'pinned_tabs',
                                 options: this.options,
+                                val_accessor: 'main_action.pinned_tabs',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'grouped_tabs',
                                 options: this.options,
+                                val_accessor: 'main_action.grouped_tabs',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'domains',
                                 options: this.options,
+                                val_accessor: 'main_action.domains',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
                                 name: 'domain_whitelist',
+                                val_accessor: 'main_action.domain_whitelist',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
                                 name: 'domain_blacklist',
+                                val_accessor: 'main_action.domain_blacklist',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Checkbox({
                                 name: 'open_new_tab_after_action',
+                                val_accessor: 'main_action.open_new_tab_after_action',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
                                 name: 'urls_after_action',
+                                val_accessor: 'main_action.urls_after_action',
                                 event_callback: d_sections.Val.i().change,
                             }),
                         ],
@@ -265,7 +277,12 @@ export class Main {
 
             ext.send_msg({
                 msg: 'update_settings',
-                settings: { current_section: d_settings.Sections.i().current_section },
+                settings: {
+                    settings: {
+                        ...data.settings,
+                        ...{ current_section: d_settings.Sections.i().current_section },
+                    },
+                },
             });
         }, 'cot_1015');
 }

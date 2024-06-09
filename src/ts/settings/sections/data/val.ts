@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { t } from '@loftyshaky/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { s_settings } from '@loftyshaky/shared/settings';
@@ -20,7 +21,13 @@ export class Val {
                 const raw_val = d_inputs.Val.i().access({ input });
                 let val: t.AnyUndefined;
 
-                if (n(raw_val)) {
+                if (
+                    ['domain_whitelist', 'domain_blacklist', 'urls_after_action'].includes(
+                        input.name,
+                    )
+                ) {
+                    val = _.map((raw_val as string).split(','), _.trim);
+                } else if (n(raw_val)) {
                     val = input.name === 'transition_duration' ? +raw_val : raw_val;
 
                     s_settings.Theme.i().change({
@@ -36,10 +43,17 @@ export class Val {
 
                 s_css_vars.Main.i().set();
 
-                ext.send_msg({
-                    msg: 'update_settings',
-                    settings: { [input.name]: val },
-                });
+                if (!n(input.val_accessor)) {
+                    ext.send_msg({
+                        msg: 'update_settings',
+                        settings: {
+                            settings: {
+                                ...data.settings,
+                                ...{ [input.name]: val },
+                            },
+                        },
+                    });
+                }
             },
             'cot_1020',
             { silent: true },
@@ -49,7 +63,12 @@ export class Val {
         err_async(async () => {
             await ext.send_msg_resp({
                 msg: 'update_settings',
-                settings: { developer_mode: data.settings.developer_mode },
+                settings: {
+                    settings: {
+                        ...data.settings,
+                        ...{ developer_mode: data.settings.developer_mode },
+                    },
+                },
                 rerun_actions: true,
             });
         }, 'cot_1021');

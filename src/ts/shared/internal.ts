@@ -1,5 +1,6 @@
 export * from 'shared/init_all';
 
+export * as d_data from 'shared/data/data';
 export * as d_settings from 'shared/settings/data';
 
 export * as s_css_vars from 'shared/css_vars/scripts';
