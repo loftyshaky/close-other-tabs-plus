@@ -27,7 +27,7 @@ export class Actions {
                 ([key, val]: [string, any]): i_data.Settings & i_data.ActionData =>
                     err(() => {
                         val.key = key;
-                        val.indexed_action_name = `[${val.action_position + 1}] ${val.action_name}`;
+                        val.indexed_action_name = `[${val.action_position}] ${val.action_name}`;
 
                         return val as i_data.Settings & i_data.ActionData;
                     }, 'cot_1042'),

@@ -34,7 +34,7 @@ export class Main {
                 },
                 close_other_tabs: {
                     action_name: 'Close other tabs',
-                    action_position: 0,
+                    action_position: 1,
                     action_type: 'close',
                     windows_to_affect: 'current_window',
                     tabs_to_affect: 'other_tabs',
@@ -48,7 +48,7 @@ export class Main {
                 },
                 close_tabs_to_the_right: {
                     action_name: 'Close tabs to the right',
-                    action_position: 1,
+                    action_position: 2,
                     action_type: 'close',
                     windows_to_affect: 'current_window',
                     tabs_to_affect: 'tabs_to_right',
@@ -62,7 +62,7 @@ export class Main {
                 },
                 close_tabs_to_the_left: {
                     action_name: 'Close tabs to the left',
-                    action_position: 2,
+                    action_position: 3,
                     action_type: 'close',
                     windows_to_affect: 'current_window',
                     tabs_to_affect: 'tabs_to_left',
