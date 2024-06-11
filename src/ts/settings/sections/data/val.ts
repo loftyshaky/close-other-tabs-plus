@@ -1,8 +1,9 @@
 import _ from 'lodash';
+
 import { t } from '@loftyshaky/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { s_settings } from '@loftyshaky/shared/settings';
-import { s_css_vars } from 'shared/internal';
+import { s_css_vars, d_settings } from 'shared/internal';
 
 export class Val {
     private static i0: Val;
@@ -15,9 +16,9 @@ export class Val {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public change = ({ input }: { input: i_inputs.Input }): void =>
-        err(
-            () => {
+    public change = ({ input }: { input: i_inputs.Input }): Promise<void> =>
+        err_async(
+            async () => {
                 const raw_val = d_inputs.Val.i().access({ input });
                 let val: t.AnyUndefined;
 
@@ -43,7 +44,9 @@ export class Val {
 
                 s_css_vars.Main.i().set();
 
-                if (!n(input.val_accessor)) {
+                if (n(input.val_accessor)) {
+                    await d_settings.Actions.i().set_actions();
+                } else {
                     ext.send_msg({
                         msg: 'update_settings',
                         settings: {

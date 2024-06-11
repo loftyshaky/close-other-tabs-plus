@@ -27,14 +27,15 @@ export class Transform {
                 settings_final = settings;
             }
 
-            runInAction(() => {
-                data.settings = n(settings_final.settings)
-                    ? settings_final.settings
-                    : settings_final;
-                data.main_action = d_settings.Actions.i().extract_main_action({
-                    settings: settings_final,
-                });
-            });
+            runInAction(async () =>
+                err_async(async () => {
+                    data.settings = n(settings_final.settings)
+                        ? settings_final.settings
+                        : settings_final;
+                }, 'cot_1046'),
+            );
+
+            await d_settings.Actions.i().set_actions();
 
             ext.send_msg({ msg: 'react_to_change' });
         }, 'cot_1035');

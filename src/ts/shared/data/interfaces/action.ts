@@ -1,4 +1,6 @@
 export interface Action {
+    [key: string]: any;
+
     action_name: string;
     action_position: number;
     action_type: string;

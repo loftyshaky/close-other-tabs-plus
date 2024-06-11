@@ -1,8 +1,10 @@
-import { makeObservable, computed } from 'mobx';
+import _ from 'lodash';
+import { makeObservable, computed, autorun } from 'mobx';
 
 import { s_utils } from '@loftyshaky/shared';
 import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { d_settings } from '@loftyshaky/shared/settings';
+import { i_data } from 'shared/internal';
 import { d_sections } from 'settings/internal';
 
 export class Main {
@@ -285,4 +287,31 @@ export class Main {
                 },
             });
         }, 'cot_1015');
+
+    public update_action_options = (): void => {
+        autorun(() => {
+            if (!_.isEmpty(data.actions)) {
+                const action_options = data.actions.map(
+                    (action: i_data.ActionData): o_inputs.Option =>
+                        err(
+                            () =>
+                                new o_inputs.Option({
+                                    name: action.key,
+                                    alt_msg: action.indexed_action_name,
+                                }),
+                            'cot_1043',
+                        ),
+                );
+
+                this.options = {
+                    ...action_options,
+                    actions: action_options,
+                    main_action: action_options,
+                };
+
+                (this.sections as any).actions.inputs.actions.options = this.options;
+                (this.sections as any).actions.inputs.main_action.options = this.options;
+            }
+        });
+    };
 }
