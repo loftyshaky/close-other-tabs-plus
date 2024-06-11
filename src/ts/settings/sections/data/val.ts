@@ -44,9 +44,14 @@ export class Val {
 
                 s_css_vars.Main.i().set();
 
-                if (n(input.val_accessor)) {
-                    await d_settings.Actions.i().set_actions();
-                } else {
+                if (n(input.val_accessor) || ['actions', 'main_action'].includes(input.name)) {
+                    d_settings.Actions.i().set_actions();
+                }
+
+                if (
+                    (!n(input.val_accessor) && !input.name.includes('actions')) ||
+                    input.name.includes('main_action')
+                ) {
                     ext.send_msg({
                         msg: 'update_settings',
                         settings: {
