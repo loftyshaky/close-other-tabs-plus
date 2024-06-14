@@ -152,7 +152,7 @@ export class InitAll {
                 err_async(async () => {
                     const { d_sections } = await import('settings/internal');
 
-                    d_sections.Main.i().update_action_options();
+                    d_sections.Options.i().update_action_options();
 
                     d_inputs.InputWidth.i().calculate_for_all_sections({
                         sections: d_sections.Main.i().sections as i_inputs.Sections,

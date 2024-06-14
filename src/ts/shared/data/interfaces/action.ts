@@ -1,6 +1,7 @@
 export interface Action {
     [key: string]: any;
 
+    id: string;
     action_name: string;
     action_position: number;
     action_type: string;
@@ -13,4 +14,5 @@ export interface Action {
     domain_blacklist: string[];
     open_new_tab_after_action: boolean;
     urls_after_action: string[];
+    indexed_action_name?: string;
 }

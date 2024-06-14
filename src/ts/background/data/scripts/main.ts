@@ -29,10 +29,12 @@ export class Main {
                     enable_cut_features: false,
                     persistent_service_worker: false,
                     offers_are_visible: true,
+                    current_action: 'close_other_tabs',
                     main_action: 'close_tabs_to_the_right',
                     tab_count_is_visible: true,
                 },
                 close_other_tabs: {
+                    id: 'close_other_tabs',
                     action_name: 'Close other tabs',
                     action_position: 1,
                     action_type: 'close',
@@ -47,6 +49,7 @@ export class Main {
                     urls_after_action: [],
                 },
                 close_tabs_to_the_right: {
+                    id: 'close_tabs_to_the_right',
                     action_name: 'Close tabs to the right',
                     action_position: 2,
                     action_type: 'close',
@@ -61,6 +64,7 @@ export class Main {
                     urls_after_action: [],
                 },
                 close_tabs_to_the_left: {
+                    id: 'close_tabs_to_the_left',
                     action_name: 'Close tabs to the left',
                     action_position: 3,
                     action_type: 'close',

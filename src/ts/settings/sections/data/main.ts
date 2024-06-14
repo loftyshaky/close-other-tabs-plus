@@ -1,10 +1,8 @@
-import _ from 'lodash';
-import { makeObservable, computed, autorun } from 'mobx';
+import { makeObservable, computed } from 'mobx';
 
 import { s_utils } from '@loftyshaky/shared';
 import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { d_settings } from '@loftyshaky/shared/settings';
-import { i_data } from 'shared/internal';
+import { d_settings as d_settings_shared } from '@loftyshaky/shared/settings';
 import { d_sections } from 'settings/internal';
 
 export class Main {
@@ -25,7 +23,7 @@ export class Main {
         return n(data.settings.current_section) ? data.settings.current_section : 'actions';
     }
 
-    private options: i_inputs.Options = {};
+    public options: i_inputs.Options = {};
     public sections: o_inputs.Section[] | i_inputs.Sections = [];
 
     public init_options = (): void =>
@@ -82,6 +80,7 @@ export class Main {
                             new o_inputs.Select({
                                 name: 'actions',
                                 options: this.options,
+                                val_accessor: 'settings.current_action',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
@@ -95,15 +94,15 @@ export class Main {
                                 inputs: [
                                     new o_inputs.Btn({
                                         name: 'create_action',
-                                        event_callback: () => {},
+                                        event_callback: d_sections.Actions.i().create_action,
                                     }),
                                     new o_inputs.Btn({
                                         name: 'update_action',
-                                        event_callback: () => {},
+                                        event_callback: d_sections.Actions.i().update_action,
                                     }),
                                     new o_inputs.Btn({
                                         name: 'delete_action',
-                                        event_callback: () => {},
+                                        event_callback: d_sections.Actions.i().delete_action,
                                     }),
                                 ],
                             }),
@@ -112,69 +111,69 @@ export class Main {
                             }),
                             new o_inputs.Text({
                                 name: 'action_name',
-                                val_accessor: 'main_action.action_name',
+                                val_accessor: 'current_action.action_name',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Text({
                                 name: 'action_position',
                                 text_type: 'number',
-                                val_accessor: 'main_action.action_position',
+                                val_accessor: 'current_action.action_position',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'action_type',
                                 options: this.options,
-                                val_accessor: 'main_action.action_type',
+                                val_accessor: 'current_action.action_type',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'windows_to_affect',
                                 options: this.options,
-                                val_accessor: 'main_action.windows_to_affect',
+                                val_accessor: 'current_action.windows_to_affect',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'tabs_to_affect',
                                 options: this.options,
-                                val_accessor: 'main_action.tabs_to_affect',
+                                val_accessor: 'current_action.tabs_to_affect',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'pinned_tabs',
                                 options: this.options,
-                                val_accessor: 'main_action.pinned_tabs',
+                                val_accessor: 'current_action.pinned_tabs',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'grouped_tabs',
                                 options: this.options,
-                                val_accessor: 'main_action.grouped_tabs',
+                                val_accessor: 'current_action.grouped_tabs',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'domains',
                                 options: this.options,
-                                val_accessor: 'main_action.domains',
+                                val_accessor: 'current_action.domains',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
                                 name: 'domain_whitelist',
-                                val_accessor: 'main_action.domain_whitelist',
+                                val_accessor: 'current_action.domain_whitelist',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
                                 name: 'domain_blacklist',
-                                val_accessor: 'main_action.domain_blacklist',
+                                val_accessor: 'current_action.domain_blacklist',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Checkbox({
                                 name: 'open_new_tab_after_action',
-                                val_accessor: 'main_action.open_new_tab_after_action',
+                                val_accessor: 'current_action.open_new_tab_after_action',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
                                 name: 'urls_after_action',
-                                val_accessor: 'main_action.urls_after_action',
+                                val_accessor: 'current_action.urls_after_action',
                                 event_callback: d_sections.Val.i().change,
                             }),
                         ],
@@ -189,7 +188,7 @@ export class Main {
                         ],
                     }),
                 ],
-                ...d_settings.Sections.i().make_shared_sections({
+                ...d_settings_shared.Sections.i().make_shared_sections({
                     download_back_up_callback: ext.storage_get,
                     upload_back_up_callback: d_sections.Restore.i().restore_back_up,
                     restore_defaults_callback: () => d_sections.Restore.i().restore_confirm(),
@@ -275,43 +274,16 @@ export class Main {
 
     public change_section_val = (): void =>
         err(() => {
-            data.settings.current_section = d_settings.Sections.i().current_section;
+            data.settings.current_section = d_settings_shared.Sections.i().current_section;
 
             ext.send_msg({
                 msg: 'update_settings',
                 settings: {
                     settings: {
                         ...data.settings,
-                        ...{ current_section: d_settings.Sections.i().current_section },
+                        ...{ current_section: d_settings_shared.Sections.i().current_section },
                     },
                 },
             });
         }, 'cot_1015');
-
-    public update_action_options = (): void => {
-        autorun(() => {
-            if (!_.isEmpty(data.actions)) {
-                const action_options = data.actions.map(
-                    (action: i_data.ActionData): o_inputs.Option =>
-                        err(
-                            () =>
-                                new o_inputs.Option({
-                                    name: action.key,
-                                    alt_msg: action.indexed_action_name,
-                                }),
-                            'cot_1043',
-                        ),
-                );
-
-                this.options = {
-                    ...action_options,
-                    actions: action_options,
-                    main_action: action_options,
-                };
-
-                (this.sections as any).actions.inputs.actions.options = this.options;
-                (this.sections as any).actions.inputs.main_action.options = this.options;
-            }
-        });
-    };
 }

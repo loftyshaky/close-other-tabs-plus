@@ -37,21 +37,32 @@ export class Val {
                     });
                 }
 
+                const val_final = n(val) && input.name === 'action_position' ? +val : val;
+
                 d_inputs.Val.i().set({
-                    val,
+                    val: val_final,
                     input,
                 });
 
                 s_css_vars.Main.i().set();
 
-                if (n(input.val_accessor) || ['actions', 'main_action'].includes(input.name)) {
-                    d_settings.Actions.i().set_actions();
+                if (n(input.val_accessor) && input.name === 'actions') {
+                    await d_settings.Actions.i().set_actions();
+
+                    d_settings.Actions.i().current_action_initial = { ...data.current_action };
+
+                    ext.send_msg({
+                        msg: 'update_settings',
+                        settings: {
+                            settings: {
+                                ...data.settings,
+                                ...{ current_action: val },
+                            },
+                        },
+                    });
                 }
 
-                if (
-                    (!n(input.val_accessor) && !input.name.includes('actions')) ||
-                    input.name.includes('main_action')
-                ) {
+                if (!n(input.val_accessor) && input.name !== 'actions') {
                     ext.send_msg({
                         msg: 'update_settings',
                         settings: {
@@ -66,6 +77,22 @@ export class Val {
             'cot_1020',
             { silent: true },
         );
+
+    public update_settings = (): void =>
+        err(() => {
+            ext.send_msg({
+                msg: 'update_settings',
+                settings: {
+                    settings: data.settings,
+                    ..._.keyBy(
+                        d_settings.Actions.i().remove_indexed_action_name({
+                            actions: data.actions,
+                        }),
+                        'id',
+                    ),
+                },
+            });
+        }, 'cot_1061');
 
     public enable_developer_mode_save_callback = (): Promise<void> =>
         err_async(async () => {

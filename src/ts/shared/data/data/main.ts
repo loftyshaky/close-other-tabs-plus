@@ -16,6 +16,7 @@ export class Main {
 
     public create_objs = (): void =>
         err(() => {
+            data.current_action = {};
             data.main_action = {};
             data.actions = {};
         }, 'cot_1037');
