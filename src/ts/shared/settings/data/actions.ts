@@ -19,7 +19,7 @@ export class Actions {
         err_async(async () => {
             const settings = await ext.storage_get();
 
-            const current_action: i_data.Action = settings[data.settings.current_action];
+            const current_action: i_data.Action = settings[data.settings.current_action_id];
 
             return current_action;
         }, 'cot_1050');
@@ -28,7 +28,7 @@ export class Actions {
         err_async(async () => {
             const settings = await ext.storage_get();
 
-            const main_action: i_data.Action = settings[data.settings.main_action];
+            const main_action: i_data.Action = settings[data.settings.current_action_id];
 
             return main_action;
         }, 'cot_1038');
@@ -76,7 +76,7 @@ export class Actions {
                 actions
                     .slice()
                     .sort((a: i_data.Action, b: i_data.Action): number =>
-                        err(() => a.action_position - b.action_position, 'cot_1041'),
+                        err(() => a.position - b.position, 'cot_1041'),
                     ),
             'cot_1052',
         );
@@ -90,8 +90,8 @@ export class Actions {
             const actions_data: i_data.Action[] = actions.map(
                 (item): i_data.Action =>
                     err(() => {
-                        (item as i_data.Action).indexed_action_name = `[${item.action_position}] ${
-                            (item as i_data.Action).action_name
+                        (item as i_data.Action).indexed_action_name = `[${item.position}] ${
+                            (item as i_data.Action).name
                         }`;
 
                         return item as i_data.Action;

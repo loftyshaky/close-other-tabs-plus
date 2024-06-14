@@ -7,6 +7,7 @@ export interface Settings {
     enable_cut_features: boolean;
     persistent_service_worker: boolean;
     offers_are_visible: boolean;
-    main_action: string;
+    current_action_id: string;
+    main_action_id: string;
     tab_count_is_visible: true;
 }

@@ -2,9 +2,9 @@ export interface Action {
     [key: string]: any;
 
     id: string;
-    action_name: string;
-    action_position: number;
-    action_type: string;
+    name: string;
+    position: number;
+    type: string;
     windows_to_affect: string;
     tabs_to_affect: string;
     pinned_tabs: string;

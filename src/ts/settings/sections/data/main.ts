@@ -80,12 +80,13 @@ export class Main {
                             new o_inputs.Select({
                                 name: 'actions',
                                 options: this.options,
-                                val_accessor: 'settings.current_action',
+                                val_accessor: 'settings.current_action_id',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'main_action',
                                 options: this.options,
+                                val_accessor: 'settings.main_action_id',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Group({
@@ -111,19 +112,19 @@ export class Main {
                             }),
                             new o_inputs.Text({
                                 name: 'action_name',
-                                val_accessor: 'current_action.action_name',
+                                val_accessor: 'current_action.name',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Text({
                                 name: 'action_position',
                                 text_type: 'number',
-                                val_accessor: 'current_action.action_position',
+                                val_accessor: 'current_action.position',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'action_type',
                                 options: this.options,
-                                val_accessor: 'current_action.action_type',
+                                val_accessor: 'current_action.type',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
