@@ -15,30 +15,52 @@ export class Actions {
 
     public current_action_initial: i_data.Action | undefined;
 
-    public extract_current_action = (): Promise<i_data.Action> =>
+    public extract_current_action = ({
+        settings,
+    }: {
+        settings?: i_data.SettingsWrapped;
+    } = {}): Promise<i_data.Action> =>
         err_async(async () => {
-            const settings = await ext.storage_get();
+            const settings_final: i_data.SettingsWrapped = n(settings)
+                ? settings
+                : await ext.storage_get();
 
-            const current_action: i_data.Action = settings[data.settings.current_action_id];
+            const current_action: i_data.Action = settings_final[
+                data.settings.current_action_id
+            ] as i_data.Action;
 
             return current_action;
         }, 'cot_1050');
 
-    public extract_main_action = (): Promise<i_data.Action> =>
+    public extract_main_action = ({
+        settings,
+    }: {
+        settings?: i_data.SettingsWrapped;
+    } = {}): Promise<i_data.Action> =>
         err_async(async () => {
-            const settings = await ext.storage_get();
+            const settings_final: i_data.SettingsWrapped = n(settings)
+                ? settings
+                : await ext.storage_get();
 
-            const main_action: i_data.Action = settings[data.settings.current_action_id];
+            const main_action: i_data.Action = settings_final[
+                settings_final.settings.current_action_id
+            ] as i_data.Action;
 
             return main_action;
         }, 'cot_1038');
 
-    public extract_actions = (): Promise<i_data.Action[]> =>
+    public extract_actions = ({
+        settings,
+    }: {
+        settings?: i_data.SettingsWrapped;
+    } = {}): Promise<i_data.Action[]> =>
         err_async(async () => {
-            const settings = await ext.storage_get();
+            const settings_final: i_data.SettingsWrapped = n(settings)
+                ? settings
+                : await ext.storage_get();
 
             const actions: i_data.Action[] = (
-                Object.values(settings) as (i_data.Settings & i_data.Action)[]
+                Object.values(settings_final) as (i_data.Settings & i_data.Action)[]
             ).filter((item: i_data.Settings & i_data.Action): boolean =>
                 err(() => !n(item.enable_cut_features), 'cot_1040'),
             );
@@ -50,12 +72,20 @@ export class Actions {
             return actions_data;
         }, 'cot_1039');
 
-    public set_actions = (): Promise<void> =>
+    public set_actions = ({
+        settings,
+    }: {
+        settings?: i_data.SettingsWrapped;
+    } = {}): Promise<void> =>
         err_async(async () => {
             const current_action: i_data.Action =
-                await d_settings.Actions.i().extract_current_action();
-            const main_action: i_data.Action = await d_settings.Actions.i().extract_main_action();
-            const actions: i_data.Action[] = await d_settings.Actions.i().extract_actions();
+                await d_settings.Actions.i().extract_current_action({ settings });
+            const main_action: i_data.Action = await d_settings.Actions.i().extract_main_action({
+                settings,
+            });
+            const actions: i_data.Action[] = await d_settings.Actions.i().extract_actions({
+                settings,
+            });
 
             runInAction(() =>
                 err(() => {

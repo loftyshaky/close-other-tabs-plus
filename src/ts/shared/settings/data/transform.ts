@@ -35,7 +35,7 @@ export class Transform {
                 }, 'cot_1046'),
             );
 
-            await d_settings.Actions.i().set_actions();
+            await d_settings.Actions.i().set_actions({ settings: settings_final });
 
             ext.send_msg({ msg: 'react_to_change' });
         }, 'cot_1035');

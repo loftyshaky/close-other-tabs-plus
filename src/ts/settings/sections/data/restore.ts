@@ -27,6 +27,7 @@ export class Restore {
                 ext.send_msg({
                     msg: 'update_settings',
                     settings: settings_final,
+                    replace: true,
                 });
 
                 s_theme.Main.i().set({
@@ -50,6 +51,7 @@ export class Restore {
                 settings,
                 transform: true,
                 rerun_actions: true,
+                replace: true,
             });
 
             s_theme.Main.i().set({

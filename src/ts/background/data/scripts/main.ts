@@ -84,9 +84,11 @@ export class Main {
     public update_settings = ({
         settings,
         transform = false,
+        replace = false,
     }: {
         settings?: i_data.SettingsWrapped;
         transform?: boolean;
+        replace?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
             const settings_2: i_data.SettingsWrapped = n(settings)
@@ -99,7 +101,7 @@ export class Main {
                 settings_final = await this.transform({ settings: settings_2 });
             }
 
-            await ext.storage_set(settings_final);
+            await ext.storage_set(settings_final, replace);
 
             s_service_worker.ServiceWorker.i().make_persistent();
         }, 'cot_1001');
@@ -109,9 +111,10 @@ export class Main {
             settings: i_data.SettingsWrapped,
             rerun_actions: boolean = false,
             transform: boolean = false,
+            replace: boolean = false,
         ) =>
             err_async(async () => {
-                await this.update_settings({ settings, transform });
+                await this.update_settings({ settings, transform, replace });
 
                 if (rerun_actions) {
                     ext.send_msg_to_all_tabs({ msg: 'rerun_actions' });
