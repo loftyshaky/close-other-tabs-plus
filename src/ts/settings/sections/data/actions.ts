@@ -13,10 +13,11 @@ export class Actions {
     }
 
     private constructor() {
-        makeObservable(this, {
+        makeObservable<this, 'update_main_action'>(this, {
             create_action: action,
             update_action: action,
             delete_action: action,
+            update_main_action: action,
         });
     }
 
@@ -89,8 +90,12 @@ export class Actions {
                     }, 'cot_1056'),
             );
 
+            const new_current_action_id: string = { ...data.current_action }.id;
+
+            this.update_main_action({ new_current_action_id });
+
             data.settings.current_action_id = undefined;
-            data.settings.current_action_id = data.current_action.id;
+            data.settings.current_action_id = new_current_action_id;
             d_settings.Actions.i().current_action_initial = { ...data.current_action };
             data.actions = d_settings.Actions.i().create_indexed_action_name_and_sort_actions({
                 actions: data.actions,
@@ -139,7 +144,12 @@ export class Actions {
                     ? data.actions[0]
                     : data.actions[previous_action_i]),
             };
-            data.settings.current_action_id = { ...data.current_action }.id;
+
+            const new_current_action_id: string = { ...data.current_action }.id;
+
+            this.update_main_action({ new_current_action_id });
+
+            data.settings.current_action_id = new_current_action_id;
             d_settings.Actions.i().current_action_initial = { ...data.current_action };
             data.actions = d_settings.Actions.i().create_indexed_action_name_and_sort_actions({
                 actions: data.actions,
@@ -151,4 +161,16 @@ export class Actions {
                 d_sections.Val.i().update_settings();
             }
         }, 'cot_1057');
+
+    private update_main_action = ({
+        new_current_action_id,
+    }: {
+        new_current_action_id: string;
+    }): void =>
+        err(() => {
+            if (data.settings.current_action_id === data.settings.main_action_id) {
+                data.settings.main_action_id = undefined;
+                data.settings.main_action_id = new_current_action_id;
+            }
+        }, 'cot_1062');
 }
