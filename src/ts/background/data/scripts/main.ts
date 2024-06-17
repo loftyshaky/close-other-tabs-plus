@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
 import { t, s_service_worker } from '@loftyshaky/shared';
-import { i_data } from 'shared/internal';
+import { d_settings, i_data } from 'shared/internal';
+import { s_context_menu } from 'background/internal';
 
 export class Main {
     private static i0: Main;
@@ -102,7 +103,8 @@ export class Main {
             }
 
             await ext.storage_set(settings_final, replace);
-
+            await d_settings.Actions.i().set_actions();
+            await s_context_menu.Main.i().create_itmes();
             s_service_worker.ServiceWorker.i().make_persistent();
         }, 'cot_1001');
 

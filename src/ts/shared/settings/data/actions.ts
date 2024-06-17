@@ -26,7 +26,7 @@ export class Actions {
                 : await ext.storage_get();
 
             const current_action: i_data.Action = settings_final[
-                data.settings.current_action_id
+                settings_final.settings.current_action_id
             ] as i_data.Action;
 
             return current_action;

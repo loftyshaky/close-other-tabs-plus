@@ -7,4 +7,5 @@ misplaced_dependency('background');
 export * from 'background/init';
 
 export * as s_badge from 'background/badge/scripts';
+export * as s_context_menu from 'background/context_menu/scripts';
 export * as s_data from 'background/data/scripts';
