@@ -46,7 +46,7 @@ export class Val {
 
                 s_css_vars.Main.i().set();
 
-                if (n(input.val_accessor) && input.name === 'actions') {
+                if (n(input.val_accessor) && ['actions', 'main_action'].includes(input.name)) {
                     await d_settings.Actions.i().set_actions();
 
                     d_settings.Actions.i().current_action_initial = { ...data.current_action };
