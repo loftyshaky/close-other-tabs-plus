@@ -47,17 +47,17 @@
     "grouped_tabs_label_text": {
         "message": "Affect tabs by group state"
     },
-    "domains_label_text": {
-        "message": "Affect tabs by domain"
+    "hostnames_label_text": {
+        "message": "Affect tabs by hostname"
     },
     "window_url_comparison_label_text": {
-        "message": "Use the domain in the active tab of each window as a basis for comparison"
+        "message": "Use the hostname in the active tab of each window as a basis for comparison"
     },
-    "domain_whitelist_label_text": {
-        "message": "Domain whitelist"
+    "url_whitelist_label_text": {
+        "message": "URL whitelist"
     },
-    "domain_blacklist_label_text": {
-        "message": "Domain blacklist"
+    "url_blacklist_label_text": {
+        "message": "URL blacklist"
     },
     "open_new_tab_after_action_label_text": {
         "message": "Open new tab after the action"
@@ -119,14 +119,14 @@
     "ungrouped_option_text": {
         "message": "Ungrouped"
     },
-    "current_domain_option_text": {
-        "message": "Current domain"
+    "current_hostname_option_text": {
+        "message": "Current hostname"
     },
-    "any_domain_option_text": {
-        "message": "Any domain"
+    "any_hostname_option_text": {
+        "message": "Any hostname"
     },
-    "any_domain_except_current_option_text": {
-        "message": "Any domain except current"
+    "any_hostname_except_current_option_text": {
+        "message": "Any hostname except current"
     },
     "advanced_extension_reloader_chrome_link_text": {
         "message": "⚗️ Close Other Tabs Extended for Chrome"

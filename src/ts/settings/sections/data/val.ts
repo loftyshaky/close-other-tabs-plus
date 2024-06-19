@@ -22,11 +22,7 @@ export class Val {
                 const raw_val = d_inputs.Val.i().access({ input });
                 let val: t.AnyUndefined;
 
-                if (
-                    ['domain_whitelist', 'domain_blacklist', 'urls_after_action'].includes(
-                        input.name,
-                    )
-                ) {
+                if (['url_whitelist', 'url_blacklist', 'urls_after_action'].includes(input.name)) {
                     val = _.map((raw_val as string).split(','), _.trim);
                 } else if (n(raw_val)) {
                     val = input.name === 'transition_duration' ? +raw_val : raw_val;

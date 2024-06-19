@@ -58,13 +58,13 @@ export class Main {
                     new o_inputs.Option({ name: 'grouped' }),
                     new o_inputs.Option({ name: 'ungrouped' }),
                 ],
-                domains: [
+                hostnames: [
                     new o_inputs.Option({
-                        name: 'current_domain',
+                        name: 'current_hostname',
                     }),
-                    new o_inputs.Option({ name: 'any_domain' }),
+                    new o_inputs.Option({ name: 'any_hostname' }),
                     new o_inputs.Option({
-                        name: 'any_domain_except_current',
+                        name: 'any_hostname_except_current',
                     }),
                 ],
             };
@@ -159,32 +159,35 @@ export class Main {
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
-                                name: 'domains',
+                                name: 'hostnames',
                                 options: this.options,
-                                val_accessor: 'current_action.domains',
+                                val_accessor: 'current_action.hostnames',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Checkbox({
                                 name: 'window_url_comparison',
                                 val_accessor: 'current_action.window_url_comparison',
-                                parent: 'domains',
+                                parent: 'hostnames',
                                 is_enabled_conds: [
                                     {
-                                        input_name: 'domains',
-                                        val_accessor: 'current_action.domains',
-                                        pass_vals: ['current_domain', 'any_domain_except_current'],
+                                        input_name: 'hostnames',
+                                        val_accessor: 'current_action.hostnames',
+                                        pass_vals: [
+                                            'current_hostname',
+                                            'any_hostname_except_current',
+                                        ],
                                     },
                                 ],
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
-                                name: 'domain_whitelist',
-                                val_accessor: 'current_action.domain_whitelist',
+                                name: 'url_whitelist',
+                                val_accessor: 'current_action.url_whitelist',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({
-                                name: 'domain_blacklist',
-                                val_accessor: 'current_action.domain_blacklist',
+                                name: 'url_blacklist',
+                                val_accessor: 'current_action.url_blacklist',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Checkbox({

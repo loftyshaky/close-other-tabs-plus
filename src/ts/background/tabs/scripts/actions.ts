@@ -51,29 +51,29 @@ export class Actions {
                                 hostname_of_this_tab === hostname_of_current_tab; // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab
                             const hostname_of_this_tab_is_the_same_as_url_2: boolean =
                                 hostname_of_this_tab === hostname_of_current_tab_of_current_window; // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab_of_current_window
-                            const domain_whitelist_is_empty: boolean =
-                                action.domain_whitelist.length === 0;
-                            const domain_blacklist_is_empty: boolean =
-                                action.domain_blacklist.length === 0;
+                            const url_whitelist_is_empty: boolean =
+                                action.url_whitelist.length === 0;
+                            const url_blacklist_is_empty: boolean =
+                                action.url_blacklist.length === 0;
                             const found_url_of_whitelist: boolean =
                                 this.list_item_is_present_in_href({
                                     href: href_of_this_tab,
-                                    list: action.domain_whitelist,
+                                    list: action.url_whitelist,
                                 });
                             const found_url_of_blacklist: boolean =
                                 this.list_item_is_present_in_href({
                                     href: href_of_this_tab,
-                                    list: action.domain_blacklist,
+                                    list: action.url_blacklist,
                                 });
-                            const found_url_of_current_domain: boolean =
-                                action.domains === 'current_domain' &&
+                            const found_url_of_current_hostname: boolean =
+                                action.hostnames === 'current_hostname' &&
                                 ((action.window_url_comparison &&
                                     hostname_of_this_tab_is_the_same_as_url_2) ||
                                     (!action.window_url_comparison &&
                                         hostname_of_this_tab_is_the_same_as_url_1) ||
                                     found_url_of_whitelist);
-                            const found_url_of_any_domain_except_current: boolean =
-                                action.domains === 'any_domain_except_current' &&
+                            const found_url_of_any_hostname_except_current: boolean =
+                                action.hostnames === 'any_hostname_except_current' &&
                                 ((action.window_url_comparison &&
                                     !hostname_of_this_tab_is_the_same_as_url_2) ||
                                     (!action.window_url_comparison &&
@@ -111,31 +111,31 @@ export class Actions {
                                 (action.grouped_tabs === 'grouped' && is_grouped) ||
                                 (action.grouped_tabs === 'ungrouped' && !is_grouped);
 
-                            const domains: boolean =
-                                action.domains === 'any_domain' ||
-                                found_url_of_current_domain ||
-                                found_url_of_any_domain_except_current;
+                            const hostnames: boolean =
+                                action.hostnames === 'any_hostname' ||
+                                found_url_of_current_hostname ||
+                                found_url_of_any_hostname_except_current;
 
-                            const domain_whitelist: boolean =
-                                domain_whitelist_is_empty ||
+                            const url_whitelist: boolean =
+                                url_whitelist_is_empty ||
                                 found_url_of_whitelist ||
-                                found_url_of_current_domain ||
-                                found_url_of_any_domain_except_current;
+                                found_url_of_current_hostname ||
+                                found_url_of_any_hostname_except_current;
 
-                            const domain_blacklist: boolean =
-                                action.domains === 'current_domain' ||
-                                !domain_whitelist_is_empty ||
-                                (domain_whitelist_is_empty &&
-                                    (domain_blacklist_is_empty || !found_url_of_blacklist));
+                            const url_blacklist: boolean =
+                                action.hostnames === 'current_hostname' ||
+                                !url_whitelist_is_empty ||
+                                (url_whitelist_is_empty &&
+                                    (url_blacklist_is_empty || !found_url_of_blacklist));
 
                             return (
                                 windows_to_affect &&
                                 tabs_to_affect &&
                                 pinned_tabs &&
                                 grouped_tabs &&
-                                domains &&
-                                domain_whitelist &&
-                                domain_blacklist
+                                hostnames &&
+                                url_whitelist &&
+                                url_blacklist
                             );
                         }
 

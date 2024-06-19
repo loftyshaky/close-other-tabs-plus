@@ -9,10 +9,10 @@ export interface Action {
     tabs_to_affect: string;
     pinned_tabs: string;
     grouped_tabs: string;
-    domains: string;
+    hostnames: string;
     window_url_comparison: boolean;
-    domain_whitelist: string[];
-    domain_blacklist: string[];
+    url_whitelist: string[];
+    url_blacklist: string[];
     open_new_tab_after_action: boolean;
     urls_after_action: string[];
     indexed_action_name?: string;
