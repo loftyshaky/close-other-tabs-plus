@@ -43,7 +43,7 @@ export class Actions {
                 : await ext.storage_get();
 
             const main_action: i_data.Action = settings_final[
-                settings_final.settings.current_action_id
+                settings_final.settings.main_action_id
             ] as i_data.Action;
 
             return main_action;
