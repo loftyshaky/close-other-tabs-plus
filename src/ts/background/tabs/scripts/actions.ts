@@ -67,16 +67,16 @@ export class Actions {
                                 });
                             const found_url_of_current_hostname: boolean =
                                 action.hostnames === 'current_hostname' &&
-                                ((action.window_url_comparison &&
+                                ((action.window_hostname_comparison &&
                                     hostname_of_this_tab_is_the_same_as_url_2) ||
-                                    (!action.window_url_comparison &&
+                                    (!action.window_hostname_comparison &&
                                         hostname_of_this_tab_is_the_same_as_url_1) ||
                                     found_url_of_whitelist);
                             const found_url_of_any_hostname_except_current: boolean =
                                 action.hostnames === 'any_hostname_except_current' &&
-                                ((action.window_url_comparison &&
+                                ((action.window_hostname_comparison &&
                                     !hostname_of_this_tab_is_the_same_as_url_2) ||
-                                    (!action.window_url_comparison &&
+                                    (!action.window_hostname_comparison &&
                                         !hostname_of_this_tab_is_the_same_as_url_1));
 
                             const windows_to_affect: boolean =

@@ -165,8 +165,8 @@ export class Main {
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Checkbox({
-                                name: 'window_url_comparison',
-                                val_accessor: 'current_action.window_url_comparison',
+                                name: 'window_hostname_comparison',
+                                val_accessor: 'current_action.window_hostname_comparison',
                                 parent: 'hostnames',
                                 is_enabled_conds: [
                                     {
