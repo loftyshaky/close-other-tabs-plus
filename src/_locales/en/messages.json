@@ -50,7 +50,7 @@
     "hostnames_label_text": {
         "message": "Affect tabs by hostname"
     },
-    "window_url_comparison_label_text": {
+    "window_hostname_comparison_label_text": {
         "message": "Use the hostname in the active tab of each window as a basis for comparison"
     },
     "url_whitelist_label_text": {
