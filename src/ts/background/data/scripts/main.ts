@@ -23,7 +23,7 @@ export class Main {
             this.defaults = {
                 settings: {
                     current_section: 'actions',
-                    options_page_theme: 'lavender',
+                    options_page_theme: 'aqua',
                     transition_duration: 200,
                     show_color_help: true,
                     developer_mode: false,
