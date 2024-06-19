@@ -43,7 +43,14 @@ export class Val {
                 s_css_vars.Main.i().set();
 
                 if (n(input.val_accessor) && ['actions', 'main_action'].includes(input.name)) {
-                    await d_settings.Actions.i().set_actions();
+                    ext.send_msg({
+                        msg: 'update_settings',
+                        settings: {
+                            settings: data.settings,
+                        },
+                        update_instantly: true,
+                        load_settings: input.name === 'actions',
+                    });
 
                     d_settings.Actions.i().current_action_initial = { ...data.current_action };
 

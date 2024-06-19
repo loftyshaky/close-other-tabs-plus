@@ -89,10 +89,12 @@ export class Main {
         settings,
         transform = false,
         replace = false,
+        load_settings = false,
     }: {
         settings?: i_data.SettingsWrapped;
         transform?: boolean;
         replace?: boolean;
+        load_settings?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
             const settings_2: i_data.SettingsWrapped = n(settings)
@@ -109,6 +111,10 @@ export class Main {
             await d_settings.Actions.i().set_actions();
             await s_context_menu.Main.i().create_itmes();
             s_service_worker.ServiceWorker.i().make_persistent();
+
+            if (load_settings) {
+                await ext.send_msg_resp({ msg: 'load_settings' });
+            }
         }, 'cot_1001');
 
     public update_settings_debounce = _.debounce(

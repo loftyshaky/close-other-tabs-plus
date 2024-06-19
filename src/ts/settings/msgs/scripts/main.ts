@@ -12,6 +12,10 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
                 .catch((error_obj: any) => show_err_ribbon(error_obj, 'cot_1012'));
         }
 
+        if (msg_str === 'load_settings') {
+            d_settings.Actions.i().set_actions();
+        }
+
         return false;
     }, 'cot_1013'),
 );
