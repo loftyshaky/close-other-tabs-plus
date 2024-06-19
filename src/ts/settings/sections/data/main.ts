@@ -149,12 +149,32 @@ export class Main {
                                 name: 'grouped_tabs',
                                 options: this.options,
                                 val_accessor: 'current_action.grouped_tabs',
+                                is_enabled_conds: [
+                                    {
+                                        input_name: 'action_type',
+                                        val_accessor: 'current_action.type',
+                                        pass_vals: ['close', 'pin'],
+                                    },
+                                ],
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'domains',
                                 options: this.options,
                                 val_accessor: 'current_action.domains',
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Checkbox({
+                                name: 'window_url_comparison',
+                                val_accessor: 'current_action.window_url_comparison',
+                                parent: 'domains',
+                                is_enabled_conds: [
+                                    {
+                                        input_name: 'domains',
+                                        val_accessor: 'current_action.domains',
+                                        pass_vals: ['current_domain', 'any_domain_except_current'],
+                                    },
+                                ],
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Textarea({

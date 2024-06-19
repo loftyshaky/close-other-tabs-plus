@@ -50,6 +50,9 @@
     "domains_label_text": {
         "message": "Affect tabs by domain"
     },
+    "window_url_comparison_label_text": {
+        "message": "Use the domain in the active tab of each window as a basis for comparison"
+    },
     "domain_whitelist_label_text": {
         "message": "Domain whitelist"
     },

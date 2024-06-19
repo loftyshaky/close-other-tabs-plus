@@ -10,6 +10,7 @@ export interface Action {
     pinned_tabs: string;
     grouped_tabs: string;
     domains: string;
+    window_url_comparison: boolean;
     domain_whitelist: string[];
     domain_blacklist: string[];
     open_new_tab_after_action: boolean;

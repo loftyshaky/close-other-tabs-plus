@@ -44,6 +44,7 @@ export class Main {
                     pinned_tabs: 'unpinned',
                     grouped_tabs: 'grouped_and_ungrouped',
                     domains: 'any_domain',
+                    window_url_comparison: false,
                     domain_whitelist: [],
                     domain_blacklist: [],
                     open_new_tab_after_action: false,
@@ -59,6 +60,7 @@ export class Main {
                     pinned_tabs: 'unpinned',
                     grouped_tabs: 'grouped_and_ungrouped',
                     domains: 'any_domain',
+                    window_url_comparison: false,
                     domain_whitelist: [],
                     domain_blacklist: [],
                     open_new_tab_after_action: false,
@@ -74,6 +76,7 @@ export class Main {
                     pinned_tabs: 'unpinned',
                     grouped_tabs: 'grouped_and_ungrouped',
                     domains: 'any_domain',
+                    window_url_comparison: false,
                     domain_whitelist: [],
                     domain_blacklist: [],
                     open_new_tab_after_action: false,
@@ -129,12 +132,14 @@ export class Main {
         transform = false,
     }: { transform?: boolean } = {}): Promise<void> =>
         err_async(async () => {
-            const settings: i_data.SettingsWrapped = await ext.storage_get();
+            if (!n(data.settings.enable_cut_features)) {
+                const settings: i_data.SettingsWrapped = await ext.storage_get();
 
-            if (_.isEmpty(settings)) {
-                await this.update_settings({ transform });
-            } else if (transform) {
-                await this.update_settings({ settings, transform });
+                if (_.isEmpty(settings)) {
+                    await this.update_settings({ transform });
+                } else if (transform) {
+                    await this.update_settings({ settings, transform });
+                }
             }
         }, 'cot_1003');
 
