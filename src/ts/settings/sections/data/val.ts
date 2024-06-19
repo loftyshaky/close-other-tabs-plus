@@ -50,10 +50,7 @@ export class Val {
                     ext.send_msg({
                         msg: 'update_settings',
                         settings: {
-                            settings: {
-                                ...data.settings,
-                                ...{ current_action: val },
-                            },
+                            settings: data.settings,
                         },
                     });
                 }
