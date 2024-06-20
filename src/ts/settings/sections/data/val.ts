@@ -5,7 +5,7 @@ import { t, i_data } from '@loftyshaky/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { s_settings } from '@loftyshaky/shared/settings';
 import { s_css_vars, d_settings } from 'shared/internal';
-import { d_sections } from 'settings/internal';
+import { d_optional_permissions, d_sections } from 'settings/internal';
 
 export class Val {
     private static i0: Val;
@@ -24,10 +24,14 @@ export class Val {
         err_async(
             async () => {
                 const raw_val = d_inputs.Val.i().access({ input });
+
                 let val: t.AnyUndefined;
 
                 if (this.is_textarea_input({ input_name: input.name })) {
-                    val = raw_val;
+                    const granted_tabs_permission: boolean =
+                        await d_optional_permissions.Main.i().set_permission({ input });
+
+                    val = granted_tabs_permission ? raw_val : '';
                 } else if (n(raw_val)) {
                     val = input.name === 'transition_duration' ? +raw_val : raw_val;
 

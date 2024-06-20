@@ -17,7 +17,8 @@ class Manifest {
                 page: 'settings.html',
                 open_in_tab: true,
             },
-            permissions: ['storage', 'contextMenus', 'tabs'],
+            permissions: ['storage', 'contextMenus'],
+            optional_permissions: ['tabs'],
             commands: {
                 hotkey_1: {
                     suggested_key: {
