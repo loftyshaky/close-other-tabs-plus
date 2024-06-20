@@ -1,5 +1,5 @@
 .input_item {
-    .input_w:not(.checkbox) {
+    .input_w:not(.checkbox, .textarea) {
         /* stylelint-disable-next-line value-keyword-case */
         max-width: __MSG_input_width_css__ !important;
     }
