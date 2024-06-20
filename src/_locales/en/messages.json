@@ -5,6 +5,9 @@
     "description": {
         "message": ""
     },
+    "input_width_css": {
+        "message": "392px"
+    },
     "actions_section_text": {
         "message": "Actions"
     },
