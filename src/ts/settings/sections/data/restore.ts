@@ -40,8 +40,8 @@ export class Restore {
     public restore_back_up = ({ data_objs }: { data_objs: t.AnyRecord[] }): Promise<void> =>
         err_async(async () => {
             let settings: i_data.Settings = {
-                ...data_objs[0],
                 ...this.get_unchanged_settings(),
+                ...data_objs[0],
             } as i_data.Settings;
 
             settings = await this.set({ settings });

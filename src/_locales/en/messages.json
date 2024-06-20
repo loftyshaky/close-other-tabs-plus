@@ -8,6 +8,24 @@
     "input_width_css": {
         "message": "392px"
     },
+    "action_created_notification": {
+        "message": "Action created."
+    },
+    "action_updated_notification": {
+        "message": "Action updated."
+    },
+    "action_deleted_notification": {
+        "message": "Action deleted."
+    },
+    "unable_to_create_action_notification": {
+        "message": "Unable to create the action. The input provided is not valid."
+    },
+    "unable_to_update_action_notification": {
+        "message": "Unable to update the action. The input provided is not valid."
+    },
+    "the_last_action_cannot_be_deleted_notification": {
+        "message": "The last action cannot be deleted."
+    },
     "actions_section_text": {
         "message": "Actions"
     },

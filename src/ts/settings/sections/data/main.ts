@@ -114,12 +114,14 @@ export class Main {
                                 name: 'action_name',
                                 val_accessor: 'current_action.name',
                                 event_callback: d_sections.Val.i().change,
+                                warn_state_checker: d_sections.Val.i().validate_input,
                             }),
                             new o_inputs.Text({
                                 name: 'action_position',
                                 text_type: 'number',
                                 val_accessor: 'current_action.position',
                                 event_callback: d_sections.Val.i().change,
+                                warn_state_checker: d_sections.Val.i().validate_input,
                             }),
                             new o_inputs.Select({
                                 name: 'action_type',
@@ -184,11 +186,13 @@ export class Main {
                                 name: 'url_whitelist',
                                 val_accessor: 'current_action.url_whitelist',
                                 event_callback: d_sections.Val.i().change,
+                                warn_state_checker: d_sections.Val.i().validate_input,
                             }),
                             new o_inputs.Textarea({
                                 name: 'url_blacklist',
                                 val_accessor: 'current_action.url_blacklist',
                                 event_callback: d_sections.Val.i().change,
+                                warn_state_checker: d_sections.Val.i().validate_input,
                             }),
                             new o_inputs.Checkbox({
                                 name: 'open_new_tab_after_action',
@@ -199,6 +203,7 @@ export class Main {
                                 name: 'urls_after_action',
                                 val_accessor: 'current_action.urls_after_action',
                                 event_callback: d_sections.Val.i().change,
+                                warn_state_checker: d_sections.Val.i().validate_input,
                             }),
                         ],
                     }),
