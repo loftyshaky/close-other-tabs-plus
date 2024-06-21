@@ -1,5 +1,6 @@
 import { i_inputs } from '@loftyshaky/shared/inputs';
 import { d_optional_permissions } from '@loftyshaky/shared/settings';
+import { i_actions } from 'shared/internal';
 
 export class Permissions {
     private static i0: Permissions;
@@ -16,18 +17,24 @@ export class Permissions {
         filter_lists: { permissions: ['tabs'], origins: [] },
     };
 
-    public set = ({ input }: { input: i_inputs.Input }): Promise<boolean> =>
+    public set = ({
+        input,
+        force = false,
+    }: {
+        input?: i_inputs.Input;
+        force?: boolean;
+    }): Promise<boolean> =>
         err_async(async () => {
             const is_tabs_permission_input: boolean = [
                 'url_whitelist',
                 'url_blacklist',
                 'hostnames',
-            ].includes(input.name);
+            ].includes(n(input) ? input.name : '');
             const contains_permission: boolean = await we.permissions.contains(
                 this.optional_permission_checkbox_dict.filter_lists,
             );
 
-            if (is_tabs_permission_input && !contains_permission) {
+            if ((is_tabs_permission_input || force) && !contains_permission) {
                 return d_optional_permissions.Main.i().set_permission({
                     name: 'filter_lists',
                     optional_permission_checkbox_dict: this.optional_permission_checkbox_dict,
@@ -37,4 +44,29 @@ export class Permissions {
 
             return true;
         }, 'cot_1086');
+
+    public set_on_back_up_restore = (): void =>
+        err(() => {
+            data.actions.some((action: i_actions.Action): boolean =>
+                err(
+                    () =>
+                        Object.entries(action).some(([key, val]: any): boolean =>
+                            err(() => {
+                                if (
+                                    (['url_whitelist', 'url_blacklist'].includes(key) &&
+                                        val.length > 0) ||
+                                    (key === 'hostnames' && val !== 'any_hostname')
+                                ) {
+                                    this.set({ force: true });
+
+                                    return true;
+                                }
+
+                                return false;
+                            }, 'cot_1097'),
+                        ),
+                    'cot_1096',
+                ),
+            );
+        }, 'cot_1095');
 }

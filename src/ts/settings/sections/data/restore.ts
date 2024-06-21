@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import { t, s_theme } from '@loftyshaky/shared';
 import { d_data, s_css_vars, i_data } from 'shared/internal';
+import { d_optional_permissions } from 'settings/internal';
 
 export class Restore {
     private static i0: Restore;
@@ -22,7 +23,7 @@ export class Restore {
             );
 
             if (confirmed_restore) {
-                const settings_final: i_data.Settings = await this.set({ settings });
+                const settings_final: i_data.Settings | undefined = await this.set({ settings });
 
                 ext.send_msg({
                     msg: 'update_settings',
@@ -39,12 +40,14 @@ export class Restore {
 
     public restore_back_up = ({ data_objs }: { data_objs: t.AnyRecord[] }): Promise<void> =>
         err_async(async () => {
-            let settings: i_data.Settings = {
+            const settings: i_data.Settings = {
                 ...this.get_unchanged_settings(),
                 ...data_objs[0],
             } as i_data.Settings;
 
-            settings = await this.set({ settings });
+            await this.set({ settings });
+
+            d_optional_permissions.Permissions.i().set_on_back_up_restore();
 
             ext.send_msg({
                 msg: 'update_settings',
@@ -60,9 +63,11 @@ export class Restore {
             s_css_vars.CssVars.i().set();
         }, 'cot_1017');
 
-    private set = ({ settings }: { settings?: i_data.Settings } = {}): Promise<i_data.Settings> =>
+    private set = ({ settings }: { settings?: i_data.Settings } = {}): Promise<
+        i_data.Settings | undefined
+    > =>
         err_async(async () => {
-            let settings_final: i_data.Settings;
+            let settings_final: i_data.Settings | undefined;
 
             if (_.isEmpty(settings)) {
                 const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
@@ -78,13 +83,13 @@ export class Restore {
                 settings_final = settings;
             }
 
-            const set_inner = (): i_data.Settings => {
-                d_data.Transform.i().set_transformed({ settings: _.clone(settings_final) });
+            if (n(settings_final)) {
+                await d_data.Transform.i().set_transformed({ settings: _.clone(settings_final) });
 
                 return settings_final;
-            };
+            }
 
-            return set_inner();
+            return settings_final;
         }, 'cot_1018');
 
     private get_unchanged_settings = (): t.AnyRecord =>
