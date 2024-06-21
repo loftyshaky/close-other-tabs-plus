@@ -18,9 +18,11 @@ export class Permissions {
 
     public set = ({ input }: { input: i_inputs.Input }): Promise<boolean> =>
         err_async(async () => {
-            const is_tabs_permission_input: boolean = ['url_whitelist', 'url_blacklist'].includes(
-                input.name,
-            );
+            const is_tabs_permission_input: boolean = [
+                'url_whitelist',
+                'url_blacklist',
+                'hostnames',
+            ].includes(input.name);
             const contains_permission: boolean = await we.permissions.contains(
                 this.optional_permission_checkbox_dict.filter_lists,
             );

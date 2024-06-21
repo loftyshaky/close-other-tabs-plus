@@ -22,11 +22,18 @@ export class Val {
 
                 let val: t.AnyUndefined;
 
-                if (s_sections.Utils.i().is_textarea_input({ input_name: input.name })) {
+                if (
+                    s_sections.Utils.i().is_textarea_input({ input_name: input.name }) ||
+                    input.name === 'hostnames'
+                ) {
                     const granted_tabs_permission: boolean =
                         await d_optional_permissions.Permissions.i().set({ input });
 
-                    val = granted_tabs_permission ? raw_val : '';
+                    if (input.name === 'hostnames') {
+                        val = granted_tabs_permission ? raw_val : 'any_hostname';
+                    } else {
+                        val = granted_tabs_permission ? raw_val : '';
+                    }
                 } else if (n(raw_val)) {
                     val = input.name === 'transition_duration' ? +raw_val : raw_val;
 
