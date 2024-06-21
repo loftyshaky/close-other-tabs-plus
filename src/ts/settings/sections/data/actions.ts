@@ -216,8 +216,15 @@ export class Actions {
         new_current_action_id: string;
     }): void =>
         err(() => {
-            data.settings.main_action_id = undefined;
-            data.settings.main_action_id = new_current_action_id;
+            const { current_action_initial } = d_settings.Actions.i();
+
+            if (
+                n(current_action_initial) &&
+                current_action_initial.current_action_id === data.settings.main_action_id
+            ) {
+                data.settings.main_action_id = undefined;
+                data.settings.main_action_id = new_current_action_id;
+            }
         }, 'cot_1062');
 
     private transfrom_textarea_input_into_arrays = (): void =>
