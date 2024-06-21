@@ -1,2 +1,3 @@
-export * from 'background/context_menu/scripts/actions';
-export * from 'background/context_menu/scripts/main';
+import 'background/context_menu/scripts/events';
+
+export * from 'background/context_menu/scripts/items';

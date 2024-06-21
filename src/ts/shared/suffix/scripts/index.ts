@@ -1,1 +1,1 @@
-export * from 'shared/suffix/scripts/main';
+export * from 'shared/suffix/scripts/suffix';

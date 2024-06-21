@@ -1,12 +1,12 @@
 import { Tabs } from 'webextension-polyfill';
 
-import { i_data } from 'shared/internal';
-import { s_tabs, i_tabs } from 'background/internal';
+import { i_actions } from 'shared/internal';
+import { s_actions, i_tabs } from 'background/internal';
 
-export class Actions {
-    private static i0: Actions;
+export class Activation {
+    private static i0: Activation;
 
-    public static i(): Actions {
+    public static i(): Activation {
         // eslint-disable-next-line no-return-assign
         return this.i0 || (this.i0 = new this());
     }
@@ -14,14 +14,14 @@ export class Actions {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public activate = ({ action }: { action: i_data.Action }): Promise<void> =>
+    public activate = ({ action }: { action: i_actions.Action }): Promise<void> =>
         err_async(async () => {
-            const current_tabs: i_tabs.CurrentTabs = await s_tabs.Main.i().get_current_tabs();
+            const current_tabs: i_tabs.CurrentTabs = await s_actions.Tabs.i().get_current_tabs();
             const current_tab: Tabs.Tab | undefined = await ext.get_active_tab();
-            const tabs: Tabs.Tab[] = await s_tabs.Main.i().get_all();
+            const tabs: Tabs.Tab[] = await s_actions.Tabs.i().get_all();
 
             if (n(current_tab)) {
-                const hostname_of_current_tab: string = s_tabs.Main.i().get_hostname_of_tab({
+                const hostname_of_current_tab: string = s_actions.Tabs.i().get_hostname_of_tab({
                     tab: current_tab,
                 });
 
@@ -37,14 +37,14 @@ export class Actions {
                             const is_current_tab_of_current_window: boolean =
                                 tab.id === current_tab_of_current_window.id;
                             const hostname_of_this_tab: string =
-                                s_tabs.Main.i().get_hostname_of_tab({
+                                s_actions.Tabs.i().get_hostname_of_tab({
                                     tab,
                                 });
                             const hostname_of_current_tab_of_current_window: string =
-                                s_tabs.Main.i().get_hostname_of_tab({
+                                s_actions.Tabs.i().get_hostname_of_tab({
                                     tab: current_tab_of_current_window,
                                 });
-                            const href_of_this_tab: string = s_tabs.Main.i().get_href_of_tab({
+                            const href_of_this_tab: string = s_actions.Tabs.i().get_href_of_tab({
                                 tab,
                             });
                             const hostname_of_this_tab_is_the_same_as_url_1: boolean =

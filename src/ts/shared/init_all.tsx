@@ -11,7 +11,7 @@ import {
     s_theme,
 } from '@loftyshaky/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { s_css_vars, d_settings, s_suffix } from 'shared/internal';
+import { s_css_vars, d_data, s_suffix } from 'shared/internal';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, @typescript-eslint/no-unused-vars
 declare let __webpack_public_path__: string;
@@ -36,7 +36,7 @@ export class InitAll {
                 const on_loading_screen_render = (): void =>
                     err(() => {
                         const loading_screen_root_el = s<HTMLDivElement>(
-                            `.${new s_suffix.Main('loading_screen').result}`,
+                            `.${new s_suffix.Suffix('loading_screen').result}`,
                         );
 
                         if (n(loading_screen_root_el) && n(loading_screen_root_el.shadowRoot)) {
@@ -67,12 +67,12 @@ export class InitAll {
                 __webpack_public_path__ = we.runtime.getURL('');
 
                 if (page === 'settings') {
-                    await d_settings.Transform.i().set_transformed_from_storage();
+                    await d_data.Transform.i().set_transformed_from_storage();
                 }
 
                 this.set_page_title();
 
-                s_css_vars.Main.i().set();
+                s_css_vars.CssVars.i().set();
 
                 const error_root: ShadowRoot = this.create_root({ prefix: 'error' }) as ShadowRoot;
                 const loading_screen_root: ShadowRoot = this.create_root({
@@ -123,7 +123,7 @@ export class InitAll {
         err(() => {
             const root = x.create(
                 'div',
-                x.cls([new s_suffix.Main('root').result, new s_suffix.Main(prefix).result]),
+                x.cls([new s_suffix.Suffix('root').result, new s_suffix.Suffix(prefix).result]),
             );
 
             x.append(document.body, root);
@@ -155,7 +155,7 @@ export class InitAll {
                     d_sections.Options.i().update_action_options();
 
                     d_inputs.InputWidth.i().calculate_for_all_sections({
-                        sections: d_sections.Main.i().sections as i_inputs.Sections,
+                        sections: d_sections.Sections.i().sections as i_inputs.Sections,
                     });
                     d_inputs.InputWidth.i().set_max_width();
 

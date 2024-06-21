@@ -1,11 +1,11 @@
-import { Windows, Tabs } from 'webextension-polyfill';
+import { Windows, Tabs as TabsType } from 'webextension-polyfill';
 
 import { i_tabs } from 'background/internal';
 
-export class Main {
-    private static i0: Main;
+export class Tabs {
+    private static i0: Tabs;
 
-    public static i(): Main {
+    public static i(): Tabs {
         // eslint-disable-next-line no-return-assign
         return this.i0 || (this.i0 = new this());
     }
@@ -13,9 +13,9 @@ export class Main {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public get_all = (): Promise<Tabs.Tab[]> =>
+    public get_all = (): Promise<TabsType.Tab[]> =>
         err_async(async () => {
-            const tabs: Tabs.Tab[] = await we.tabs.query({});
+            const tabs: TabsType.Tab[] = await we.tabs.query({});
 
             return tabs;
         }, 'cot_1066');
@@ -28,10 +28,10 @@ export class Main {
             windows.forEach(
                 (window: Windows.Window): Promise<void> =>
                     err_async(async () => {
-                        const tabs: Tabs.Tab[] = await we.tabs.query({ windowId: window.id });
+                        const tabs: TabsType.Tab[] = await we.tabs.query({ windowId: window.id });
 
-                        const current_tab: Tabs.Tab | undefined = tabs.find(
-                            (tab: Tabs.Tab): boolean => tab.active,
+                        const current_tab: TabsType.Tab | undefined = tabs.find(
+                            (tab: TabsType.Tab): boolean => tab.active,
                         );
 
                         if (n(window.id) && n(current_tab)) {
@@ -43,9 +43,9 @@ export class Main {
             return current_tabs;
         }, 'cot_1072');
 
-    public get_href_of_tab = ({ tab }: { tab: Tabs.Tab }): string =>
+    public get_href_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
         err(() => (n(tab.url) ? new URL(tab.url).href : ''), 'cot_1074');
 
-    public get_hostname_of_tab = ({ tab }: { tab: Tabs.Tab }): string =>
+    public get_hostname_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
         err(() => (n(tab.url) ? new URL(tab.url).hostname : ''), 'cot_1075');
 }

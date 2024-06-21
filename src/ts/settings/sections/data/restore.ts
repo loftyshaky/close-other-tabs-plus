@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { t, s_theme } from '@loftyshaky/shared';
-import { d_settings, s_css_vars, i_data } from 'shared/internal';
+import { d_data, s_css_vars, i_data } from 'shared/internal';
 
 export class Restore {
     private static i0: Restore;
@@ -14,7 +14,7 @@ export class Restore {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public restore_confirm = ({ settings }: { settings?: i_data.Settings } = {}): Promise<void> =>
+    public restore_defaults = ({ settings }: { settings?: i_data.Settings } = {}): Promise<void> =>
         err_async(async () => {
             // eslint-disable-next-line no-alert
             const confirmed_restore: boolean = globalThis.confirm(
@@ -33,7 +33,7 @@ export class Restore {
                 s_theme.Main.i().set({
                     name: data.settings.options_page_theme,
                 });
-                s_css_vars.Main.i().set();
+                s_css_vars.CssVars.i().set();
             }
         }, 'cot_1016');
 
@@ -57,7 +57,7 @@ export class Restore {
             s_theme.Main.i().set({
                 name: data.settings.options_page_theme,
             });
-            s_css_vars.Main.i().set();
+            s_css_vars.CssVars.i().set();
         }, 'cot_1017');
 
     private set = ({ settings }: { settings?: i_data.Settings } = {}): Promise<i_data.Settings> =>
@@ -79,7 +79,7 @@ export class Restore {
             }
 
             const set_inner = (): i_data.Settings => {
-                d_settings.Transform.i().set_transformed({ settings: _.clone(settings_final) });
+                d_data.Transform.i().set_transformed({ settings: _.clone(settings_final) });
 
                 return settings_final;
             };
@@ -87,7 +87,7 @@ export class Restore {
             return set_inner();
         }, 'cot_1018');
 
-    public get_unchanged_settings = (): t.AnyRecord =>
+    private get_unchanged_settings = (): t.AnyRecord =>
         err(
             () => ({
                 settings: {

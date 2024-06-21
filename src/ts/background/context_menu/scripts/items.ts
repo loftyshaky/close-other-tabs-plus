@@ -1,9 +1,9 @@
-import { i_data } from 'shared/internal';
+import { i_actions } from 'shared/internal';
 
-export class Main {
-    private static i0: Main;
+export class Items {
+    private static i0: Items;
 
-    public static i(): Main {
+    public static i(): Items {
         // eslint-disable-next-line no-return-assign
         return this.i0 || (this.i0 = new this());
     }
@@ -15,7 +15,7 @@ export class Main {
         err_async(async () => {
             await we.contextMenus.removeAll();
 
-            data.actions.forEach((action: i_data.Action): void =>
+            data.actions.forEach((action: i_actions.Action): void =>
                 err(() => {
                     we.contextMenus.create({
                         id: action.id,

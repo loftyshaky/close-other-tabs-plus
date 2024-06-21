@@ -1,9 +1,9 @@
 import { s_css_vars } from '@loftyshaky/shared';
 
-export class Main {
-    private static i0: Main;
+export class CssVars {
+    private static i0: CssVars;
 
-    public static i(): Main {
+    public static i(): CssVars {
         // eslint-disable-next-line no-return-assign
         return this.i0 || (this.i0 = new this());
     }

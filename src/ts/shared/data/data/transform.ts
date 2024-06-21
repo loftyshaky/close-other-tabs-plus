@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { runInAction } from 'mobx';
 
-import { d_settings as d_settings_shared } from '@loftyshaky/shared';
-import { d_settings } from 'shared/internal';
+import { d_settings as d_settings_loftyshaky } from '@loftyshaky/shared';
+import { d_actions } from 'shared/internal';
 
 export class Transform {
     private static i0: Transform;
@@ -35,8 +35,9 @@ export class Transform {
                 }, 'cot_1046'),
             );
 
-            await d_settings.Actions.i().set_actions({ settings: settings_final });
-            d_settings.Actions.i().current_action_initial = { ...data.current_action };
+            await d_actions.Actions.i().set({ settings: settings_final });
+
+            d_actions.Actions.i().initial_current_action = { ...data.current_action };
 
             ext.send_msg({ msg: 'react_to_change' });
         }, 'cot_1035');
@@ -52,7 +53,7 @@ export class Transform {
                 const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
 
                 await ext.storage_set(default_settings);
-                await d_settings_shared.Main.i().set({
+                await d_settings_loftyshaky.Main.i().set({
                     settings: default_settings,
                     settings_are_corrupt,
                 });

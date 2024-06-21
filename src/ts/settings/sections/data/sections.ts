@@ -2,13 +2,13 @@ import { makeObservable, computed } from 'mobx';
 
 import { s_utils } from '@loftyshaky/shared';
 import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { d_settings as d_settings_shared } from '@loftyshaky/shared/settings';
-import { d_sections } from 'settings/internal';
+import { d_settings as d_settings_loftyshaky } from '@loftyshaky/shared/settings';
+import { d_actions, d_sections } from 'settings/internal';
 
-export class Main {
-    private static i0: Main;
+export class Sections {
+    private static i0: Sections;
 
-    public static i(): Main {
+    public static i(): Sections {
         // eslint-disable-next-line no-return-assign
         return this.i0 || (this.i0 = new this());
     }
@@ -23,54 +23,9 @@ export class Main {
         return n(data.settings.current_section) ? data.settings.current_section : 'actions';
     }
 
-    public options: i_inputs.Options = {};
     public sections: o_inputs.Section[] | i_inputs.Sections = [];
 
-    public init_options = (): void =>
-        err(() => {
-            this.options = {
-                actions: [],
-                main_action: [],
-                action_type: [
-                    new o_inputs.Option({ name: 'close' }),
-                    new o_inputs.Option({ name: 'pin' }),
-                    new o_inputs.Option({ name: 'unpin' }),
-                ],
-                windows_to_affect: [
-                    new o_inputs.Option({ name: 'current_window' }),
-                    new o_inputs.Option({ name: 'all_windows' }),
-                    new o_inputs.Option({ name: 'other_windows' }),
-                ],
-                tabs_to_affect: [
-                    new o_inputs.Option({ name: 'current_tab' }),
-                    new o_inputs.Option({ name: 'all_tabs' }),
-                    new o_inputs.Option({ name: 'other_tabs' }),
-                    new o_inputs.Option({ name: 'tabs_to_right' }),
-                    new o_inputs.Option({ name: 'tabs_to_left' }),
-                ],
-                pinned_tabs: [
-                    new o_inputs.Option({ name: 'pinned_and_unpinned' }),
-                    new o_inputs.Option({ name: 'pinned' }),
-                    new o_inputs.Option({ name: 'unpinned' }),
-                ],
-                grouped_tabs: [
-                    new o_inputs.Option({ name: 'grouped_and_ungrouped' }),
-                    new o_inputs.Option({ name: 'grouped' }),
-                    new o_inputs.Option({ name: 'ungrouped' }),
-                ],
-                hostnames: [
-                    new o_inputs.Option({
-                        name: 'current_hostname',
-                    }),
-                    new o_inputs.Option({ name: 'any_hostname' }),
-                    new o_inputs.Option({
-                        name: 'any_hostname_except_current',
-                    }),
-                ],
-            };
-        }, 'cnt_1268');
-
-    public init_sections = (): void =>
+    public init = (): void =>
         err(() => {
             this.sections = [
                 ...[
@@ -79,13 +34,13 @@ export class Main {
                         inputs: [
                             new o_inputs.Select({
                                 name: 'actions',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'settings.current_action_id',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'main_action',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'settings.main_action_id',
                                 event_callback: d_sections.Val.i().change,
                             }),
@@ -95,15 +50,15 @@ export class Main {
                                 inputs: [
                                     new o_inputs.Btn({
                                         name: 'create_action',
-                                        event_callback: d_sections.Actions.i().create_action,
+                                        event_callback: d_actions.Action.i().create,
                                     }),
                                     new o_inputs.Btn({
                                         name: 'update_action',
-                                        event_callback: d_sections.Actions.i().update_action,
+                                        event_callback: d_actions.Action.i().update,
                                     }),
                                     new o_inputs.Btn({
                                         name: 'delete_action',
-                                        event_callback: d_sections.Actions.i().delete_action,
+                                        event_callback: d_actions.Action.i().delete,
                                     }),
                                 ],
                             }),
@@ -114,42 +69,42 @@ export class Main {
                                 name: 'action_name',
                                 val_accessor: 'current_action.name',
                                 event_callback: d_sections.Val.i().change,
-                                warn_state_checker: d_sections.Val.i().validate_input,
+                                warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
                             new o_inputs.Text({
                                 name: 'action_position',
                                 text_type: 'number',
                                 val_accessor: 'current_action.position',
                                 event_callback: d_sections.Val.i().change,
-                                warn_state_checker: d_sections.Val.i().validate_input,
+                                warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
                             new o_inputs.Select({
                                 name: 'action_type',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'current_action.type',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'windows_to_affect',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'current_action.windows_to_affect',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'tabs_to_affect',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'current_action.tabs_to_affect',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'pinned_tabs',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'current_action.pinned_tabs',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'grouped_tabs',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'current_action.grouped_tabs',
                                 is_enabled_conds: [
                                     {
@@ -162,7 +117,7 @@ export class Main {
                             }),
                             new o_inputs.Select({
                                 name: 'hostnames',
-                                options: this.options,
+                                options: d_sections.Options.i().options,
                                 val_accessor: 'current_action.hostnames',
                                 event_callback: d_sections.Val.i().change,
                             }),
@@ -186,13 +141,13 @@ export class Main {
                                 name: 'url_whitelist',
                                 val_accessor: 'current_action.url_whitelist',
                                 event_callback: d_sections.Val.i().change,
-                                warn_state_checker: d_sections.Val.i().validate_input,
+                                warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
                             new o_inputs.Textarea({
                                 name: 'url_blacklist',
                                 val_accessor: 'current_action.url_blacklist',
                                 event_callback: d_sections.Val.i().change,
-                                warn_state_checker: d_sections.Val.i().validate_input,
+                                warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
                             new o_inputs.Checkbox({
                                 name: 'open_new_tab_after_action',
@@ -203,7 +158,7 @@ export class Main {
                                 name: 'urls_after_action',
                                 val_accessor: 'current_action.urls_after_action',
                                 event_callback: d_sections.Val.i().change,
-                                warn_state_checker: d_sections.Val.i().validate_input,
+                                warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
                         ],
                     }),
@@ -217,10 +172,10 @@ export class Main {
                         ],
                     }),
                 ],
-                ...d_settings_shared.Sections.i().make_shared_sections({
+                ...d_settings_loftyshaky.Sections.i().make_shared_sections({
                     download_back_up_callback: ext.storage_get,
                     upload_back_up_callback: d_sections.Restore.i().restore_back_up,
-                    restore_defaults_callback: () => d_sections.Restore.i().restore_confirm(),
+                    restore_defaults_callback: () => d_sections.Restore.i().restore_defaults(),
                     input_change_val_callback: d_sections.Val.i().change,
                 }),
                 ...[
@@ -301,16 +256,16 @@ export class Main {
             });
         }, 'cot_1014');
 
-    public change_section_val = (): void =>
+    public change_current_section_val = (): void =>
         err(() => {
-            data.settings.current_section = d_settings_shared.Sections.i().current_section;
+            data.settings.current_section = d_settings_loftyshaky.Sections.i().current_section;
 
             ext.send_msg({
                 msg: 'update_settings',
                 settings: {
                     settings: {
                         ...data.settings,
-                        ...{ current_section: d_settings_shared.Sections.i().current_section },
+                        ...{ current_section: d_settings_loftyshaky.Sections.i().current_section },
                     },
                 },
             });

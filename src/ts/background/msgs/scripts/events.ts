@@ -9,12 +9,12 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
             we.runtime.reload();
         } else if (msg_str === 'update_settings') {
             if (n(msg.update_instantly) && msg.update_instantly) {
-                s_data.Main.i().update_settings({
+                s_data.Manipulation.i().update_settings({
                     settings: msg.settings,
                     load_settings: n(msg.load_settings) ? msg.load_settings : false,
                 });
             } else {
-                s_data.Main.i().update_settings_debounce(
+                s_data.Manipulation.i().update_settings_debounce(
                     msg.settings,
                     n(msg.rerun_actions) ? msg.rerun_actions : false,
                     n(msg.transform) ? msg.transform : false,
@@ -26,7 +26,7 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
         }
 
         if (msg_str === 'get_defaults') {
-            return Promise.resolve(s_data.Main.i().defaults);
+            return Promise.resolve(s_data.Manipulation.i().defaults);
         }
 
         return false;

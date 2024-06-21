@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { reaction } from 'mobx';
 
-import { o_inputs } from '@loftyshaky/shared/inputs';
-import { i_data } from 'shared/internal';
+import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
+import { i_actions } from 'shared/internal';
 import { d_sections } from 'settings/internal';
 
 export class Options {
@@ -16,13 +16,59 @@ export class Options {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
+    public options: i_inputs.Options = {};
+
+    public init = (): void =>
+        err(() => {
+            this.options = {
+                actions: [],
+                main_action: [],
+                action_type: [
+                    new o_inputs.Option({ name: 'close' }),
+                    new o_inputs.Option({ name: 'pin' }),
+                    new o_inputs.Option({ name: 'unpin' }),
+                ],
+                windows_to_affect: [
+                    new o_inputs.Option({ name: 'current_window' }),
+                    new o_inputs.Option({ name: 'all_windows' }),
+                    new o_inputs.Option({ name: 'other_windows' }),
+                ],
+                tabs_to_affect: [
+                    new o_inputs.Option({ name: 'current_tab' }),
+                    new o_inputs.Option({ name: 'all_tabs' }),
+                    new o_inputs.Option({ name: 'other_tabs' }),
+                    new o_inputs.Option({ name: 'tabs_to_right' }),
+                    new o_inputs.Option({ name: 'tabs_to_left' }),
+                ],
+                pinned_tabs: [
+                    new o_inputs.Option({ name: 'pinned_and_unpinned' }),
+                    new o_inputs.Option({ name: 'pinned' }),
+                    new o_inputs.Option({ name: 'unpinned' }),
+                ],
+                grouped_tabs: [
+                    new o_inputs.Option({ name: 'grouped_and_ungrouped' }),
+                    new o_inputs.Option({ name: 'grouped' }),
+                    new o_inputs.Option({ name: 'ungrouped' }),
+                ],
+                hostnames: [
+                    new o_inputs.Option({
+                        name: 'current_hostname',
+                    }),
+                    new o_inputs.Option({ name: 'any_hostname' }),
+                    new o_inputs.Option({
+                        name: 'any_hostname_except_current',
+                    }),
+                ],
+            };
+        }, 'cnt_1268');
+
     public update_action_options = (): void => {
         reaction(
             () => data.actions,
             () => {
                 if (!_.isEmpty(data.actions)) {
                     const action_options = data.actions.map(
-                        (action_2: i_data.Action): o_inputs.Option =>
+                        (action_2: i_actions.Action): o_inputs.Option =>
                             err(
                                 () =>
                                     new o_inputs.Option({
@@ -33,16 +79,16 @@ export class Options {
                             ),
                     );
 
-                    d_sections.Main.i().options = {
-                        ...d_sections.Main.i().options,
+                    this.options = {
+                        ...this.options,
                         actions: action_options,
                         main_action: action_options,
                     };
 
-                    (d_sections.Main.i().sections as any).actions.inputs.actions.options =
-                        d_sections.Main.i().options;
-                    (d_sections.Main.i().sections as any).actions.inputs.main_action.options =
-                        d_sections.Main.i().options;
+                    (d_sections.Sections.i().sections as any).actions.inputs.actions.options =
+                        this.options;
+                    (d_sections.Sections.i().sections as any).actions.inputs.main_action.options =
+                        this.options;
                 }
             },
             { fireImmediately: true },

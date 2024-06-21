@@ -1,10 +1,10 @@
 import { i_inputs } from '@loftyshaky/shared/inputs';
 import { d_optional_permissions } from '@loftyshaky/shared/settings';
 
-export class Main {
-    private static i0: Main;
+export class Permissions {
+    private static i0: Permissions;
 
-    public static i(): Main {
+    public static i(): Permissions {
         // eslint-disable-next-line no-return-assign
         return this.i0 || (this.i0 = new this());
     }
@@ -16,7 +16,7 @@ export class Main {
         filter_lists: { permissions: ['tabs'], origins: [] },
     };
 
-    public set_permission = ({ input }: { input: i_inputs.Input }): Promise<boolean> =>
+    public set = ({ input }: { input: i_inputs.Input }): Promise<boolean> =>
         err_async(async () => {
             const is_tabs_permission_input: boolean = ['url_whitelist', 'url_blacklist'].includes(
                 input.name,

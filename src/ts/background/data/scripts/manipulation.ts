@@ -1,13 +1,13 @@
 import _ from 'lodash';
 
 import { t, s_service_worker } from '@loftyshaky/shared';
-import { d_settings, i_data } from 'shared/internal';
-import { s_context_menu } from 'background/internal';
+import { d_actions, i_data } from 'shared/internal';
+import { s_context_menu, s_tab_counter } from 'background/internal';
 
-export class Main {
-    private static i0: Main;
+export class Manipulation {
+    private static i0: Manipulation;
 
-    public static i(): Main {
+    public static i(): Manipulation {
         // eslint-disable-next-line no-return-assign
         return this.i0 || (this.i0 = new this());
     }
@@ -31,8 +31,8 @@ export class Main {
                     persistent_service_worker: false,
                     offers_are_visible: true,
                     current_action_id: 'close_other_tabs',
-                    main_action_id: 'close_tabs_to_the_right',
-                    tab_count_is_visible: true,
+                    main_action_id: 'close_other_tabs',
+                    tab_counter_is_visible: true,
                 },
                 close_other_tabs: {
                     id: 'close_other_tabs',
@@ -108,9 +108,10 @@ export class Main {
             }
 
             await ext.storage_set(settings_final, replace);
-            await d_settings.Actions.i().set_actions();
-            await s_context_menu.Main.i().create_itmes();
+            await d_actions.Actions.i().set();
+            await s_context_menu.Items.i().create_itmes();
             s_service_worker.ServiceWorker.i().make_persistent();
+            await s_tab_counter.Badge.i().set_tab_count();
 
             if (load_settings) {
                 await ext.send_msg_resp({ msg: 'load_settings' });

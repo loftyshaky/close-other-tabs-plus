@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 
 import { c_settings } from '@loftyshaky/shared/settings';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { d_sections, p_settings } from 'settings/internal';
-import { d_settings } from 'shared/internal';
+import { d_data, d_sections, p_settings } from 'settings/internal';
+import { d_data as d_data_shared } from 'shared/internal';
 
 export const Body: React.FunctionComponent<p_settings.Body> = observer((props) => {
     const { on_render } = props;
@@ -18,10 +18,10 @@ export const Body: React.FunctionComponent<p_settings.Body> = observer((props) =
             err(() => {
                 const run = async () =>
                     err(() => {
-                        d_settings.Transform.i().set_transformed_from_storage();
+                        d_data_shared.Transform.i().set_transformed_from_storage();
 
                         d_inputs.NestedInput.i().set_all_parents_disbled_vals({
-                            sections: d_sections.Main.i().sections as i_inputs.Sections,
+                            sections: d_sections.Sections.i().sections as i_inputs.Sections,
                         });
                     }, 'cot_1009');
 
@@ -33,17 +33,17 @@ export const Body: React.FunctionComponent<p_settings.Body> = observer((props) =
     return (
         <div className='main'>
             <c_settings.Body
-                sections={d_sections.Main.i().sections as i_inputs.Sections}
-                initial_section={d_sections.Main.i().current_section}
+                sections={d_sections.Sections.i().sections as i_inputs.Sections}
+                initial_section={d_sections.Sections.i().current_section}
                 change_section_callback={(): void => {
                     d_inputs.NestedInput.i().set_all_parents_disbled_vals({
-                        sections: d_sections.Main.i().sections as i_inputs.Sections,
+                        sections: d_sections.Sections.i().sections as i_inputs.Sections,
                     });
 
-                    d_sections.Main.i().change_section_val();
+                    d_sections.Sections.i().change_current_section_val();
                 }}
                 enable_developer_mode_save_callback={
-                    d_sections.Val.i().enable_developer_mode_save_callback
+                    d_data.Manipulation.i().enable_developer_mode_save_callback
                 }
             />
         </div>

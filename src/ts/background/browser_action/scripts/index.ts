@@ -1,1 +1,1 @@
-import 'background/browser_action/scripts/actions';
+import 'background/browser_action/scripts/events';
