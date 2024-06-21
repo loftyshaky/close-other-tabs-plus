@@ -78,6 +78,10 @@ export class Actions {
                 this.transfrom_textarea_input_into_arrays();
 
                 const { current_action_initial } = d_settings.Actions.i();
+                data.current_action.position =
+                    data.current_action.position > data.actions.length
+                        ? data.current_action.position - 1
+                        : data.current_action.position;
 
                 data.actions = data.actions.map(
                     (action_2: i_data.Action): i_data.Action =>
