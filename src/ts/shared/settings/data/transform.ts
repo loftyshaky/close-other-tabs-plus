@@ -36,6 +36,7 @@ export class Transform {
             );
 
             await d_settings.Actions.i().set_actions({ settings: settings_final });
+            d_settings.Actions.i().current_action_initial = { ...data.current_action };
 
             ext.send_msg({ msg: 'react_to_change' });
         }, 'cot_1035');
