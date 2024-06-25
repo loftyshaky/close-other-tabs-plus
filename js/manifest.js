@@ -38,6 +38,147 @@ class Manifest {
                     },
                     description: '__MSG_hotkey_3__',
                 },
+                hotkey_4: {
+                    description: '__MSG_hotkey_4__',
+                },
+                hotkey_5: {
+                    description: '__MSG_hotkey_5__',
+                },
+                hotkey_6: {
+                    description: '__MSG_hotkey_6__',
+                },
+                hotkey_7: {
+                    description: '__MSG_hotkey_7__',
+                },
+                hotkey_8: {
+                    description: '__MSG_hotkey_8__',
+                },
+                hotkey_9: {
+                    description: '__MSG_hotkey_9__',
+                },
+                hotkey_10: {
+                    description: '__MSG_hotkey_10__',
+                },
+                hotkey_11: {
+                    description: '__MSG_hotkey_11__',
+                },
+                hotkey_12: {
+                    description: '__MSG_hotkey_12__',
+                },
+                hotkey_13: {
+                    description: '__MSG_hotkey_13__',
+                },
+                hotkey_14: {
+                    description: '__MSG_hotkey_14__',
+                },
+                hotkey_15: {
+                    description: '__MSG_hotkey_15__',
+                },
+                hotkey_16: {
+                    description: '__MSG_hotkey_16__',
+                },
+                hotkey_17: {
+                    description: '__MSG_hotkey_17__',
+                },
+                hotkey_18: {
+                    description: '__MSG_hotkey_18__',
+                },
+                hotkey_19: {
+                    description: '__MSG_hotkey_19__',
+                },
+                hotkey_20: {
+                    description: '__MSG_hotkey_20__',
+                },
+                hotkey_21: {
+                    description: '__MSG_hotkey_21__',
+                },
+                hotkey_22: {
+                    description: '__MSG_hotkey_22__',
+                },
+                hotkey_23: {
+                    description: '__MSG_hotkey_23__',
+                },
+                hotkey_24: {
+                    description: '__MSG_hotkey_24__',
+                },
+                hotkey_25: {
+                    description: '__MSG_hotkey_25__',
+                },
+                hotkey_26: {
+                    description: '__MSG_hotkey_26__',
+                },
+                hotkey_27: {
+                    description: '__MSG_hotkey_27__',
+                },
+                hotkey_28: {
+                    description: '__MSG_hotkey_28__',
+                },
+                hotkey_29: {
+                    description: '__MSG_hotkey_29__',
+                },
+                hotkey_30: {
+                    description: '__MSG_hotkey_30__',
+                },
+                hotkey_31: {
+                    description: '__MSG_hotkey_31__',
+                },
+                hotkey_32: {
+                    description: '__MSG_hotkey_32__',
+                },
+                hotkey_33: {
+                    description: '__MSG_hotkey_33__',
+                },
+                hotkey_34: {
+                    description: '__MSG_hotkey_34__',
+                },
+                hotkey_35: {
+                    description: '__MSG_hotkey_35__',
+                },
+                hotkey_36: {
+                    description: '__MSG_hotkey_36__',
+                },
+                hotkey_37: {
+                    description: '__MSG_hotkey_37__',
+                },
+                hotkey_38: {
+                    description: '__MSG_hotkey_38__',
+                },
+                hotkey_39: {
+                    description: '__MSG_hotkey_39__',
+                },
+                hotkey_40: {
+                    description: '__MSG_hotkey_40__',
+                },
+                hotkey_41: {
+                    description: '__MSG_hotkey_41__',
+                },
+                hotkey_42: {
+                    description: '__MSG_hotkey_42__',
+                },
+                hotkey_43: {
+                    description: '__MSG_hotkey_43__',
+                },
+                hotkey_44: {
+                    description: '__MSG_hotkey_44__',
+                },
+                hotkey_45: {
+                    description: '__MSG_hotkey_45__',
+                },
+                hotkey_46: {
+                    description: '__MSG_hotkey_46__',
+                },
+                hotkey_47: {
+                    description: '__MSG_hotkey_47__',
+                },
+                hotkey_48: {
+                    description: '__MSG_hotkey_48__',
+                },
+                hotkey_49: {
+                    description: '__MSG_hotkey_49__',
+                },
+                hotkey_50: {
+                    description: '__MSG_hotkey_50__',
+                },
             },
         };
 

@@ -1,5 +1,6 @@
 import 'background/browser_action/scripts';
 import 'background/context_menu/scripts';
+import 'background/hotkeys/scripts';
 import 'background/msgs/scripts';
 import 'background/on_startup/scripts';
 import 'background/tabs/scripts';
