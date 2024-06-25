@@ -1,4 +1,5 @@
-import { Tabs } from 'webextension-polyfill';
+import _ from 'lodash';
+import { Windows, Tabs } from 'webextension-polyfill';
 
 import { i_actions } from 'shared/internal';
 import { s_actions, i_tabs } from 'background/internal';
@@ -16,6 +17,63 @@ export class Activation {
 
     public activate = ({ action }: { action: i_actions.Action }): Promise<void> =>
         err_async(async () => {
+            const open_urls = (): Promise<void> =>
+                err_async(async () => {
+                    const open_urls_inner = ({ window_id }: { window_id: number }): Promise<void> =>
+                        err_async(async () => {
+                            // eslint-disable-next-line no-restricted-syntax
+                            for await (const url of urls_to_open) {
+                                await we.tabs.create({
+                                    windowId: window_id,
+                                    url,
+                                });
+                            }
+                        }, 'cot_1109');
+
+                    const urls_to_open: string[] = [
+                        ...action.urls_after_action,
+                        ...(action.open_new_tab_after_action ? ['chrome://new-tab-page'] : []),
+                    ];
+
+                    if (n(current_tab)) {
+                        const windows: Windows.Window[] = await we.windows.getAll();
+                        const current_windows_last: Windows.Window | undefined = await windows.find(
+                            (window: Windows.Window): boolean =>
+                                err(
+                                    () => n(window.id) && window.id === current_tab.windowId,
+                                    'cot_1111',
+                                ),
+                        );
+
+                        if (n(current_windows_last)) {
+                            const windows_no_current: Windows.Window[] = _.reject(windows, {
+                                id: current_windows_last.id,
+                            });
+                            const windows_current_last = [
+                                ...windows_no_current,
+                                ...[current_windows_last],
+                            ];
+
+                            // eslint-disable-next-line no-restricted-syntax
+                            for await (const window of windows_current_last) {
+                                const is_current_window: boolean =
+                                    window.id === current_tab.windowId;
+
+                                const matched_window: boolean =
+                                    action.windows_to_affect === 'all_windows' ||
+                                    (action.windows_to_affect === 'current_window' &&
+                                        is_current_window) ||
+                                    (action.windows_to_affect === 'other_windows' &&
+                                        !is_current_window);
+
+                                if (matched_window && n(window.id)) {
+                                    await open_urls_inner({ window_id: window.id });
+                                }
+                            }
+                        }
+                    }
+                }, 'cot_1099');
+
             const current_tabs: i_tabs.CurrentTabs = await s_actions.Tabs.i().get_current_tabs();
             const current_tab: Tabs.Tab | undefined = await ext.get_active_tab();
             const tabs: Tabs.Tab[] = await s_actions.Tabs.i().get_all();
@@ -142,6 +200,8 @@ export class Activation {
                         return false;
                     }, 'cot_1068'),
                 );
+
+                await open_urls();
 
                 (action.type === 'unpin' ? tabs_to_activate.reverse() : tabs_to_activate).forEach(
                     (tab: Tabs.Tab): void =>
