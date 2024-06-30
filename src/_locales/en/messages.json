@@ -3,7 +3,7 @@
         "message": "Close Other Tabs Extended"
     },
     "description": {
-        "message": ""
+        "message": "Close/pin/unpin multiple tabs at once, filtering them by a window, pin/group state or hostname."
     },
     "input_width_css": {
         "message": "392px"
