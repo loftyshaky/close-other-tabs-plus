@@ -26,6 +26,15 @@
     "the_last_action_cannot_be_deleted_notification": {
         "message": "The last action cannot be deleted."
     },
+    "close_other_tabs_default_action_name_text": {
+        "message": "Close other tabs"
+    },
+    "close_tabs_to_the_right_default_action_name_text": {
+        "message": "Close tabs to the right"
+    },
+    "close_tabs_to_the_left_default_action_name_text": {
+        "message": "Close tabs to the left"
+    },
     "actions_section_text": {
         "message": "Actions"
     },
@@ -150,16 +159,16 @@
         "message": "Any hostname except current"
     },
     "actions_section_help_text": {
-        "message": "Here, you can define what actions appear in the context menus. Each action closes, pins or unpins tabs. The extension's icon context menu can have up to 6 actions. The \"on page\" context menu can have a lot more.\n\nTo create a new action first, select any action from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Create action\" button. The new action will appear in the \"Actions\" dropdown.\n\nTo update a current action, first, select it from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Update action\" button.\n\nTo delete an action, select it from the \"Actions\" dropdown and press the \"Delete action\" button."
+        "message": "Here, you can define what actions appear in the context menus. Each action closes, pins or unpins tabs. The extension's icon context menu can have up to 6 actions. The \"on page\" context menu can have a lot more.\n\nTo create a new action first, select any action from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Create action\" button. The new action will appear in the \"Actions\" dropdown.\n\nTo update an action first, select it from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Update action\" button.\n\nTo delete an action, select it from the \"Actions\" dropdown and press the \"Delete action\" button."
     },
     "actions_help_text": {
         "message": "All actions in the order they appear in the context menus. Each action closes, pins or unpins tabs."
     },
     "main_action_help_text": {
-        "message": "What action to perform when you press the extension's icon. Action closes, pins or unpins tabs."
+        "message": "Which action to perform when you press the extension's icon. Action closes, pins or unpins tabs."
     },
     "action_btns_help_text": {
-        "message": "To create a new action first, select any action from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Create action\" button. The new action will appear in the \"Actions\" dropdown.\n\nTo update a current action first, select it from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Update action\" button.\n\nTo delete an action, select it from the \"Actions\" dropdown and press the \"Delete action\" button."
+        "message": "To create a new action first, select any action from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Create action\" button. The new action will appear in the \"Actions\" dropdown.\n\nTo update an action first, select it from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Update action\" button.\n\nTo delete an action, select it from the \"Actions\" dropdown and press the \"Delete action\" button."
     },
     "action_name_help_text": {
         "message": "A name of an action, as it appears in the context menus."
@@ -168,7 +177,7 @@
         "message": "Defines the order of an action in the context menus."
     },
     "window_hostname_comparison_help_text": {
-        "message": "If unchecked, the hostname in the active tab of the CURRENT window will be used as a basis for comparison instead.\n\nExample:\nYou have two windows. Each has four tabs, two facebook.com tabs and two reddit.com tabs. In the first window, facebook.com is the active tab. In the second, it's reddit.com. You're running close action with the \"All windows\", \"Other tabs\" and \"Current hostname\" settings.\n\nIf unchecked, the non-current facebook.com tabs will be closed in both windows.\n\nIf checked, the non-current facebook.com tab will be closed in the first window, but in the second window, it'll be the reddit.com tab."
+        "message": "If unchecked, the hostname in the active tab of the CURRENT window will be used as a basis for comparison instead.\n\nExample:\nYou have two windows opened. Each has four tabs opened, two facebook.com tabs and two reddit.com tabs. In the first window, facebook.com is the active tab. In the second, it's reddit.com. You're running close action with the \"All windows\", \"Other tabs\" and \"Current hostname\" settings.\n\nIf unchecked, the non-active facebook.com tabs will be closed in both windows.\n\nIf checked, the non-active facebook.com tab will be closed in the first window, but in the second window, it'll be the reddit.com tab."
     },
     "url_whitelist_help_text": {
         "message": "Defines on which URLs or parts of URLs to perform an action.\n\nCancels out the effect of \"Affect tabs by hostname: Current hostname\".\n\nCancels out the effect of \"URL blacklist\"."
