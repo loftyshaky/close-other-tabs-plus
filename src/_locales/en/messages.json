@@ -35,6 +35,33 @@
     "close_tabs_to_the_left_default_action_name_text": {
         "message": "Close tabs to the left"
     },
+    "close_other_tabs_including_pinned_default_action_name_text": {
+        "message": "Close other tabs, including pinned ones"
+    },
+    "close_other_windows_default_action_name_text": {
+        "message": "Close other windows"
+    },
+    "close_all_windows_default_action_name_text": {
+        "message": "Close all windows"
+    },
+    "pin_other_tabs_default_action_name_text": {
+        "message": "Pin other tabs"
+    },
+    "pin_tabs_to_the_right_default_action_name_text": {
+        "message": "Pin tabs to the right"
+    },
+    "pin_tabs_to_the_left_default_action_name_text": {
+        "message": "Pin tabs to the left"
+    },
+    "unpin_other_tabs_default_action_name_text": {
+        "message": "Unpin other tabs"
+    },
+    "close_tabs_with_current_hostname_default_action_name_text": {
+        "message": "Close tabs with the current hostname"
+    },
+    "close_tabs_with_any_hostname_except_current_default_action_name_text": {
+        "message": "Close tabs with any hostname except the current one"
+    },
     "actions_section_text": {
         "message": "Actions"
     },
@@ -97,6 +124,9 @@
     },
     "urls_after_action_label_text": {
         "message": "URLs to be opened after the action"
+    },
+    "in_which_windows_to_open_tabs_label_text": {
+        "message": "In which windows to open tabs"
     },
     "tab_counter_is_visible_label_text": {
         "message": "Show tab counter"
