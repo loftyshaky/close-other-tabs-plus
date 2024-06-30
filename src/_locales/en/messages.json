@@ -81,7 +81,7 @@
         "message": "URL blacklist"
     },
     "open_new_tab_after_action_label_text": {
-        "message": "Open new tab after the action"
+        "message": "Open a new tab after the action"
     },
     "urls_after_action_label_text": {
         "message": "URLs to be opened after the action"
