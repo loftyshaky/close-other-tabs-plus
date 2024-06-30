@@ -156,7 +156,7 @@
         "message": "All actions in the order they appear in the context menus. Each action closes, pins or unpins tabs."
     },
     "main_action_help_text": {
-        "message": "What action to run when you press the extension's icon. Action closes, pins or unpins tabs."
+        "message": "What action to perform when you press the extension's icon. Action closes, pins or unpins tabs."
     },
     "action_btns_help_text": {
         "message": "To create a new action first, select any action from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Create action\" button. The new action will appear in the \"Actions\" dropdown.\n\nTo update a current action first, select it from the \"Actions\" dropdown. The settings of the chosen action will populate the inputs under the Create/Update/Delete action buttons. Edit these settings, then press the \"Update action\" button.\n\nTo delete an action, select it from the \"Actions\" dropdown and press the \"Delete action\" button."
