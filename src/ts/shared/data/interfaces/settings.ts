@@ -9,5 +9,5 @@ export interface Settings {
     offers_are_visible: boolean;
     current_action_id: string;
     main_action_id: string;
-    tab_counter_is_visible: true;
+    tab_counter_is_visible: boolean;
 }
