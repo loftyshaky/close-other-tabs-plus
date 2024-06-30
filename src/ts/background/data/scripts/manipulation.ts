@@ -36,7 +36,7 @@ export class Manipulation {
                 },
                 close_other_tabs: {
                     id: 'close_other_tabs',
-                    name: 'Close other tabs',
+                    name: ext.msg('close_other_tabs_default_action_name_text'),
                     position: 1,
                     type: 'close',
                     windows_to_affect: 'current_window',
@@ -52,7 +52,7 @@ export class Manipulation {
                 },
                 close_tabs_to_the_right: {
                     id: 'close_tabs_to_the_right',
-                    name: 'Close tabs to the right',
+                    name: ext.msg('close_tabs_to_the_right_default_action_name_text'),
                     position: 2,
                     type: 'close',
                     windows_to_affect: 'current_window',
@@ -68,7 +68,7 @@ export class Manipulation {
                 },
                 close_tabs_to_the_left: {
                     id: 'close_tabs_to_the_left',
-                    name: 'Close tabs to the left',
+                    name: ext.msg('close_tabs_to_the_left_default_action_name_text'),
                     position: 3,
                     type: 'close',
                     windows_to_affect: 'current_window',
