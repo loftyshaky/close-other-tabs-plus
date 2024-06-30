@@ -15,5 +15,6 @@ export interface Action {
     url_blacklist: string[];
     open_new_tab_after_action: boolean;
     urls_after_action: string[];
+    in_which_windows_to_open_tabs: string;
     indexed_action_name?: string;
 }

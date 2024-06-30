@@ -60,10 +60,10 @@ export class Activation {
                                     window.id === current_tab.windowId;
 
                                 const matched_window: boolean =
-                                    action.windows_to_affect === 'all_windows' ||
-                                    (action.windows_to_affect === 'current_window' &&
+                                    action.in_which_windows_to_open_tabs === 'all_windows' ||
+                                    (action.in_which_windows_to_open_tabs === 'current_window' &&
                                         is_current_window) ||
-                                    (action.windows_to_affect === 'other_windows' &&
+                                    (action.in_which_windows_to_open_tabs === 'other_windows' &&
                                         !is_current_window);
 
                                 if (matched_window && n(window.id)) {

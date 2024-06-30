@@ -170,6 +170,12 @@ export class Sections {
                                 event_callback: d_sections.Val.i().change,
                                 warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
+                            new o_inputs.Select({
+                                name: 'in_which_windows_to_open_tabs',
+                                options: d_sections.Options.i().options,
+                                val_accessor: 'current_action.in_which_windows_to_open_tabs',
+                                event_callback: d_sections.Val.i().change,
+                            }),
                         ],
                     }),
                     new o_inputs.Section({

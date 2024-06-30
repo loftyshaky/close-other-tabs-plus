@@ -59,6 +59,11 @@ export class Options {
                         name: 'any_hostname_except_current',
                     }),
                 ],
+                in_which_windows_to_open_tabs: [
+                    new o_inputs.Option({ name: 'current_window' }),
+                    new o_inputs.Option({ name: 'all_windows' }),
+                    new o_inputs.Option({ name: 'other_windows' }),
+                ],
             };
         }, 'cnt_1268');
 
