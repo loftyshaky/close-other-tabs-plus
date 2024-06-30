@@ -72,12 +72,14 @@ export class Sections {
                             }),
                             new o_inputs.Text({
                                 name: 'action_name',
+                                include_help: true,
                                 val_accessor: 'current_action.name',
                                 event_callback: d_sections.Val.i().change,
                                 warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
                             new o_inputs.Text({
                                 name: 'action_position',
+                                include_help: true,
                                 text_type: 'number',
                                 val_accessor: 'current_action.position',
                                 event_callback: d_sections.Val.i().change,
