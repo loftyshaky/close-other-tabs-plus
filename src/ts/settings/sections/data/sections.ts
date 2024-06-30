@@ -31,21 +31,26 @@ export class Sections {
                 ...[
                     new o_inputs.Section({
                         name: 'actions',
+                        include_help: true,
+                        alt_help_msg: 'actions_section_help_text',
                         inputs: [
                             new o_inputs.Select({
                                 name: 'actions',
+                                include_help: true,
                                 options: d_sections.Options.i().options,
                                 val_accessor: 'settings.current_action_id',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
                                 name: 'main_action',
+                                include_help: true,
                                 options: d_sections.Options.i().options,
                                 val_accessor: 'settings.main_action_id',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Group({
                                 name: 'action_btns',
+                                include_help: true,
                                 event_callback: () => undefined,
                                 inputs: [
                                     new o_inputs.Btn({
@@ -123,6 +128,7 @@ export class Sections {
                             }),
                             new o_inputs.Checkbox({
                                 name: 'window_hostname_comparison',
+                                include_help: true,
                                 val_accessor: 'current_action.window_hostname_comparison',
                                 parent: 'hostnames',
                                 is_enabled_conds: [
@@ -139,12 +145,14 @@ export class Sections {
                             }),
                             new o_inputs.Textarea({
                                 name: 'url_whitelist',
+                                include_help: true,
                                 val_accessor: 'current_action.url_whitelist',
                                 event_callback: d_sections.Val.i().change,
                                 warn_state_checker: d_sections.Validation.i().validate_input,
                             }),
                             new o_inputs.Textarea({
                                 name: 'url_blacklist',
+                                include_help: true,
                                 val_accessor: 'current_action.url_blacklist',
                                 event_callback: d_sections.Val.i().change,
                                 warn_state_checker: d_sections.Validation.i().validate_input,
@@ -167,6 +175,7 @@ export class Sections {
                         inputs: [
                             new o_inputs.Checkbox({
                                 name: 'tab_counter_is_visible',
+                                include_help: true,
                                 event_callback: d_sections.Val.i().change,
                             }),
                         ],
