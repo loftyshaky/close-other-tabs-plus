@@ -182,6 +182,19 @@ export class Sections {
                             }),
                         ],
                     }),
+                    new o_inputs.Section({
+                        name: 'context_menus',
+                        inputs: [
+                            new o_inputs.Checkbox({
+                                name: 'enable_action_context_menu',
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                            new o_inputs.Checkbox({
+                                name: 'enable_on_page_context_menu',
+                                event_callback: d_sections.Val.i().change,
+                            }),
+                        ],
+                    }),
                 ],
                 ...d_settings_loftyshaky.Sections.i().make_shared_sections({
                     download_back_up_callback: ext.storage_get,

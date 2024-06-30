@@ -41,6 +41,9 @@
     "tab_counter_section_text": {
         "message": "Tab counter"
     },
+    "context_menus_section_text": {
+        "message": "Context menus"
+    },
     "actions_label_text": {
         "message": "Actions"
     },
@@ -97,6 +100,12 @@
     },
     "tab_counter_is_visible_label_text": {
         "message": "Show tab counter"
+    },
+    "enable_action_context_menu_label_text": {
+        "message": "Enable the extension's icon context menu"
+    },
+    "enable_on_page_context_menu_label_text": {
+        "message": "Enable the \"on page\" context menu"
     },
     "close_option_text": {
         "message": "Close"

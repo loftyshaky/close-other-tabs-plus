@@ -1,4 +1,4 @@
-import { i_actions } from 'shared/internal';
+import { i_actions, i_data } from 'shared/internal';
 
 export class Items {
     private static i0: Items;
@@ -15,12 +15,23 @@ export class Items {
         err_async(async () => {
             await we.contextMenus.removeAll();
 
+            const settings: i_data.SettingsWrapped = await ext.storage_get();
+
+            const contexts_on_page: string[] = (settings.settings as i_data.Settings)
+                .enable_on_page_context_menu
+                ? ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio']
+                : [];
+            const contexts_action: string[] = (settings.settings as i_data.Settings)
+                .enable_action_context_menu
+                ? ['action']
+                : [];
+
             data.actions.forEach((action: i_actions.Action): void =>
                 err(() => {
                     we.contextMenus.create({
                         id: action.id,
                         title: action.name,
-                        contexts: ['all'],
+                        contexts: [...contexts_on_page, ...contexts_action],
                     });
                 }, 'cot_1065'),
             );

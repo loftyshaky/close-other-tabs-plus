@@ -20,6 +20,9 @@
     "tab_counter_section_text": {
         "message": "Счетчик вкладок"
     },
+    "context_menus_section_text": {
+        "message": "Контекстные меню"
+    },
     "actions_label_text": {
         "message": "Действия"
     },
@@ -76,6 +79,12 @@
     },
     "tab_counter_is_visible_label_text": {
         "message": "Показывать счетчик вкладок"
+    },
+    "enable_action_context_menu_label_text": {
+        "message": "Включить контекстном меню иконки расширения"
+    },
+    "enable_on_page_context_menu_label_text": {
+        "message": "Включить \"страничное\" контекстное меню"
     },
     "close_option_text": {
         "message": "Закрыть"

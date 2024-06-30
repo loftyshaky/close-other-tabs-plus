@@ -10,4 +10,6 @@ export interface Settings {
     current_action_id: string;
     main_action_id: string;
     tab_counter_is_visible: boolean;
+    enable_on_page_context_menu: boolean;
+    enable_action_context_menu: boolean;
 }

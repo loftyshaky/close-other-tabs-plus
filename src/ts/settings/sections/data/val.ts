@@ -79,7 +79,7 @@ export class Val {
                                 ...{ [input.name]: val },
                             },
                         },
-                        update_instantly: input.name === 'tab_counter_is_visible',
+                        update_instantly: input.type === 'checkbox',
                     });
                 }
             },

@@ -33,6 +33,8 @@ export class Manipulation {
                     current_action_id: 'close_other_tabs',
                     main_action_id: 'close_other_tabs',
                     tab_counter_is_visible: true,
+                    enable_action_context_menu: true,
+                    enable_on_page_context_menu: true,
                 },
                 close_other_tabs: {
                     id: 'close_other_tabs',
