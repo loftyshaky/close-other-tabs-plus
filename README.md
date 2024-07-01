@@ -7,7 +7,7 @@ A browser extension that allows you to close/pin/unpin multiple tabs at once, fi
 
 ## Build steps
 
-1. git clone https://github.com/loftyshaky/close-other-tabs-extended
+1. git clone https://github.com/loftyshaky/close-other-tabs-plus
 2. cd into the cloned repository
 3. npm install
 4. npm run prod (Chrome) / npm run prode (Edge)

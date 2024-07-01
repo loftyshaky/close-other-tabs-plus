@@ -1,5 +1,5 @@
 {
-    "name": "close-other-tabs-extended",
+    "name": "close-other-tabs+",
     "version": "1.0.0",
     "scripts": {
         "dev": "webpack --watch --mode=development --env test --env browser=chrome",

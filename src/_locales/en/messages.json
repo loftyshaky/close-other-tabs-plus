@@ -1,6 +1,6 @@
 {
     "name": {
-        "message": "Close Other Tabs Extended"
+        "message": "Close Other Tabs+"
     },
     "description": {
         "message": "Close/pin/unpin multiple tabs at once, filtering them by a window, pin/group state or hostname."
@@ -228,13 +228,13 @@
         "message": "Show the number of currently opened tabs on the extension's icon."
     },
     "advanced_extension_reloader_chrome_link_text": {
-        "message": "⚗️ Close Other Tabs Extended for Chrome"
+        "message": "⚗️ Close Other Tabs+ for Chrome"
     },
     "advanced_extension_reloader_edge_link_text": {
-        "message": "⚗️ Close Other Tabs Extended for Edge"
+        "message": "⚗️ Close Other Tabs+ for Edge"
     },
     "github_link_text": {
-        "message": "😼 Close Other Tabs Extended on Github"
+        "message": "😼 Close Other Tabs+ on Github"
     },
     "rate_chrome_link_href": {
         "message": "https://chromewebstore.google.com/detail/higiahnfphokonkjalljdfgjhafdjbil/reviews"
@@ -243,7 +243,7 @@
         "message": "https://microsoftedge.microsoft.com/addons/detail/higiahnfphokonkjalljdfgjhafdjbil"
     },
     "github_link_href": {
-        "message": "https://github.com/loftyshaky/close-other-tabs-extended"
+        "message": "https://github.com/loftyshaky/close-other-tabs-plus"
     },
     "hotkey_1": {
         "message": "Action 1"

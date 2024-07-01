@@ -8,7 +8,7 @@ class Manifest {
     generate = ({ test, browser }) => {
         const manifest = {
             manifest_version: 3,
-            name: 'Close Other Tabs Extended',
+            name: '__MSG_name__',
             description: '__MSG_description__',
             background: {
                 service_worker: 'background.js',
