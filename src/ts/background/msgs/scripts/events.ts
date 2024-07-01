@@ -12,11 +12,12 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
                 s_data.Manipulation.i().update_settings({
                     settings: msg.settings,
                     load_settings: n(msg.load_settings) ? msg.load_settings : false,
+                    transform: n(msg.transform) ? msg.transform : false,
+                    replace: n(msg.replace) ? msg.replace : false,
                 });
             } else {
                 s_data.Manipulation.i().update_settings_debounce(
                     msg.settings,
-                    n(msg.rerun_actions) ? msg.rerun_actions : false,
                     n(msg.transform) ? msg.transform : false,
                     n(msg.replace) ? msg.replace : false,
                 );

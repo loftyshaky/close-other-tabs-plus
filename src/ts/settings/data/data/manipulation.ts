@@ -26,6 +26,7 @@ export class Manipulation {
                         'id',
                     ),
                 },
+                update_instantly: true,
             });
         }, 'cot_1061');
 
@@ -39,7 +40,6 @@ export class Manipulation {
                         ...{ developer_mode: data.settings.developer_mode },
                     },
                 },
-                rerun_actions: true,
             });
         }, 'cot_1021');
 }

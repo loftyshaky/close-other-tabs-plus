@@ -244,18 +244,9 @@ export class Manipulation {
         }, 'cot_1001');
 
     public update_settings_debounce = _.debounce(
-        (
-            settings: i_data.SettingsWrapped,
-            rerun_actions: boolean = false,
-            transform: boolean = false,
-            replace: boolean = false,
-        ) =>
+        (settings: i_data.SettingsWrapped, transform: boolean = false, replace: boolean = false) =>
             err_async(async () => {
                 await this.update_settings({ settings, transform, replace });
-
-                if (rerun_actions) {
-                    ext.send_msg_to_all_tabs({ msg: 'rerun_actions' });
-                }
             }, 'cot_1002'),
         500,
     );
