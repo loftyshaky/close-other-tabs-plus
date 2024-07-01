@@ -206,7 +206,7 @@ export class Manipulation {
                     open_new_tab_after_action: false,
                     urls_after_action: [],
                     in_which_windows_to_open_tabs: 'current_window',
-                }
+                },
             };
         }, 'cot_1000');
 
