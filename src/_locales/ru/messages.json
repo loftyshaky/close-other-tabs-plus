@@ -8,6 +8,24 @@
     "input_width_css": {
         "message": "523px"
     },
+    "action_created_notification": {
+        "message": "Действие создано."
+    },
+    "action_updated_notification": {
+        "message": "Действие обновлено."
+    },
+    "action_deleted_notification": {
+        "message": "Действие удалено."
+    },
+    "unable_to_create_action_notification": {
+        "message": "Не удалось создать действие. Введенные данные не действительны."
+    },
+    "unable_to_update_action_notification": {
+        "message": "Не удалось обновить действие. Введенные данные не действительны."
+    },
+    "the_last_action_cannot_be_deleted_notification": {
+        "message": "Последнее действие не может быть удалено."
+    },
     "close_other_tabs_default_action_name_text": {
         "message": "Закрыть другие вкладки"
     },
