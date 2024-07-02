@@ -55,7 +55,7 @@ module.exports = (env, argv) => {
         enable_anouncement: false,
         callback_begin: () => {
             task_scheduler.unlock_dist({
-                package_name: 'Close Other Tabs+',
+                package_name: 'Close Other Tabs Plus',
                 remove_dist: argv.mode === 'production',
             });
         },
