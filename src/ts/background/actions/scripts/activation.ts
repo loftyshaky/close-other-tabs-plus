@@ -82,12 +82,15 @@ export class Activation {
                 const hostname_of_current_tab: string = s_actions.Tabs.i().get_hostname_of_tab({
                     tab: current_tab,
                 });
+                const current_tab_is_grouped: boolean = (current_tab as any).groupId !== -1;
 
                 const tabs_to_activate: Tabs.Tab[] = tabs.filter((tab: Tabs.Tab): boolean =>
                     err(() => {
                         const is_in_current_window: boolean = tab.windowId === current_tab.windowId;
                         const is_current_tab: boolean = tab.id === current_tab.id;
                         const is_grouped: boolean = (tab as any).groupId !== -1;
+                        const is_in_current_group: boolean =
+                            is_grouped && (tab as any).groupId === (current_tab as any).groupId;
 
                         if (n(tab.windowId)) {
                             const current_tab_of_current_window: Tabs.Tab =
@@ -167,7 +170,12 @@ export class Activation {
                                 action.type === 'unpin' ||
                                 action.grouped_tabs === 'grouped_and_ungrouped' ||
                                 (action.grouped_tabs === 'grouped' && is_grouped) ||
-                                (action.grouped_tabs === 'ungrouped' && !is_grouped);
+                                (action.grouped_tabs === 'ungrouped' && !is_grouped) ||
+                                (action.grouped_tabs === 'current_group' && is_in_current_group) ||
+                                (action.grouped_tabs === 'any_group_except_current' &&
+                                    current_tab_is_grouped &&
+                                    is_grouped &&
+                                    !is_in_current_group);
 
                             const hostnames: boolean =
                                 action.hostnames === 'any_hostname' ||

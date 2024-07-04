@@ -188,6 +188,12 @@
     "ungrouped_option_text": {
         "message": "Ungrouped"
     },
+    "current_group_option_text": {
+        "message": "Current group"
+    },
+    "any_group_except_current_option_text": {
+        "message": "Any group except current"
+    },
     "current_hostname_option_text": {
         "message": "Current hostname"
     },

@@ -49,6 +49,8 @@ export class Options {
                     new o_inputs.Option({ name: 'grouped_and_ungrouped' }),
                     new o_inputs.Option({ name: 'grouped' }),
                     new o_inputs.Option({ name: 'ungrouped' }),
+                    new o_inputs.Option({ name: 'current_group' }),
+                    new o_inputs.Option({ name: 'any_group_except_current' }),
                 ],
                 hostnames: [
                     new o_inputs.Option({

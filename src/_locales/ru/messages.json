@@ -188,6 +188,12 @@
     "ungrouped_option_text": {
         "message": "Несгруппированные"
     },
+    "current_group_option_text": {
+        "message": "Текущая группа"
+    },
+    "any_group_except_current_option_text": {
+        "message": "Любая группа, кроме текущей"
+    },
     "current_hostname_option_text": {
         "message": "Текущее имя хоста"
     },
