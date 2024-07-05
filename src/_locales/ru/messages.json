@@ -26,6 +26,9 @@
     "the_last_action_cannot_be_deleted_notification": {
         "message": "Последнее действие не может быть удалено."
     },
+    "create_test_actions_confirm": {
+        "message": "Создать тестовые действия? Текущие действия будут удалены."
+    },
     "close_other_tabs_default_action_name_text": {
         "message": "Закрыть другие вкладки"
     },
@@ -37,6 +40,12 @@
     },
     "close_other_tabs_including_pinned_default_action_name_text": {
         "message": "Закрыть другие вкладки, включая закрепленные"
+    },
+    "close_current_group_default_action_name_text": {
+        "message": "Закрыть текущую группу"
+    },
+    "close_all_groups_except_current_default_action_name_text": {
+        "message": "Закрыть все группы, кроме текущей"
     },
     "close_other_windows_default_action_name_text": {
         "message": "Закрыть другие окна"
@@ -136,6 +145,9 @@
     },
     "enable_on_page_context_menu_label_text": {
         "message": "Включить \"страничное\" контекстное меню"
+    },
+    "create_test_actions_btn_text": {
+        "message": "Создать тестовые действия"
     },
     "close_option_text": {
         "message": "Закрыть"

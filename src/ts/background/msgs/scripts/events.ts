@@ -24,10 +24,14 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
             }
 
             return Promise.resolve(true);
-        }
-
-        if (msg_str === 'get_defaults') {
-            return Promise.resolve(s_data.Manipulation.i().defaults);
+        } else if (msg_str === 'create_test_actions') {
+            s_data.Manipulation.i().update_settings({
+                load_settings: true,
+                replace: true,
+                test_actions: true,
+            });
+        } else if (msg_str === 'get_defaults') {
+            return Promise.resolve(s_data.Data.i().defaults);
         }
 
         return false;

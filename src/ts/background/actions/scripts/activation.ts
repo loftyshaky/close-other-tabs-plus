@@ -87,7 +87,7 @@ export class Activation {
                 const tabs_to_activate: Tabs.Tab[] = tabs.filter((tab: Tabs.Tab): boolean =>
                     err(() => {
                         const is_in_current_window: boolean = tab.windowId === current_tab.windowId;
-                        const is_current_tab: boolean = tab.id === current_tab.id;
+                        const is_highlighted: boolean = tab.highlighted; // if tab is selected
                         const is_grouped: boolean = (tab as any).groupId !== -1;
                         const is_in_current_group: boolean =
                             is_grouped && (tab as any).groupId === (current_tab as any).groupId;
@@ -149,7 +149,7 @@ export class Activation {
 
                             const tabs_to_affect: boolean =
                                 action.tabs_to_affect === 'all_tabs' ||
-                                (action.tabs_to_affect === 'current_tab' && is_current_tab) ||
+                                (action.tabs_to_affect === 'current_tab' && is_highlighted) ||
                                 (!is_current_tab_of_current_window &&
                                     (action.tabs_to_affect === 'other_tabs' ||
                                         (action.tabs_to_affect === 'tabs_to_left' &&

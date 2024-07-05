@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-import { t, s_service_worker } from '@loftyshaky/shared';
+import { s_service_worker } from '@loftyshaky/shared';
 import { d_actions, i_data } from 'shared/internal';
-import { s_context_menu, s_tab_counter } from 'background/internal';
+import { s_context_menu, s_data, s_tab_counter } from 'background/internal';
 
 export class Manipulation {
     private static i0: Manipulation;
@@ -15,220 +15,38 @@ export class Manipulation {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public defaults: i_data.SettingsWrapped | t.EmptyRecord = {};
-    public setting: i_data.SettingsWrapped | t.EmptyRecord = {};
     public set_from_storage_run_prevented: boolean = false;
-
-    public init_defaults = (): void =>
-        err(() => {
-            this.defaults = {
-                settings: {
-                    current_section: 'actions',
-                    options_page_theme: 'aqua',
-                    transition_duration: 200,
-                    show_color_help: true,
-                    developer_mode: false,
-                    enable_cut_features: false,
-                    persistent_service_worker: false,
-                    offers_are_visible: true,
-                    current_action_id: 'close_other_tabs',
-                    main_action_id: 'close_other_tabs',
-                    tab_counter_is_visible: true,
-                    enable_action_context_menu: true,
-                    enable_on_page_context_menu: true,
-                },
-                close_other_tabs: {
-                    id: 'close_other_tabs',
-                    name: ext.msg('close_other_tabs_default_action_name_text'),
-                    position: 1,
-                    type: 'close',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'other_tabs',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                close_tabs_to_the_right: {
-                    id: 'close_tabs_to_the_right',
-                    name: ext.msg('close_tabs_to_the_right_default_action_name_text'),
-                    position: 2,
-                    type: 'close',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'tabs_to_right',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                close_tabs_to_the_left: {
-                    id: 'close_tabs_to_the_left',
-                    name: ext.msg('close_tabs_to_the_left_default_action_name_text'),
-                    position: 3,
-                    type: 'close',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'tabs_to_left',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                close_other_tabs_including_pinned: {
-                    id: 'close_other_tabs_including_pinned',
-                    name: ext.msg('close_other_tabs_including_pinned_default_action_name_text'),
-                    position: 4,
-                    type: 'close',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'other_tabs',
-                    pinned_tabs: 'pinned_and_unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                close_other_windows: {
-                    id: 'close_other_windows',
-                    name: ext.msg('close_other_windows_default_action_name_text'),
-                    position: 5,
-                    type: 'close',
-                    windows_to_affect: 'other_windows',
-                    tabs_to_affect: 'all_tabs',
-                    pinned_tabs: 'pinned_and_unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                close_all_windows: {
-                    id: 'close_all_windows',
-                    name: ext.msg('close_all_windows_default_action_name_text'),
-                    position: 6,
-                    type: 'close',
-                    windows_to_affect: 'all_windows',
-                    tabs_to_affect: 'all_tabs',
-                    pinned_tabs: 'pinned_and_unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: true,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                pin_other_tabs: {
-                    id: 'pin_other_tabs',
-                    name: ext.msg('pin_other_tabs_default_action_name_text'),
-                    position: 7,
-                    type: 'pin',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'other_tabs',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                pin_tabs_to_the_right: {
-                    id: 'pin_tabs_to_the_right',
-                    name: ext.msg('pin_tabs_to_the_right_default_action_name_text'),
-                    position: 8,
-                    type: 'pin',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'tabs_to_right',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                pin_tabs_to_the_left: {
-                    id: 'pin_tabs_to_the_left',
-                    name: ext.msg('pin_tabs_to_the_left_default_action_name_text'),
-                    position: 9,
-                    type: 'pin',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'tabs_to_left',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                unpin_other_tabs: {
-                    id: 'unpin_other_tabs',
-                    name: ext.msg('unpin_other_tabs_default_action_name_text'),
-                    position: 10,
-                    type: 'unpin',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'other_tabs',
-                    pinned_tabs: 'pinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    hostnames: 'any_hostname',
-                    window_hostname_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-            };
-        }, 'cot_1000');
 
     public update_settings = ({
         settings,
         transform = false,
         replace = false,
         load_settings = false,
+        test_actions = false,
     }: {
         settings?: i_data.SettingsWrapped;
         transform?: boolean;
         replace?: boolean;
         load_settings?: boolean;
+        test_actions?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
-            const settings_2: i_data.SettingsWrapped = n(settings)
-                ? settings
-                : (this.defaults as i_data.SettingsWrapped);
+            const default_settings: i_data.SettingsWrapped = test_actions
+                ? (s_data.Data.i().test_actions as i_data.SettingsWrapped)
+                : (s_data.Data.i().defaults as i_data.SettingsWrapped);
+            const settings_2: i_data.SettingsWrapped = n(settings) ? settings : default_settings;
 
             let settings_final: i_data.SettingsWrapped = settings_2;
 
-            if (transform) {
+            if (test_actions) {
+                const current_settings: i_data.SettingsWrapped = await ext.storage_get();
+
+                current_settings.settings.current_action_id =
+                    s_data.Data.i().default_test_action_id;
+                current_settings.settings.main_action_id = s_data.Data.i().default_test_action_id;
+
+                settings_final.settings = current_settings.settings;
+            } else if (transform) {
                 settings_final = await this.transform({ settings: settings_2 });
             }
 

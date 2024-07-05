@@ -207,6 +207,12 @@ export class Sections {
                     upload_back_up_callback: d_sections.Restore.i().restore_back_up,
                     restore_defaults_callback: () => d_sections.Restore.i().restore_defaults(),
                     input_change_val_callback: d_sections.Val.i().change,
+                    admin_inputs: [
+                        new o_inputs.Btn({
+                            name: 'create_test_actions',
+                            event_callback: d_actions.Actions.i().create_test_actions,
+                        }),
+                    ],
                 }),
                 ...[
                     new o_inputs.Section({

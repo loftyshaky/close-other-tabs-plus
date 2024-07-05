@@ -26,6 +26,9 @@
     "the_last_action_cannot_be_deleted_notification": {
         "message": "The last action cannot be deleted."
     },
+    "create_test_actions_confirm": {
+        "message": "Create test actions? Current actions will be deleted."
+    },
     "close_other_tabs_default_action_name_text": {
         "message": "Close other tabs"
     },
@@ -37,6 +40,15 @@
     },
     "close_other_tabs_including_pinned_default_action_name_text": {
         "message": "Close other tabs, including pinned ones"
+    },
+    "close_current_group_default_action_name_text": {
+        "message": "Close current group"
+    },
+    "close_all_groups_except_current_default_action_name_text": {
+        "message": "Close any group except current"
+    },
+    "close_all_group_except_current_default_action_name_text": {
+        "message": "Close current group"
     },
     "close_other_windows_default_action_name_text": {
         "message": "Close other windows"
@@ -136,6 +148,9 @@
     },
     "enable_on_page_context_menu_label_text": {
         "message": "Enable the \"on page\" context menu"
+    },
+    "create_test_actions_btn_text": {
+        "message": "Create test actions"
     },
     "close_option_text": {
         "message": "Close"
