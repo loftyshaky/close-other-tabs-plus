@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { d_actions } from 'shared/internal';
+import { d_actions, i_data } from 'shared/internal';
 
 export class Manipulation {
     private static i0: Manipulation;
@@ -13,10 +13,35 @@ export class Manipulation {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public update_settings = (): void =>
-        err(() => {
+    public send_msg_to_update_settings = ({
+        settings,
+        update_instantly = false,
+        transform = false,
+        replace = false,
+        load_settings = false,
+    }: {
+        settings?: i_data.SettingsWrapped;
+        update_instantly?: boolean;
+        transform?: boolean;
+        replace?: boolean;
+        load_settings?: boolean;
+    }): Promise<void> =>
+        err_async(async () => {
+            await we.storage.session.set({ updating_settings: true });
+
             ext.send_msg({
                 msg: 'update_settings',
+                settings,
+                update_instantly,
+                transform,
+                replace,
+                load_settings,
+            });
+        }, 'cot_1116');
+
+    public update_settings = (): Promise<void> =>
+        err_async(async () => {
+            await this.send_msg_to_update_settings({
                 settings: {
                     settings: data.settings,
                     ..._.keyBy(
@@ -32,8 +57,7 @@ export class Manipulation {
 
     public enable_developer_mode_save_callback = (): Promise<void> =>
         err_async(async () => {
-            await ext.send_msg_resp({
-                msg: 'update_settings',
+            await this.send_msg_to_update_settings({
                 settings: {
                     settings: {
                         ...data.settings,

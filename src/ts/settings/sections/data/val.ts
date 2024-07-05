@@ -2,7 +2,7 @@ import { t } from '@loftyshaky/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { s_settings } from '@loftyshaky/shared/settings';
 import { s_css_vars } from 'shared/internal';
-import { d_sections, d_optional_permissions, s_sections } from 'settings/internal';
+import { d_data, d_sections, d_optional_permissions, s_sections } from 'settings/internal';
 
 export class Val {
     private static i0: Val;
@@ -60,8 +60,7 @@ export class Val {
                         d_sections.Validation.i().reset_is_in_warn_state();
                     }
 
-                    ext.send_msg({
-                        msg: 'update_settings',
+                    await d_data.Manipulation.i().send_msg_to_update_settings({
                         settings: {
                             settings: data.settings,
                         },
@@ -71,8 +70,7 @@ export class Val {
                 }
 
                 if (!n(input.val_accessor) && input.name !== 'actions') {
-                    ext.send_msg({
-                        msg: 'update_settings',
+                    await d_data.Manipulation.i().send_msg_to_update_settings({
                         settings: {
                             settings: {
                                 ...data.settings,

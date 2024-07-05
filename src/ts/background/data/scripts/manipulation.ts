@@ -55,6 +55,7 @@ export class Manipulation {
             await s_context_menu.Items.i().create_itmes();
             s_service_worker.ServiceWorker.i().make_persistent();
             await s_tab_counter.Badge.i().set_tab_count();
+            await we.storage.session.set({ updating_settings: false });
 
             if (load_settings) {
                 await ext.send_msg_resp({ msg: 'load_settings' });
@@ -83,6 +84,15 @@ export class Manipulation {
                 }
             }
         }, 'cot_1003');
+
+    public on_init_set_from_storage = (): Promise<void> =>
+        err_async(async () => {
+            const session_data = await we.storage.session.get();
+
+            if (!n(session_data.updating_settings) || !session_data.updating_settings) {
+                await this.set_from_storage({ transform: true });
+            }
+        }, 'cot_1117');
 
     private transform = ({
         settings,

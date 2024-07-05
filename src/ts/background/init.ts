@@ -6,5 +6,5 @@ export const init = (): Promise<void> =>
         s_data.Data.i().init_test_actions();
         s_tab_counter.Badge.i().set_color();
 
-        await s_data.Manipulation.i().set_from_storage({ transform: true });
+        await s_data.Manipulation.i().on_init_set_from_storage();
     }, 'cot_1005');
