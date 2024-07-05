@@ -12,11 +12,11 @@
 
         &.window_hostname_comparison {
             .input_w_and_help_btn {
-                max-width: calc(__MSG_input_width_css__);
+                max-width: __MSG_input_width_css__;
             }
 
             .help {
-                max-width: calc(__MSG_input_width_css__ - 28px) !important;
+                max-width: __MSG_input_width_css__ - 28px !important;
             }
         }
     }
