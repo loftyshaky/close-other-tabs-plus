@@ -240,18 +240,21 @@
         "message": "If unchecked, the hostname in the active tab of the CURRENT window will be used as a basis for comparison instead.\n\nExample:\nYou have two windows opened. Each has four tabs opened, two facebook.com tabs and two reddit.com tabs. In the first window, facebook.com is the active tab. In the second, it's reddit.com. You're running close action with the \"All windows\", \"Other tabs\" and \"Current hostname\" settings.\n\nIf unchecked, the non-active facebook.com tabs will be closed in both windows.\n\nIf checked, the non-active facebook.com tab will be closed in the first window, but in the second window, it'll be the reddit.com tab."
     },
     "url_whitelist_help_text": {
-        "message": "Defines on which URLs or parts of URLs to perform an action.\n\nCancels out the effect of \"Affect tabs by hostname: Current hostname\".\n\nCancels out the effect of \"URL blacklist\"."
+        "message": "Defines on which URLs or parts of URLs to perform an action.\n\nCancels out the effect of \"Affect tabs by hostname: Current hostname\".\n\nCancels out the effect of \"URL blacklist\".\n\nSeparate URL's with commas."
     },
     "url_blacklist_help_text": {
-        "message": "Defines on which URLs or parts of URLs to NOT perform an action.\n\nCancels out the effect of all \"Affect tabs by hostname\" options.\n\nThe effect is canceled out by \"URL whitelist\"."
+        "message": "Defines on which URLs or parts of URLs to NOT perform an action.\n\nCancels out the effect of all \"Affect tabs by hostname\" options.\n\nThe effect is canceled out by \"URL whitelist\".\n\nSeparate URL's with commas."
+    },
+    "urls_after_action_help_text": {
+        "message": "Separate URL's with commas."
     },
     "tab_counter_is_visible_help_text": {
         "message": "Show the number of currently opened tabs on the extension's icon."
     },
-    "advanced_extension_reloader_chrome_link_text": {
+    "close_other_tabs_plus_chrome_link_text": {
         "message": "⚗️ Close Other Tabs+ for Chrome"
     },
-    "advanced_extension_reloader_edge_link_text": {
+    "close_other_tabs_plus_edge_link_text": {
         "message": "⚗️ Close Other Tabs+ for Edge"
     },
     "github_link_text": {
