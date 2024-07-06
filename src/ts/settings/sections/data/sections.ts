@@ -107,6 +107,13 @@ export class Sections {
                                 name: 'pinned_tabs',
                                 options: d_sections.Options.i().options,
                                 val_accessor: 'current_action.pinned_tabs',
+                                is_enabled_conds: [
+                                    {
+                                        input_name: 'action_type',
+                                        val_accessor: 'current_action.type',
+                                        pass_vals: ['close', 'pin', 'group', 'ungroup'],
+                                    },
+                                ],
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
