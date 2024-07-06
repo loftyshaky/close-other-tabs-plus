@@ -28,7 +28,7 @@ export class Permissions {
             const is_tabs_permission_input: boolean = [
                 'url_whitelist',
                 'url_blacklist',
-                'hostnames',
+                'urls',
             ].includes(n(input) ? input.name : '');
             const contains_permission: boolean = await we.permissions.contains(
                 this.optional_permission_checkbox_dict.filter_lists,
@@ -55,7 +55,7 @@ export class Permissions {
                                 if (
                                     (['url_whitelist', 'url_blacklist'].includes(key) &&
                                         val.length > 0) ||
-                                    (key === 'hostnames' && val !== 'any_hostname')
+                                    (key === 'urls' && val !== 'any_url')
                                 ) {
                                     this.set({ force: true });
 

@@ -24,13 +24,13 @@ export class Val {
 
                 if (
                     s_sections.Utils.i().is_textarea_input({ input_name: input.name }) ||
-                    input.name === 'hostnames'
+                    input.name === 'urls'
                 ) {
                     const granted_tabs_permission: boolean =
                         await d_optional_permissions.Permissions.i().set({ input });
 
-                    if (input.name === 'hostnames') {
-                        val = granted_tabs_permission ? raw_val : 'any_hostname';
+                    if (input.name === 'urls') {
+                        val = granted_tabs_permission ? raw_val : 'any_url';
                     } else {
                         val = granted_tabs_permission ? raw_val : '';
                     }

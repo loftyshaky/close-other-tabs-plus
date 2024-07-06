@@ -130,21 +130,25 @@ export class Sections {
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Select({
-                                name: 'hostnames',
+                                name: 'urls',
                                 options: d_sections.Options.i().options,
-                                val_accessor: 'current_action.hostnames',
+                                val_accessor: 'current_action.urls',
                                 event_callback: d_sections.Val.i().change,
                             }),
                             new o_inputs.Checkbox({
-                                name: 'window_hostname_comparison',
+                                name: 'window_url_comparison',
                                 include_help: true,
-                                val_accessor: 'current_action.window_hostname_comparison',
-                                parent: 'hostnames',
+                                val_accessor: 'current_action.window_url_comparison',
+                                parent: 'urls',
                                 is_enabled_conds: [
                                     {
-                                        input_name: 'hostnames',
-                                        val_accessor: 'current_action.hostnames',
+                                        input_name: 'urls',
+                                        val_accessor: 'current_action.urls',
                                         pass_vals: [
+                                            'current_url',
+                                            'any_url_except_current',
+                                            'current_domain',
+                                            'any_domain_except_current',
                                             'current_hostname',
                                             'any_hostname_except_current',
                                         ],

@@ -3,7 +3,7 @@
         "message": "Close Other Tabs+"
     },
     "description": {
-        "message": "Close/pin/unpin multiple tabs at once, filtering them by a window, pin/group state or hostname."
+        "message": "Close/pin/unpin/group/ungroup multiple tabs at once, filtering them by a window, pin/group state or URL."
     },
     "input_width_css": {
         "message": "392px"
@@ -68,12 +68,6 @@
     "unpin_other_tabs_default_action_name_text": {
         "message": "Unpin other tabs"
     },
-    "close_tabs_with_current_hostname_default_action_name_text": {
-        "message": "Close tabs with the current hostname"
-    },
-    "close_tabs_with_any_hostname_except_current_default_action_name_text": {
-        "message": "Close tabs with any hostname except the current one"
-    },
     "actions_section_text": {
         "message": "Actions"
     },
@@ -119,11 +113,11 @@
     "grouped_tabs_label_text": {
         "message": "Affect tabs by group state"
     },
-    "hostnames_label_text": {
-        "message": "Affect tabs by hostname"
+    "urls_label_text": {
+        "message": "Affect tabs by URL"
     },
-    "window_hostname_comparison_label_text": {
-        "message": "Use the hostname in the active tab of each window as a basis for comparison"
+    "window_url_comparison_label_text": {
+        "message": "Use the URL in the active tab of each window as a basis for comparison"
     },
     "url_whitelist_label_text": {
         "message": "URL whitelist"
@@ -215,11 +209,23 @@
     "any_group_except_current_option_text": {
         "message": "Any group except current"
     },
+    "any_url_option_text": {
+        "message": "Any URL"
+    },
+    "current_url_option_text": {
+        "message": "Current URL"
+    },
+    "any_url_except_current_option_text": {
+        "message": "Any URL except current"
+    },
+    "current_domain_option_text": {
+        "message": "Current domain"
+    },
+    "any_domain_except_current_option_text": {
+        "message": "Any domain except current"
+    },
     "current_hostname_option_text": {
         "message": "Current hostname"
-    },
-    "any_hostname_option_text": {
-        "message": "Any hostname"
     },
     "any_hostname_except_current_option_text": {
         "message": "Any hostname except current"
@@ -242,17 +248,17 @@
     "action_position_help_text": {
         "message": "Defines the order of an action in the context menus."
     },
-    "window_hostname_comparison_help_text": {
-        "message": "If unchecked, the hostname in the active tab of the CURRENT window will be used as a basis for comparison instead.\n\nExample:\nYou have two windows opened. Each has four tabs opened, two facebook.com tabs and two reddit.com tabs. In the first window, facebook.com is the active tab. In the second, it's reddit.com. You're running close action with the \"All windows\", \"Other tabs\" and \"Current hostname\" settings.\n\nIf unchecked, the non-active facebook.com tabs will be closed in both windows.\n\nIf checked, the non-active facebook.com tab will be closed in the first window, but in the second window, it'll be the reddit.com tab."
+    "window_url_comparison_help_text": {
+        "message": "If unchecked, the URL in the active tab of the CURRENT window will be used as a basis for comparison instead.\n\nExample:\nYou have two windows opened. Each has four tabs opened, two facebook.com tabs and two reddit.com tabs. In the first window, facebook.com is the active tab. In the second, it's reddit.com. You're running close action with the \"All windows\", \"Other tabs\" and \"Current domain\" settings.\n\nIf unchecked, the non-active facebook.com tabs will be closed in both windows.\n\nIf checked, the non-active facebook.com tab will be closed in the first window, but in the second window, it'll be the reddit.com tab."
     },
     "url_whitelist_help_text": {
-        "message": "Defines on which URLs or parts of URLs to perform an action.\n\nCancels out the effect of \"Affect tabs by hostname: Current hostname\".\n\nCancels out the effect of \"URL blacklist\".\n\nSeparate URL's with commas."
+        "message": "Defines on which URLs or parts of URLs to perform an action.\n\nCancels out the effect of \"Affect tabs by URL: Current domain\".\n\nCancels out the effect of \"URL blacklist\".\n\nSeparate URLs with commas."
     },
     "url_blacklist_help_text": {
-        "message": "Defines on which URLs or parts of URLs to NOT perform an action.\n\nCancels out the effect of all \"Affect tabs by hostname\" options.\n\nThe effect is canceled out by \"URL whitelist\".\n\nSeparate URL's with commas."
+        "message": "Defines on which URLs or parts of URLs to NOT perform an action.\n\nCancels out the effect of all \"Affect tabs by URL\" options.\n\nThe effect is canceled out by \"URL whitelist\".\n\nSeparate URLs with commas."
     },
     "urls_after_action_help_text": {
-        "message": "Separate URL's with commas."
+        "message": "Separate URLs with commas."
     },
     "tab_counter_is_visible_help_text": {
         "message": "Show the number of currently opened tabs on the extension's icon."

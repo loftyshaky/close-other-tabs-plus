@@ -79,6 +79,12 @@ export class Activation {
             const tabs: Tabs.Tab[] = await s_actions.Tabs.i().get_all();
 
             if (n(current_tab)) {
+                const href_of_current_tab: string = s_actions.Tabs.i().get_href_of_tab({
+                    tab: current_tab,
+                });
+                const domain_of_current_tab: string = s_actions.Tabs.i().get_domain_of_tab({
+                    tab: current_tab,
+                });
                 const hostname_of_current_tab: string = s_actions.Tabs.i().get_hostname_of_tab({
                     tab: current_tab,
                 });
@@ -93,10 +99,68 @@ export class Activation {
                             is_grouped && (tab as any).groupId === (current_tab as any).groupId;
 
                         if (n(tab.windowId)) {
+                            const url_cond_comparison = ({
+                                url_1,
+                                url_2,
+                            }: {
+                                url_1: string;
+                                url_2: string;
+                            }): boolean => err(() => url_1 === url_2, 'cot_1118');
+
+                            const url_cond_current = ({
+                                key,
+                                cond_1,
+                                cond_2,
+                            }: {
+                                key: string;
+                                cond_1: boolean;
+                                cond_2: boolean;
+                            }): boolean =>
+                                err(
+                                    () =>
+                                        action.urls === key &&
+                                        ((!action.window_url_comparison && cond_1) ||
+                                            (action.window_url_comparison && cond_2) ||
+                                            found_url_of_whitelist),
+                                    'cot_1119',
+                                );
+                            const url_cond_any_except = ({
+                                key,
+                                cond_1,
+                                cond_2,
+                            }: {
+                                key: string;
+                                cond_1: boolean;
+                                cond_2: boolean;
+                            }): boolean =>
+                                err(
+                                    () =>
+                                        action.urls === key &&
+                                        ((!action.window_url_comparison && !cond_1) ||
+                                            (action.window_url_comparison && !cond_2)),
+
+                                    'cot_1120',
+                                );
                             const current_tab_of_current_window: Tabs.Tab =
                                 current_tabs[tab.windowId];
                             const is_current_tab_of_current_window: boolean =
                                 tab.id === current_tab_of_current_window.id;
+                            const href_of_this_tab: string = s_actions.Tabs.i().get_href_of_tab({
+                                tab,
+                            });
+                            const href_of_current_tab_of_current_window: string =
+                                s_actions.Tabs.i().get_href_of_tab({
+                                    tab: current_tab_of_current_window,
+                                });
+                            const domain_of_this_tab: string = s_actions.Tabs.i().get_domain_of_tab(
+                                {
+                                    tab,
+                                },
+                            );
+                            const domain_of_current_tab_of_current_window: string =
+                                s_actions.Tabs.i().get_domain_of_tab({
+                                    tab: current_tab_of_current_window,
+                                });
                             const hostname_of_this_tab: string =
                                 s_actions.Tabs.i().get_hostname_of_tab({
                                     tab,
@@ -105,13 +169,36 @@ export class Activation {
                                 s_actions.Tabs.i().get_hostname_of_tab({
                                     tab: current_tab_of_current_window,
                                 });
-                            const href_of_this_tab: string = s_actions.Tabs.i().get_href_of_tab({
-                                tab,
-                            });
+                            const href_of_this_tab_is_the_same_as_url_1: boolean =
+                                url_cond_comparison({
+                                    url_1: href_of_this_tab,
+                                    url_2: href_of_current_tab,
+                                });
+                            const href_of_this_tab_is_the_same_as_url_2: boolean =
+                                url_cond_comparison({
+                                    url_1: href_of_this_tab,
+                                    url_2: href_of_current_tab_of_current_window,
+                                });
+                            const domain_of_this_tab_is_the_same_as_url_1: boolean =
+                                url_cond_comparison({
+                                    url_1: domain_of_this_tab,
+                                    url_2: domain_of_current_tab,
+                                });
+                            const domain_of_this_tab_is_the_same_as_url_2: boolean =
+                                url_cond_comparison({
+                                    url_1: domain_of_this_tab,
+                                    url_2: domain_of_current_tab_of_current_window,
+                                });
                             const hostname_of_this_tab_is_the_same_as_url_1: boolean =
-                                hostname_of_this_tab === hostname_of_current_tab; // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab
+                                url_cond_comparison({
+                                    url_1: hostname_of_this_tab,
+                                    url_2: hostname_of_current_tab,
+                                }); // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab
                             const hostname_of_this_tab_is_the_same_as_url_2: boolean =
-                                hostname_of_this_tab === hostname_of_current_tab_of_current_window; // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab_of_current_window
+                                url_cond_comparison({
+                                    url_1: hostname_of_this_tab,
+                                    url_2: hostname_of_current_tab_of_current_window,
+                                }); // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab_of_current_window
                             const url_whitelist_is_empty: boolean =
                                 action.url_whitelist.length === 0;
                             const url_blacklist_is_empty: boolean =
@@ -126,19 +213,39 @@ export class Activation {
                                     href: href_of_this_tab,
                                     list: action.url_blacklist,
                                 });
-                            const found_url_of_current_hostname: boolean =
-                                action.hostnames === 'current_hostname' &&
-                                ((action.window_hostname_comparison &&
-                                    hostname_of_this_tab_is_the_same_as_url_2) ||
-                                    (!action.window_hostname_comparison &&
-                                        hostname_of_this_tab_is_the_same_as_url_1) ||
-                                    found_url_of_whitelist);
+                            const found_url_of_current_href: boolean = url_cond_current({
+                                key: 'current_url',
+                                cond_1: href_of_this_tab_is_the_same_as_url_1,
+                                cond_2: href_of_this_tab_is_the_same_as_url_2,
+                            });
+                            const found_url_of_any_href_except_current: boolean =
+                                url_cond_any_except({
+                                    key: 'any_url_except_current',
+                                    cond_1: href_of_this_tab_is_the_same_as_url_1,
+                                    cond_2: href_of_this_tab_is_the_same_as_url_2,
+                                });
+                            const found_domain_of_current_hostname: boolean = url_cond_current({
+                                key: 'current_domain',
+                                cond_1: domain_of_this_tab_is_the_same_as_url_1,
+                                cond_2: domain_of_this_tab_is_the_same_as_url_2,
+                            });
+                            const found_url_of_any_domain_except_current: boolean =
+                                url_cond_any_except({
+                                    key: 'any_domain_except_current',
+                                    cond_1: domain_of_this_tab_is_the_same_as_url_1,
+                                    cond_2: domain_of_this_tab_is_the_same_as_url_2,
+                                });
+                            const found_url_of_current_hostname: boolean = url_cond_current({
+                                key: 'current_hostname',
+                                cond_1: hostname_of_this_tab_is_the_same_as_url_1,
+                                cond_2: hostname_of_this_tab_is_the_same_as_url_2,
+                            });
                             const found_url_of_any_hostname_except_current: boolean =
-                                action.hostnames === 'any_hostname_except_current' &&
-                                ((action.window_hostname_comparison &&
-                                    !hostname_of_this_tab_is_the_same_as_url_2) ||
-                                    (!action.window_hostname_comparison &&
-                                        !hostname_of_this_tab_is_the_same_as_url_1));
+                                url_cond_any_except({
+                                    key: 'any_hostname_except_current',
+                                    cond_1: hostname_of_this_tab_is_the_same_as_url_1,
+                                    cond_2: hostname_of_this_tab_is_the_same_as_url_2,
+                                });
 
                             const windows_to_affect: boolean =
                                 action.windows_to_affect === 'all_windows' ||
@@ -177,10 +284,14 @@ export class Activation {
                                     is_grouped &&
                                     !is_in_current_group);
 
-                            const hostnames: boolean =
-                                action.hostnames === 'any_hostname' ||
+                            const urls: boolean =
+                                action.urls === 'any_url' ||
+                                found_domain_of_current_hostname ||
+                                found_url_of_any_domain_except_current ||
                                 found_url_of_current_hostname ||
-                                found_url_of_any_hostname_except_current;
+                                found_url_of_any_hostname_except_current ||
+                                found_url_of_current_href ||
+                                found_url_of_any_href_except_current;
 
                             const url_whitelist: boolean =
                                 url_whitelist_is_empty ||
@@ -189,7 +300,7 @@ export class Activation {
                                 found_url_of_any_hostname_except_current;
 
                             const url_blacklist: boolean =
-                                action.hostnames === 'current_hostname' ||
+                                action.urls === 'current_hostname' ||
                                 !url_whitelist_is_empty ||
                                 (url_whitelist_is_empty &&
                                     (url_blacklist_is_empty || !found_url_of_blacklist));
@@ -199,7 +310,7 @@ export class Activation {
                                 tabs_to_affect &&
                                 pinned_tabs &&
                                 grouped_tabs &&
-                                hostnames &&
+                                urls &&
                                 url_whitelist &&
                                 url_blacklist
                             );

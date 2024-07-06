@@ -1,4 +1,5 @@
 import { Windows, Tabs as TabsType } from 'webextension-polyfill';
+import psl, { ParsedDomain } from 'psl';
 
 import { i_tabs } from 'background/internal';
 
@@ -48,4 +49,12 @@ export class Tabs {
 
     public get_hostname_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
         err(() => (n(tab.url) ? new URL(tab.url).hostname : ''), 'cot_1075');
+
+    public get_domain_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
+        err(() => {
+            const parsed = psl.parse(this.get_hostname_of_tab({ tab }));
+            const { domain } = parsed as ParsedDomain;
+
+            return n(tab.url) && n(domain) ? domain : '';
+        }, 'cot_1121');
 }

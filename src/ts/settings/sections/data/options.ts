@@ -54,11 +54,23 @@ export class Options {
                     new o_inputs.Option({ name: 'current_group' }),
                     new o_inputs.Option({ name: 'any_group_except_current' }),
                 ],
-                hostnames: [
+                urls: [
+                    new o_inputs.Option({ name: 'any_url' }),
+                    new o_inputs.Option({
+                        name: 'current_url',
+                    }),
+                    new o_inputs.Option({
+                        name: 'any_url_except_current',
+                    }),
+                    new o_inputs.Option({
+                        name: 'current_domain',
+                    }),
+                    new o_inputs.Option({
+                        name: 'any_domain_except_current',
+                    }),
                     new o_inputs.Option({
                         name: 'current_hostname',
                     }),
-                    new o_inputs.Option({ name: 'any_hostname' }),
                     new o_inputs.Option({
                         name: 'any_hostname_except_current',
                     }),
