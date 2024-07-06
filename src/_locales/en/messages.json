@@ -53,11 +53,11 @@
     "close_other_windows_default_action_name_text": {
         "message": "Close other windows"
     },
-    "close_all_windows_default_action_name_text": {
-        "message": "Close all windows"
+    "close_all_windows_and_tabs_default_action_name_text": {
+        "message": "Close all windows and tabs"
     },
-    "pin_other_tabs_default_action_name_text": {
-        "message": "Pin other tabs"
+    "pin_all_tabs_default_action_name_text": {
+        "message": "Pin all tabs"
     },
     "pin_tabs_to_the_right_default_action_name_text": {
         "message": "Pin tabs to the right"
@@ -65,8 +65,20 @@
     "pin_tabs_to_the_left_default_action_name_text": {
         "message": "Pin tabs to the left"
     },
-    "unpin_other_tabs_default_action_name_text": {
-        "message": "Unpin other tabs"
+    "unpin_all_tabs_default_action_name_text": {
+        "message": "Unpin all tabs"
+    },
+    "group_all_tabs_default_action_name_text": {
+        "message": "Group all tabs"
+    },
+    "group_tabs_to_the_right_default_action_name_text": {
+        "message": "Group tabs to the right"
+    },
+    "group_tabs_to_the_left_default_action_name_text": {
+        "message": "Group tabs to the left"
+    },
+    "ungroup_all_tabs_default_action_name_text": {
+        "message": "Ungroup all tabs"
     },
     "actions_section_text": {
         "message": "Actions"

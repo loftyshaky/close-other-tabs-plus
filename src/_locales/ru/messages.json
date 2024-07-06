@@ -50,11 +50,11 @@
     "close_other_windows_default_action_name_text": {
         "message": "Закрыть другие окна"
     },
-    "close_all_windows_default_action_name_text": {
-        "message": "Закрыть все окна"
+    "close_all_windows_and_tabs_default_action_name_text": {
+        "message": "Закрыть все окна и вкладки"
     },
-    "pin_other_tabs_default_action_name_text": {
-        "message": "Закрепить другие вкладки"
+    "pin_all_tabs_default_action_name_text": {
+        "message": "Закрепить все вкладки"
     },
     "pin_tabs_to_the_right_default_action_name_text": {
         "message": "Закрепить вкладки справа"
@@ -62,8 +62,20 @@
     "pin_tabs_to_the_left_default_action_name_text": {
         "message": "Закрепить вкладки слева"
     },
-    "unpin_other_tabs_default_action_name_text": {
-        "message": "Открепить другие вкладки"
+    "unpin_all_tabs_default_action_name_text": {
+        "message": "Открепить все вкладки"
+    },
+    "group_all_tabs_default_action_name_text": {
+        "message": "Сгруппировать все вкладки"
+    },
+    "group_tabs_to_the_right_default_action_name_text": {
+        "message": "Сгруппировать вкладки справа"
+    },
+    "group_tabs_to_the_left_default_action_name_text": {
+        "message": "Сгруппировать вкладки слева"
+    },
+    "ungroup_all_tabs_default_action_name_text": {
+        "message": "Разгруппировать все вкладки"
     },
     "actions_section_text": {
         "message": "Действия"
