@@ -27,6 +27,8 @@ export class Options {
                     new o_inputs.Option({ name: 'close' }),
                     new o_inputs.Option({ name: 'pin' }),
                     new o_inputs.Option({ name: 'unpin' }),
+                    new o_inputs.Option({ name: 'group' }),
+                    new o_inputs.Option({ name: 'ungroup' }),
                 ],
                 windows_to_affect: [
                     new o_inputs.Option({ name: 'current_window' }),

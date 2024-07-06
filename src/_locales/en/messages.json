@@ -161,6 +161,12 @@
     "unpin_option_text": {
         "message": "Unpin"
     },
+    "group_option_text": {
+        "message": "Group"
+    },
+    "ungroup_option_text": {
+        "message": "Ungroup"
+    },
     "current_window_option_text": {
         "message": "Current window"
     },

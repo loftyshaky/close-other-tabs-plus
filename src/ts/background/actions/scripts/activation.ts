@@ -211,16 +211,28 @@ export class Activation {
 
                 await open_urls();
 
-                (action.type === 'unpin' ? tabs_to_activate.reverse() : tabs_to_activate).forEach(
-                    (tab: Tabs.Tab): void =>
+                if (['group', 'ungroup'].includes(action.type)) {
+                    const ids_for_grouping: (number | undefined)[] = _.map(tabs_to_activate, 'id');
+
+                    if (action.type === 'group') {
+                        we.tabs.group({ tabIds: ids_for_grouping });
+                    } else if (action.type === 'ungroup') {
+                        we.tabs.ungroup(ids_for_grouping);
+                    }
+                } else {
+                    (action.type === 'unpin'
+                        ? tabs_to_activate.reverse()
+                        : tabs_to_activate
+                    ).forEach((tab: Tabs.Tab): void =>
                         err(() => {
                             if (action.type === 'close') {
                                 we.tabs.remove(tab.id);
-                            } else {
+                            } else if (['pin', 'unpin'].includes(action.type)) {
                                 we.tabs.update(tab.id, { pinned: action.type === 'pin' });
                             }
                         }, 'cot_1069'),
-                );
+                    );
+                }
             }
         }, 'cot_1067');
 

@@ -158,6 +158,12 @@
     "unpin_option_text": {
         "message": "Открепить"
     },
+    "group_option_text": {
+        "message": "Group"
+    },
+    "ungroup_option_text": {
+        "message": "Ungroup"
+    },
     "current_window_option_text": {
         "message": "Текущее окно"
     },

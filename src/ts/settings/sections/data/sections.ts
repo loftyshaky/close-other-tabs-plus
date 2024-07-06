@@ -117,7 +117,7 @@ export class Sections {
                                     {
                                         input_name: 'action_type',
                                         val_accessor: 'current_action.type',
-                                        pass_vals: ['close', 'pin'],
+                                        pass_vals: ['close', 'pin', 'group', 'ungroup'],
                                     },
                                 ],
                                 event_callback: d_sections.Val.i().change,
