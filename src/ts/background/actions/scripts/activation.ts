@@ -322,13 +322,15 @@ export class Activation {
 
                 await open_urls();
 
-                if (['group', 'ungroup'].includes(action.type)) {
-                    const ids_for_grouping: (number | undefined)[] = _.map(tabs_to_activate, 'id');
+                if (['close', 'group', 'ungroup'].includes(action.type)) {
+                    const ids: (number | undefined)[] = _.map(tabs_to_activate, 'id');
 
-                    if (action.type === 'group') {
-                        we.tabs.group({ tabIds: ids_for_grouping });
+                    if (action.type === 'close') {
+                        we.tabs.remove(ids);
+                    } else if (action.type === 'group') {
+                        we.tabs.group({ tabIds: ids });
                     } else if (action.type === 'ungroup') {
-                        we.tabs.ungroup(ids_for_grouping);
+                        we.tabs.ungroup(ids);
                     }
                 } else {
                     (action.type === 'unpin'
@@ -336,9 +338,7 @@ export class Activation {
                         : tabs_to_activate
                     ).forEach((tab: Tabs.Tab): void =>
                         err(() => {
-                            if (action.type === 'close') {
-                                we.tabs.remove(tab.id);
-                            } else if (['pin', 'unpin'].includes(action.type)) {
+                            if (['pin', 'unpin'].includes(action.type)) {
                                 we.tabs.update(tab.id, { pinned: action.type === 'pin' });
                             }
                         }, 'cot_1069'),

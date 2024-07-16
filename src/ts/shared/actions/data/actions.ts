@@ -1,5 +1,6 @@
 import { runInAction } from 'mobx';
 
+import { s_data } from '@loftyshaky/shared';
 import { i_data, i_actions } from 'shared/internal';
 
 export class Actions {
@@ -18,15 +19,11 @@ export class Actions {
     private extract_current = ({
         settings,
     }: {
-        settings?: i_data.SettingsWrapped;
-    } = {}): Promise<i_actions.Action> =>
+        settings: i_data.SettingsWrapped;
+    }): Promise<i_actions.Action> =>
         err_async(async () => {
-            const settings_final: i_data.SettingsWrapped = n(settings)
-                ? settings
-                : await ext.storage_get();
-
-            const current_action: i_actions.Action = settings_final[
-                settings_final.settings.current_action_id
+            const current_action: i_actions.Action = settings[
+                settings.settings.current_action_id
             ] as i_actions.Action;
 
             return current_action;
@@ -35,15 +32,11 @@ export class Actions {
     private extract_main = ({
         settings,
     }: {
-        settings?: i_data.SettingsWrapped;
-    } = {}): Promise<i_actions.Action> =>
+        settings: i_data.SettingsWrapped;
+    }): Promise<i_actions.Action> =>
         err_async(async () => {
-            const settings_final: i_data.SettingsWrapped = n(settings)
-                ? settings
-                : await ext.storage_get();
-
-            const main_action: i_actions.Action = settings_final[
-                settings_final.settings.main_action_id
+            const main_action: i_actions.Action = settings[
+                settings.settings.main_action_id
             ] as i_actions.Action;
 
             return main_action;
@@ -52,22 +45,18 @@ export class Actions {
     private extract = ({
         settings,
     }: {
-        settings?: i_data.SettingsWrapped;
-    } = {}): Promise<i_actions.Action[]> =>
+        settings: i_data.SettingsWrapped;
+    }): Promise<i_actions.Action[]> =>
         err_async(async () => {
-            const settings_final: i_data.SettingsWrapped = n(settings)
-                ? settings
-                : await ext.storage_get();
-
-            const actions: i_actions.Action[] = (
-                Object.values(settings_final) as (i_data.Settings & i_actions.Action)[]
-            ).filter((item: i_data.Settings & i_actions.Action): boolean =>
-                err(() => !n(item.enable_cut_features), 'cot_1040'),
-            );
+            delete settings.settings;
+            delete settings.current_action;
+            delete settings.main_action;
+            delete settings.actions;
+            delete settings.updating_settings;
 
             const actions_data: i_actions.Action[] =
                 this.create_indexed_action_name_and_sort_actions({
-                    actions: Object.values(actions),
+                    actions: Object.values(settings) as i_actions.Action[],
                 });
 
             return actions_data;
@@ -75,18 +64,27 @@ export class Actions {
 
     public set = ({
         settings,
+        from_cache = false,
     }: {
         settings?: i_data.SettingsWrapped;
+        from_cache?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
+            const session_settings: i_data.SettingsWrapped = await s_data.Cache.i().get_data();
+            const actions_are_in_cache: boolean =
+                n(session_settings) && n(session_settings.current_action);
+            const settings_final = from_cache
+                ? session_settings
+                : settings || (await ext.storage_get());
+
             const current_action: i_actions.Action = await this.extract_current({
-                settings,
+                settings: settings_final,
             });
             const main_action: i_actions.Action = await this.extract_main({
-                settings,
+                settings: settings_final,
             });
             const actions: i_actions.Action[] = await this.extract({
-                settings,
+                settings: settings_final,
             });
 
             runInAction(() =>
@@ -96,6 +94,10 @@ export class Actions {
                     data.actions = actions;
                 }, 'cot_1044'),
             );
+
+            if (!actions_are_in_cache) {
+                await we.storage.session.set({ current_action, main_action, actions });
+            }
 
             if (!n(this.initial_current_action)) {
                 this.initial_current_action = { ...data.current_action };

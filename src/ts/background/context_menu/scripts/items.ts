@@ -1,3 +1,5 @@
+import { s_data } from '@loftyshaky/shared';
+
 import { i_actions, i_data } from 'shared/internal';
 
 export class Items {
@@ -15,7 +17,7 @@ export class Items {
         err_async(async () => {
             await we.contextMenus.removeAll();
 
-            const settings: i_data.SettingsWrapped = await ext.storage_get();
+            const settings: i_data.SettingsWrapped = await s_data.Cache.i().get_data();
 
             const contexts_on_page: string[] = (settings.settings as i_data.Settings)
                 .enable_on_page_context_menu

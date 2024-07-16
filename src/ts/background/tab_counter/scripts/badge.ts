@@ -1,5 +1,8 @@
 import { Tabs } from 'webextension-polyfill';
 
+import { s_data } from '@loftyshaky/shared';
+import { i_data } from 'shared/internal';
+
 export class Badge {
     private static i0: Badge;
 
@@ -13,7 +16,7 @@ export class Badge {
 
     public set_tab_count = (): Promise<void> =>
         err_async(async () => {
-            const settings = await ext.storage_get('settings');
+            const settings: i_data.SettingsWrapped = await s_data.Cache.i().get_data();
 
             if (settings.settings.tab_counter_is_visible) {
                 const tabs: Tabs.Tab[] = await we.tabs.query({ currentWindow: true });

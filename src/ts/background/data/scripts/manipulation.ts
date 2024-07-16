@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { s_service_worker } from '@loftyshaky/shared';
+import { s_data as s_data_loftyshaky, s_service_worker } from '@loftyshaky/shared';
 import { d_actions, i_data } from 'shared/internal';
 import { s_context_menu, s_data, s_tab_counter } from 'background/internal';
 
@@ -18,29 +18,32 @@ export class Manipulation {
     public set_from_storage_run_prevented: boolean = false;
 
     public update_settings = ({
+        mode = 'normal',
         settings,
         transform = false,
         replace = false,
         load_settings = false,
         test_actions = false,
+        storage_is_empty = false,
     }: {
+        mode?: 'normal' | 'set_from_storage';
         settings?: i_data.SettingsWrapped;
         transform?: boolean;
         replace?: boolean;
         load_settings?: boolean;
         test_actions?: boolean;
+        storage_is_empty?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
             const default_settings: i_data.SettingsWrapped = test_actions
                 ? (s_data.Data.i().test_actions as i_data.SettingsWrapped)
                 : (s_data.Data.i().defaults as i_data.SettingsWrapped);
             const settings_2: i_data.SettingsWrapped = n(settings) ? settings : default_settings;
-
             let settings_final: i_data.SettingsWrapped = settings_2;
 
             if (test_actions) {
-                const current_settings: i_data.SettingsWrapped = await ext.storage_get();
-
+                const current_settings: i_data.SettingsWrapped =
+                    await s_data_loftyshaky.Cache.i().get_data();
                 current_settings.settings.current_action_id =
                     s_data.Data.i().default_test_action_id;
                 current_settings.settings.main_action_id = s_data.Data.i().default_test_action_id;
@@ -50,10 +53,21 @@ export class Manipulation {
                 settings_final = await this.transform({ settings: settings_2 });
             }
 
-            await ext.storage_set(settings_final, replace);
-            await d_actions.Actions.i().set();
-            await s_context_menu.Items.i().create_itmes();
-            s_service_worker.ServiceWorker.i().make_persistent();
+            if (mode === 'normal' || (mode === 'set_from_storage' && storage_is_empty)) {
+                await ext.storage_set(settings_final, replace);
+                await s_data_loftyshaky.Cache.i().set_data({ data: settings_final, replace });
+            }
+
+            await d_actions.Actions.i().set({ from_cache: mode === 'set_from_storage' });
+
+            if (
+                mode === 'normal' ||
+                (mode === 'set_from_storage' && s_data_loftyshaky.Cache.i().cache_is_empty)
+            ) {
+                await s_context_menu.Items.i().create_itmes();
+            }
+
+            s_service_worker.ServiceWorker.i().make_persistent({ settings: settings_final });
             await s_tab_counter.Badge.i().set_tab_count();
             await we.storage.session.set({ updating_settings: false });
 
@@ -75,12 +89,21 @@ export class Manipulation {
     }: { transform?: boolean } = {}): Promise<void> =>
         err_async(async () => {
             if (!n(data.settings.enable_cut_features)) {
-                const settings: i_data.SettingsWrapped = await ext.storage_get();
+                const settings: i_data.SettingsWrapped =
+                    await s_data_loftyshaky.Cache.i().get_data();
 
                 if (_.isEmpty(settings)) {
-                    await this.update_settings({ transform });
+                    await this.update_settings({
+                        mode: 'set_from_storage',
+                        transform,
+                        storage_is_empty: true,
+                    });
                 } else if (transform) {
-                    await this.update_settings({ settings, transform });
+                    await this.update_settings({
+                        mode: 'set_from_storage',
+                        settings,
+                        transform,
+                    });
                 }
             }
         }, 'cot_1003');
