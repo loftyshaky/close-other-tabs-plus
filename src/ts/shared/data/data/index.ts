@@ -1,1 +1,1 @@
-export * from 'shared/data/data/transform';
+export * from 'shared/data/data/settings';

@@ -39,7 +39,7 @@ export class Manipulation {
                 ? (s_data.Data.i().test_actions as i_data.SettingsWrapped)
                 : (s_data.Data.i().defaults as i_data.SettingsWrapped);
             const settings_2: i_data.SettingsWrapped = n(settings) ? settings : default_settings;
-            let settings_final: i_data.SettingsWrapped = settings_2;
+            let settings_final: i_data.SettingsWrapped = _.cloneDeep(settings_2);
 
             if (test_actions) {
                 const current_settings: i_data.SettingsWrapped =
@@ -49,11 +49,19 @@ export class Manipulation {
                 current_settings.settings.main_action_id = s_data.Data.i().default_test_action_id;
 
                 settings_final.settings = current_settings.settings;
-            } else if (transform) {
-                settings_final = await this.transform({ settings: settings_2 });
             }
 
-            if (mode === 'normal' || (mode === 'set_from_storage' && storage_is_empty)) {
+            if (transform) {
+                settings_final = await this.transform({ data: settings_final });
+            }
+
+            const settings_were_transformed: boolean = !_.isEqual(settings_2, settings_final);
+
+            if (
+                settings_were_transformed ||
+                mode === 'normal' ||
+                (mode === 'set_from_storage' && storage_is_empty)
+            ) {
                 await ext.storage_set(settings_final, replace);
                 await s_data_loftyshaky.Cache.i().set_data({ data: settings_final, replace });
             }
@@ -118,8 +126,28 @@ export class Manipulation {
         }, 'cot_1117');
 
     private transform = ({
-        settings,
+        data,
     }: {
-        settings: i_data.SettingsWrapped;
-    }): Promise<i_data.SettingsWrapped> => err_async(async () => settings, 'cot_1004');
+        data: i_data.SettingsWrapped;
+    }): Promise<i_data.SettingsWrapped> =>
+        err_async(
+            async () =>
+                /*
+            const transform_items: o_schema.TransformItem[] = [
+                new o_schema.TransformItem({
+                    new_key: 'test_val',
+                    new_val: true,
+                }),
+            ];
+
+            const updated_settings: i_data.Settings = await d_schema.Main.i().transform({
+                data: data.settings,
+                transform_items,
+            });
+
+            data.settings = updated_settings;
+               */
+                data,
+            'cot_1004',
+        );
 }

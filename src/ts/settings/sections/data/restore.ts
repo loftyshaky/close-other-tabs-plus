@@ -1,7 +1,8 @@
 import _ from 'lodash';
+import { runInAction } from 'mobx';
 
 import { t, s_theme } from '@loftyshaky/shared';
-import { d_data as s_data_shared, s_css_vars, i_data } from 'shared/internal';
+import { s_css_vars, d_data as d_data_shared, i_data } from 'shared/internal';
 import { d_data, d_optional_permissions } from 'settings/internal';
 
 export class Restore {
@@ -34,6 +35,7 @@ export class Restore {
                     replace: true,
                     update_instantly: true,
                 });
+                await d_data_shared.Settings.i().set_actions({ settings: settings_final });
 
                 s_theme.Main.i().set({
                     name: data.settings.options_page_theme,
@@ -44,12 +46,11 @@ export class Restore {
 
     public restore_back_up = ({ data_objs }: { data_objs: t.AnyRecord[] }): Promise<void> =>
         err_async(async () => {
-            const settings: i_data.SettingsWrapped = {
-                ...this.get_unchanged_settings(),
-                ...data_objs[0],
-            } as i_data.SettingsWrapped;
+            data_objs[0].settings = { ...data_objs[0].settings, ...this.get_unchanged_settings() };
+            let settings: i_data.SettingsWrapped | undefined =
+                data_objs[0] as i_data.SettingsWrapped;
 
-            await this.set({ settings });
+            settings = await this.set({ settings });
 
             d_optional_permissions.Permissions.i().set_on_back_up_restore();
 
@@ -59,6 +60,7 @@ export class Restore {
                 transform: true,
                 replace: true,
             });
+            await d_data_shared.Settings.i().set_actions({ settings });
 
             s_theme.Main.i().set({
                 name: data.settings.options_page_theme,
@@ -86,15 +88,19 @@ export class Restore {
                 settings_final = settings;
             }
 
-            if (n(settings_final)) {
-                await s_data_shared.Transform.i().set_transformed({
-                    settings: _.clone(settings_final),
-                });
+            const set_inner = (): i_data.SettingsWrapped | undefined => {
+                runInAction(() =>
+                    err(() => {
+                        if (n(settings_final)) {
+                            data.settings = settings_final.settings;
+                        }
+                    }, 'seg_1132'),
+                );
 
                 return settings_final;
-            }
+            };
 
-            return settings_final;
+            return set_inner();
         }, 'cot_1018');
 
     private get_unchanged_settings = (): t.AnyRecord =>

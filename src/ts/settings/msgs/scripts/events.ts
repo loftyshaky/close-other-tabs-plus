@@ -6,9 +6,8 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
         const msg_str: string = msg.msg;
 
         if (msg_str === 'load_settings') {
-            d_data.Transform.i()
-                .set_transformed_from_storage()
-                .then(() => d_actions.Actions.i().set())
+            d_data.Settings.i()
+                .set_from_storage()
                 .then(() => {
                     d_actions.Actions.i().initial_current_action = { ...data.current_action };
                 })
