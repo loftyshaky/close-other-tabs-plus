@@ -1,5 +1,4 @@
-import { d_settings } from '@loftyshaky/shared';
-import { d_actions, i_data } from 'shared/internal';
+import { d_actions, i_data } from 'shared_clean/internal';
 
 export class Settings {
     private static i0: Settings;
@@ -11,13 +10,6 @@ export class Settings {
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
-
-    public set_from_storage = (): Promise<void> =>
-        err_async(async () => {
-            const settings: i_data.SettingsWrapped = await d_settings.Main.i().set_from_storage();
-
-            await this.set_actions({ settings });
-        }, 'cot_1035');
 
     public set_actions = ({
         settings,

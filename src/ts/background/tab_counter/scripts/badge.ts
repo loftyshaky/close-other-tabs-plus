@@ -1,7 +1,7 @@
 import { Tabs } from 'webextension-polyfill';
 
-import { s_data } from '@loftyshaky/shared';
-import { i_data } from 'shared/internal';
+import { s_data } from '@loftyshaky/shared/shared_clean';
+import { i_data } from 'shared_clean/internal';
 
 export class Badge {
     private static i0: Badge;

@@ -1,6 +1,5 @@
-import { s_data } from '@loftyshaky/shared';
-
-import { i_actions, i_data } from 'shared/internal';
+import { s_data } from '@loftyshaky/shared/shared_clean';
+import { i_actions, i_data } from 'shared_clean/internal';
 
 export class Items {
     private static i0: Items;

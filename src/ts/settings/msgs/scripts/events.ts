@@ -1,5 +1,6 @@
-import { t } from '@loftyshaky/shared';
-import { d_actions, d_data } from 'shared/internal';
+import { t } from '@loftyshaky/shared/shared';
+import { d_actions } from 'shared_clean/internal';
+import { d_data } from 'settings/internal';
 
 we.runtime.onMessage.addListener((msg: t.Msg): any =>
     err(() => {

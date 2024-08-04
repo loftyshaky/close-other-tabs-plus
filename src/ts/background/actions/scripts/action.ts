@@ -1,4 +1,4 @@
-import { i_actions } from 'shared/internal';
+import { i_actions } from 'shared_clean/internal';
 
 export class Action {
     private static i0: Action;

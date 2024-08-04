@@ -1,6 +1,6 @@
 import { runInAction } from 'mobx';
 
-import { i_data } from '@loftyshaky/shared';
+import { i_data } from '@loftyshaky/shared/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { d_sections, s_sections } from 'settings/internal';
 

@@ -1,8 +1,8 @@
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { runInAction } from 'mobx';
 
-import { t, s_theme } from '@loftyshaky/shared';
-import { s_css_vars, d_data as d_data_shared, i_data } from 'shared/internal';
+import { t, s_theme } from '@loftyshaky/shared/shared';
+import { d_data as d_data_shared_clean, s_css_vars, i_data } from 'shared_clean/internal';
 import { d_data, d_optional_permissions } from 'settings/internal';
 
 export class Restore {
@@ -35,7 +35,7 @@ export class Restore {
                     replace: true,
                     update_instantly: true,
                 });
-                await d_data_shared.Settings.i().set_actions({ settings: settings_final });
+                await d_data_shared_clean.Settings.i().set_actions({ settings: settings_final });
 
                 s_theme.Main.i().set({
                     name: data.settings.options_page_theme,
@@ -52,15 +52,15 @@ export class Restore {
 
             settings = await this.set({ settings });
 
-            d_optional_permissions.Permissions.i().set_on_back_up_restore();
-
             await d_data.Manipulation.i().send_msg_to_update_settings({
                 settings,
                 update_instantly: true,
                 transform: true,
                 replace: true,
             });
-            await d_data_shared.Settings.i().set_actions({ settings });
+            await d_data_shared_clean.Settings.i().set_actions({ settings });
+
+            d_optional_permissions.Permissions.i().set_on_back_up_restore();
 
             s_theme.Main.i().set({
                 name: data.settings.options_page_theme,
@@ -74,7 +74,7 @@ export class Restore {
         err_async(async () => {
             let settings_final: i_data.SettingsWrapped | undefined;
 
-            if (_.isEmpty(settings)) {
+            if (isEmpty(settings)) {
                 const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
 
                 settings_final = {
@@ -94,7 +94,7 @@ export class Restore {
                         if (n(settings_final)) {
                             data.settings = settings_final.settings;
                         }
-                    }, 'seg_1132'),
+                    }, 'cot_1132'),
                 );
 
                 return settings_final;

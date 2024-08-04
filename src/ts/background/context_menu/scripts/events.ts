@@ -1,6 +1,6 @@
 import { Menus } from 'webextension-polyfill';
 
-import { i_actions } from 'shared/internal';
+import { i_actions } from 'shared_clean/internal';
 import { s_actions, s_data } from 'background/internal';
 
 we.contextMenus.onClicked.addListener(
@@ -15,5 +15,5 @@ we.contextMenus.onClicked.addListener(
             if (n(action)) {
                 s_actions.Activation.i().activate({ action });
             }
-        }, 'cnt_1003'),
+        }, 'cot_1128'),
 );

@@ -6,5 +6,5 @@ we.action.onClicked.addListener(
             await s_data.Manipulation.i().set_from_storage({ transform: true });
 
             s_actions.Activation.i().activate({ action: data.main_action });
-        }, 'cnt_1003'),
+        }, 'cot_1127'),
 );

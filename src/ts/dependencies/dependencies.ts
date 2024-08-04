@@ -1,4 +1,4 @@
-import { d_settings } from '@loftyshaky/shared';
+import { d_settings } from '@loftyshaky/shared/shared_clean';
 import { init } from 'dependencies/internal';
 
 (async () => {

@@ -1,4 +1,4 @@
-import { t } from '@loftyshaky/shared';
+import { t } from '@loftyshaky/shared/shared_clean';
 import { s_data } from 'background/internal';
 
 we.runtime.onMessage.addListener((msg: t.Msg): any =>

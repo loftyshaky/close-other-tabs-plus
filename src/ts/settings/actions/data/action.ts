@@ -1,7 +1,7 @@
-import _ from 'lodash';
+import maxBy from 'lodash/maxBy';
 import { makeObservable, action } from 'mobx';
 
-import { d_actions as d_actions_shared, i_actions } from 'shared/internal';
+import { d_actions as d_actions_shared, i_actions } from 'shared_clean/internal';
 import { d_actions, d_data, d_sections } from 'settings/internal';
 
 export class Action {
@@ -26,7 +26,7 @@ export class Action {
             if (d_sections.Validation.i().input_is_valid) {
                 d_actions.Textarea.i().transfrom_textarea_input_into_arrays();
 
-                const action_with_highest_position: i_actions.Action | undefined = _.maxBy(
+                const action_with_highest_position: i_actions.Action | undefined = maxBy(
                     data.actions,
                     'position',
                 ) as i_actions.Action | undefined;

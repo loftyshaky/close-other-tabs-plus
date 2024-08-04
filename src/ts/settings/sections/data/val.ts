@@ -1,7 +1,7 @@
-import { t } from '@loftyshaky/shared';
+import { t } from '@loftyshaky/shared/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { s_settings } from '@loftyshaky/shared/settings';
-import { s_css_vars } from 'shared/internal';
+import { s_css_vars } from 'shared_clean/internal';
 import { d_data, d_sections, d_optional_permissions, s_sections } from 'settings/internal';
 
 export class Val {

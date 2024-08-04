@@ -1,7 +1,5 @@
-import { runInAction } from 'mobx';
-
-import { s_data } from '@loftyshaky/shared';
-import { i_data, i_actions } from 'shared/internal';
+import { t, s_data } from '@loftyshaky/shared/shared_clean';
+import { i_data, i_actions } from 'shared_clean/internal';
 
 export class Actions {
     private static i0: Actions;
@@ -53,6 +51,7 @@ export class Actions {
             delete settings.main_action;
             delete settings.actions;
             delete settings.updating_settings;
+            delete settings.created_initial_context_menus_once;
 
             const actions_data: i_actions.Action[] =
                 this.create_indexed_action_name_and_sort_actions({
@@ -86,6 +85,15 @@ export class Actions {
             const actions: i_actions.Action[] = await this.extract({
                 settings: settings_final,
             });
+
+            const { runInAction } =
+                page === 'background'
+                    ? {
+                          runInAction: (callback: t.CallbackVoid) => {
+                              callback();
+                          },
+                      }
+                    : await import('mobx');
 
             runInAction(() =>
                 err(() => {
@@ -153,7 +161,7 @@ export class Actions {
                         delete item.indexed_action_name;
 
                         return item;
-                    }, 'cot_1042'),
+                    }, 'cot_1126'),
             );
 
             return actions_without_indexed_action_name;

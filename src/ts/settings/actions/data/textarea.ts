@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import reject from 'lodash/reject';
+import map from 'lodash/map';
+import trim from 'lodash/trim';
+import isEmpty from 'lodash/isEmpty';
 import { makeObservable, action } from 'mobx';
 
 import { s_sections } from 'settings/internal';
@@ -26,7 +29,7 @@ export class Textarea {
                     const arr_val: string[] = n(val.split) ? val.split(',') : val;
 
                     current_action_updates[key] =
-                        val.length === 0 ? [] : _.reject(_.map(arr_val, _.trim), _.isEmpty);
+                        val.length === 0 ? [] : reject(map(arr_val, trim), isEmpty);
                 }
             });
 

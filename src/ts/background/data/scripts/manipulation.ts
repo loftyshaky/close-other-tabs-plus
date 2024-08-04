@@ -1,7 +1,10 @@
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
+import isEmpty from 'lodash/isEmpty';
 
-import { s_data as s_data_loftyshaky, s_service_worker } from '@loftyshaky/shared';
-import { d_actions, i_data } from 'shared/internal';
+import { s_data as s_data_loftyshaky, s_service_worker } from '@loftyshaky/shared/shared_clean';
+import { d_actions, i_data } from 'shared_clean/internal';
 import { s_context_menu, s_data, s_tab_counter } from 'background/internal';
 
 export class Manipulation {
@@ -39,7 +42,7 @@ export class Manipulation {
                 ? (s_data.Data.i().test_actions as i_data.SettingsWrapped)
                 : (s_data.Data.i().defaults as i_data.SettingsWrapped);
             const settings_2: i_data.SettingsWrapped = n(settings) ? settings : default_settings;
-            let settings_final: i_data.SettingsWrapped = _.cloneDeep(settings_2);
+            let settings_final: i_data.SettingsWrapped = cloneDeep(settings_2);
 
             if (test_actions) {
                 const current_settings: i_data.SettingsWrapped =
@@ -55,7 +58,7 @@ export class Manipulation {
                 settings_final = await this.transform({ data: settings_final });
             }
 
-            const settings_were_transformed: boolean = !_.isEqual(settings_2, settings_final);
+            const settings_were_transformed: boolean = !isEqual(settings_2, settings_final);
 
             if (
                 settings_were_transformed ||
@@ -63,16 +66,29 @@ export class Manipulation {
                 (mode === 'set_from_storage' && storage_is_empty)
             ) {
                 await ext.storage_set(settings_final, replace);
-                await s_data_loftyshaky.Cache.i().set_data({ data: settings_final, replace });
+                await s_data_loftyshaky.Cache.i().set_data({
+                    data: settings_final,
+                    replace,
+                    non_replaceable_keys: [
+                        'updating_settings',
+                        'created_initial_context_menus_once',
+                    ],
+                });
             }
 
-            await d_actions.Actions.i().set({ from_cache: mode === 'set_from_storage' });
+            await d_actions.Actions.i().set({ from_cache: true });
+
+            const session = await we.storage.session.get('created_initial_context_menus_once');
 
             if (
                 mode === 'normal' ||
-                (mode === 'set_from_storage' && s_data_loftyshaky.Cache.i().cache_is_empty)
+                (mode === 'set_from_storage' && !n(session.created_initial_context_menus_once))
             ) {
                 await s_context_menu.Items.i().create_itmes();
+
+                if (mode === 'set_from_storage') {
+                    await we.storage.session.set({ created_initial_context_menus_once: true });
+                }
             }
 
             s_service_worker.ServiceWorker.i().make_persistent({ settings: settings_final });
@@ -84,7 +100,7 @@ export class Manipulation {
             }
         }, 'cot_1001');
 
-    public update_settings_debounce = _.debounce(
+    public update_settings_debounce = debounce(
         (settings: i_data.SettingsWrapped, transform: boolean = false, replace: boolean = false) =>
             err_async(async () => {
                 await this.update_settings({ settings, transform, replace });
@@ -100,7 +116,7 @@ export class Manipulation {
                 const settings: i_data.SettingsWrapped =
                     await s_data_loftyshaky.Cache.i().get_data();
 
-                if (_.isEmpty(settings)) {
+                if (isEmpty(settings)) {
                     await this.update_settings({
                         mode: 'set_from_storage',
                         transform,

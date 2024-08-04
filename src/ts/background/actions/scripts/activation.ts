@@ -1,7 +1,8 @@
-import _ from 'lodash';
+import reject from 'lodash/reject';
+import map from 'lodash/map';
 import { Windows, Tabs } from 'webextension-polyfill';
 
-import { i_actions } from 'shared/internal';
+import { i_actions } from 'shared_clean/internal';
 import { s_actions, i_tabs } from 'background/internal';
 
 export class Activation {
@@ -46,7 +47,7 @@ export class Activation {
                         );
 
                         if (n(current_windows_last)) {
-                            const windows_no_current: Windows.Window[] = _.reject(windows, {
+                            const windows_no_current: Windows.Window[] = reject(windows, {
                                 id: current_windows_last.id,
                             });
                             const windows_current_last = [
@@ -323,7 +324,7 @@ export class Activation {
                 await open_urls();
 
                 if (['close', 'group', 'ungroup'].includes(action.type)) {
-                    const ids: (number | undefined)[] = _.map(tabs_to_activate, 'id');
+                    const ids: (number | undefined)[] = map(tabs_to_activate, 'id');
 
                     if (action.type === 'close') {
                         we.tabs.remove(ids);

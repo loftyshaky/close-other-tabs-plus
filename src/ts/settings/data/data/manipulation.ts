@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import keyBy from 'lodash/keyBy';
 
-import { d_actions, i_data } from 'shared/internal';
+import { d_actions, i_data } from 'shared_clean/internal';
 
 export class Manipulation {
     private static i0: Manipulation;
@@ -44,7 +44,7 @@ export class Manipulation {
             await this.send_msg_to_update_settings({
                 settings: {
                     settings: data.settings,
-                    ..._.keyBy(
+                    ...keyBy(
                         d_actions.Actions.i().remove_indexed_action_name({
                             actions: data.actions,
                         }),
@@ -52,6 +52,7 @@ export class Manipulation {
                     ),
                 },
                 update_instantly: true,
+                replace: true,
             });
         }, 'cot_1061');
 

@@ -1,6 +1,6 @@
 import { i_inputs } from '@loftyshaky/shared/inputs';
 import { d_optional_permissions } from '@loftyshaky/shared/settings';
-import { i_actions } from 'shared/internal';
+import { i_actions } from 'shared_clean/internal';
 
 export class Permissions {
     private static i0: Permissions;

@@ -1,8 +1,8 @@
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { reaction } from 'mobx';
 
 import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { i_actions } from 'shared/internal';
+import { i_actions } from 'shared_clean/internal';
 import { d_sections } from 'settings/internal';
 
 export class Options {
@@ -81,13 +81,13 @@ export class Options {
                     new o_inputs.Option({ name: 'other_windows' }),
                 ],
             };
-        }, 'cnt_1268');
+        }, 'cot_1130');
 
     public update_action_options = (): void => {
         reaction(
             () => data.actions,
             () => {
-                if (!_.isEmpty(data.actions)) {
+                if (!isEmpty(data.actions)) {
                     const action_options = data.actions.map(
                         (action_2: i_actions.Action): o_inputs.Option =>
                             err(

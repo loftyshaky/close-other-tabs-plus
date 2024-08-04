@@ -1,4 +1,4 @@
-import { i_actions } from 'shared/internal';
+import { i_actions } from 'shared_clean/internal';
 import { s_data, s_actions } from 'background/internal';
 
 we.commands.onCommand.addListener((command: string) =>
@@ -11,5 +11,5 @@ we.commands.onCommand.addListener((command: string) =>
         if (n(hotkey_action)) {
             s_actions.Activation.i().activate({ action: hotkey_action });
         }
-    }, 'cnt_1098'),
+    }, 'cot_1129'),
 );

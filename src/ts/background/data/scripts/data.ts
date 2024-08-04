@@ -1,5 +1,5 @@
-import { t } from '@loftyshaky/shared';
-import { i_data } from 'shared/internal';
+import { t } from '@loftyshaky/shared/shared_clean';
+import { i_data } from 'shared_clean/internal';
 
 export class Data {
     private static i0: Data;
