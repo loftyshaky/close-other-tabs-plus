@@ -1,11 +1,10 @@
 import { i_actions } from 'shared_clean/internal';
 
-export class Action {
-    private static i0: Action;
+class Class {
+    private static instance: Class;
 
-    public static i(): Action {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -20,3 +19,5 @@ export class Action {
             return action;
         }, 'cot_1070');
 }
+
+export const Action = Class.get_instance();

@@ -5,12 +5,11 @@ import { Windows, Tabs } from 'webextension-polyfill';
 import { i_actions } from 'shared_clean/internal';
 import { s_actions, i_tabs } from 'background/internal';
 
-export class Activation {
-    private static i0: Activation;
+class Class {
+    private static instance: Class;
 
-    public static i(): Activation {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -75,18 +74,18 @@ export class Activation {
                     }
                 }, 'cot_1099');
 
-            const current_tabs: i_tabs.CurrentTabs = await s_actions.Tabs.i().get_current_tabs();
+            const current_tabs: i_tabs.CurrentTabs = await s_actions.Tabs.get_current_tabs();
             const current_tab: Tabs.Tab | undefined = await ext.get_active_tab();
-            const tabs: Tabs.Tab[] = await s_actions.Tabs.i().get_all();
+            const tabs: Tabs.Tab[] = await s_actions.Tabs.get_all();
 
             if (n(current_tab)) {
-                const href_of_current_tab: string = s_actions.Tabs.i().get_href_of_tab({
+                const href_of_current_tab: string = s_actions.Tabs.get_href_of_tab({
                     tab: current_tab,
                 });
-                const domain_of_current_tab: string = s_actions.Tabs.i().get_domain_of_tab({
+                const domain_of_current_tab: string = s_actions.Tabs.get_domain_of_tab({
                     tab: current_tab,
                 });
-                const hostname_of_current_tab: string = s_actions.Tabs.i().get_hostname_of_tab({
+                const hostname_of_current_tab: string = s_actions.Tabs.get_hostname_of_tab({
                     tab: current_tab,
                 });
                 const current_tab_is_grouped: boolean = (current_tab as any).groupId !== -1;
@@ -146,28 +145,27 @@ export class Activation {
                                 current_tabs[tab.windowId];
                             const is_current_tab_of_current_window: boolean =
                                 tab.id === current_tab_of_current_window.id;
-                            const href_of_this_tab: string = s_actions.Tabs.i().get_href_of_tab({
+                            const href_of_this_tab: string = s_actions.Tabs.get_href_of_tab({
                                 tab,
                             });
                             const href_of_current_tab_of_current_window: string =
-                                s_actions.Tabs.i().get_href_of_tab({
+                                s_actions.Tabs.get_href_of_tab({
                                     tab: current_tab_of_current_window,
                                 });
-                            const domain_of_this_tab: string = s_actions.Tabs.i().get_domain_of_tab(
+                            const domain_of_this_tab: string = s_actions.Tabs.get_domain_of_tab({
+                                tab,
+                            });
+                            const domain_of_current_tab_of_current_window: string =
+                                s_actions.Tabs.get_domain_of_tab({
+                                    tab: current_tab_of_current_window,
+                                });
+                            const hostname_of_this_tab: string = s_actions.Tabs.get_hostname_of_tab(
                                 {
                                     tab,
                                 },
                             );
-                            const domain_of_current_tab_of_current_window: string =
-                                s_actions.Tabs.i().get_domain_of_tab({
-                                    tab: current_tab_of_current_window,
-                                });
-                            const hostname_of_this_tab: string =
-                                s_actions.Tabs.i().get_hostname_of_tab({
-                                    tab,
-                                });
                             const hostname_of_current_tab_of_current_window: string =
-                                s_actions.Tabs.i().get_hostname_of_tab({
+                                s_actions.Tabs.get_hostname_of_tab({
                                     tab: current_tab_of_current_window,
                                 });
                             const href_of_this_tab_is_the_same_as_url_1: boolean =
@@ -363,3 +361,5 @@ export class Activation {
             'cot_1076',
         );
 }
+
+export const Activation = Class.get_instance();

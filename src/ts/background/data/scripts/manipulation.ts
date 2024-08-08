@@ -7,12 +7,11 @@ import { s_data as s_data_loftyshaky, s_service_worker } from '@loftyshaky/share
 import { d_actions, i_data } from 'shared_clean/internal';
 import { s_context_menu, s_data, s_tab_counter } from 'background/internal';
 
-export class Manipulation {
-    private static i0: Manipulation;
+class Class {
+    private static instance: Class;
 
-    public static i(): Manipulation {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -39,17 +38,16 @@ export class Manipulation {
     } = {}): Promise<void> =>
         err_async(async () => {
             const default_settings: i_data.SettingsWrapped = test_actions
-                ? (s_data.Data.i().test_actions as i_data.SettingsWrapped)
-                : (s_data.Data.i().defaults as i_data.SettingsWrapped);
+                ? (s_data.Data.test_actions as i_data.SettingsWrapped)
+                : (s_data.Data.defaults as i_data.SettingsWrapped);
             const settings_2: i_data.SettingsWrapped = n(settings) ? settings : default_settings;
             let settings_final: i_data.SettingsWrapped = cloneDeep(settings_2);
 
             if (test_actions) {
                 const current_settings: i_data.SettingsWrapped =
-                    await s_data_loftyshaky.Cache.i().get_data();
-                current_settings.settings.current_action_id =
-                    s_data.Data.i().default_test_action_id;
-                current_settings.settings.main_action_id = s_data.Data.i().default_test_action_id;
+                    await s_data_loftyshaky.Cache.get_data();
+                current_settings.settings.current_action_id = s_data.Data.default_test_action_id;
+                current_settings.settings.main_action_id = s_data.Data.default_test_action_id;
 
                 settings_final.settings = current_settings.settings;
             }
@@ -66,7 +64,7 @@ export class Manipulation {
                 (mode === 'set_from_storage' && storage_is_empty)
             ) {
                 await ext.storage_set(settings_final, replace);
-                await s_data_loftyshaky.Cache.i().set_data({
+                await s_data_loftyshaky.Cache.set_data({
                     data: settings_final,
                     replace,
                     non_replaceable_keys: [
@@ -76,7 +74,7 @@ export class Manipulation {
                 });
             }
 
-            await d_actions.Actions.i().set({ from_cache: true });
+            await d_actions.Actions.set({ from_cache: true });
 
             const session = await we.storage.session.get('created_initial_context_menus_once');
 
@@ -84,15 +82,15 @@ export class Manipulation {
                 mode === 'normal' ||
                 (mode === 'set_from_storage' && !n(session.created_initial_context_menus_once))
             ) {
-                await s_context_menu.Items.i().create_itmes();
+                await s_context_menu.Items.create_itmes();
 
                 if (mode === 'set_from_storage') {
                     await we.storage.session.set({ created_initial_context_menus_once: true });
                 }
             }
 
-            s_service_worker.ServiceWorker.i().make_persistent({ settings: settings_final });
-            await s_tab_counter.Badge.i().set_tab_count();
+            s_service_worker.ServiceWorker.make_persistent({ settings: settings_final });
+            await s_tab_counter.Badge.set_tab_count();
             await we.storage.session.set({ updating_settings: false });
 
             if (load_settings) {
@@ -113,8 +111,7 @@ export class Manipulation {
     }: { transform?: boolean } = {}): Promise<void> =>
         err_async(async () => {
             if (!n(data.settings.enable_cut_features)) {
-                const settings: i_data.SettingsWrapped =
-                    await s_data_loftyshaky.Cache.i().get_data();
+                const settings: i_data.SettingsWrapped = await s_data_loftyshaky.Cache.get_data();
 
                 if (isEmpty(settings)) {
                     await this.update_settings({
@@ -156,7 +153,7 @@ export class Manipulation {
                 }),
             ];
 
-            const updated_settings: i_data.Settings = await d_schema.Main.i().transform({
+            const updated_settings: i_data.Settings = await d_schema.Main.transform({
                 data: data.settings,
                 transform_items,
             });
@@ -167,3 +164,5 @@ export class Manipulation {
             'cot_1004',
         );
 }
+
+export const Manipulation = Class.get_instance();

@@ -2,12 +2,11 @@ import keyBy from 'lodash/keyBy';
 
 import { d_actions, i_data } from 'shared_clean/internal';
 
-export class Manipulation {
-    private static i0: Manipulation;
+class Class {
+    private static instance: Class;
 
-    public static i(): Manipulation {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -45,7 +44,7 @@ export class Manipulation {
                 settings: {
                     settings: data.settings,
                     ...keyBy(
-                        d_actions.Actions.i().remove_indexed_action_name({
+                        d_actions.Actions.remove_indexed_action_name({
                             actions: data.actions,
                         }),
                         'id',
@@ -68,3 +67,5 @@ export class Manipulation {
             });
         }, 'cot_1021');
 }
+
+export const Manipulation = Class.get_instance();

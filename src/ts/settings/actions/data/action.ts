@@ -4,12 +4,11 @@ import { makeObservable, action } from 'mobx';
 import { d_actions as d_actions_shared, i_actions } from 'shared_clean/internal';
 import { d_actions, d_data, d_sections } from 'settings/internal';
 
-export class Action {
-    private static i0: Action;
+class Class {
+    private static instance: Class;
 
-    public static i(): Action {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     private constructor() {
@@ -23,8 +22,8 @@ export class Action {
 
     public create = (): void =>
         err(() => {
-            if (d_sections.Validation.i().input_is_valid) {
-                d_actions.Textarea.i().transfrom_textarea_input_into_arrays();
+            if (d_sections.Validation.input_is_valid) {
+                d_actions.Textarea.transfrom_textarea_input_into_arrays();
 
                 const action_with_highest_position: i_actions.Action | undefined = maxBy(
                     data.actions,
@@ -50,13 +49,13 @@ export class Action {
                     data.actions.push({ ...data.current_action });
                     data.settings.current_action_id = new_action.id;
                     data.actions =
-                        d_actions_shared.Actions.i().create_indexed_action_name_and_sort_actions({
+                        d_actions_shared.Actions.create_indexed_action_name_and_sort_actions({
                             actions: data.actions,
                         });
-                    d_actions_shared.Actions.i().initial_current_action = {
+                    d_actions_shared.Actions.initial_current_action = {
                         ...data.current_action,
                     };
-                    d_data.Manipulation.i().update_settings();
+                    d_data.Manipulation.update_settings();
 
                     show_notification({
                         error_msg_key: 'action_created_notification',
@@ -75,10 +74,10 @@ export class Action {
 
     public update = (): void =>
         err(() => {
-            if (d_sections.Validation.i().input_is_valid) {
-                d_actions.Textarea.i().transfrom_textarea_input_into_arrays();
+            if (d_sections.Validation.input_is_valid) {
+                d_actions.Textarea.transfrom_textarea_input_into_arrays();
 
-                const { initial_current_action } = d_actions_shared.Actions.i();
+                const { initial_current_action } = d_actions_shared.Actions;
                 data.current_action.position =
                     data.current_action.position > data.actions.length
                         ? data.current_action.position - 1
@@ -120,12 +119,13 @@ export class Action {
 
                 data.settings.current_action_id = undefined;
                 data.settings.current_action_id = new_current_action_id;
-                d_actions_shared.Actions.i().initial_current_action = { ...data.current_action };
-                data.actions =
-                    d_actions_shared.Actions.i().create_indexed_action_name_and_sort_actions({
+                d_actions_shared.Actions.initial_current_action = { ...data.current_action };
+                data.actions = d_actions_shared.Actions.create_indexed_action_name_and_sort_actions(
+                    {
                         actions: data.actions,
-                    });
-                d_data.Manipulation.i().update_settings();
+                    },
+                );
+                d_data.Manipulation.update_settings();
 
                 show_notification({
                     error_msg_key: 'action_updated_notification',
@@ -150,7 +150,7 @@ export class Action {
                     hide_delay: 1500,
                 });
             } else {
-                const { initial_current_action } = d_actions_shared.Actions.i();
+                const { initial_current_action } = d_actions_shared.Actions;
 
                 data.actions = data.actions.filter((action_2: i_actions.Action): boolean =>
                     err(
@@ -195,16 +195,17 @@ export class Action {
                 this.update_main_action({ new_current_action_id });
 
                 data.settings.current_action_id = new_current_action_id;
-                d_actions_shared.Actions.i().initial_current_action = { ...data.current_action };
-                data.actions =
-                    d_actions_shared.Actions.i().create_indexed_action_name_and_sort_actions({
+                d_actions_shared.Actions.initial_current_action = { ...data.current_action };
+                data.actions = d_actions_shared.Actions.create_indexed_action_name_and_sort_actions(
+                    {
                         actions: data.actions,
-                    });
+                    },
+                );
 
                 if (n(initial_current_action)) {
                     await ext.storage_remove([initial_current_action.id]);
 
-                    d_data.Manipulation.i().update_settings();
+                    d_data.Manipulation.update_settings();
 
                     show_notification({
                         error_msg_key: 'action_deleted_notification',
@@ -221,7 +222,7 @@ export class Action {
         new_current_action_id: string;
     }): void =>
         err(() => {
-            const { initial_current_action } = d_actions_shared.Actions.i();
+            const { initial_current_action } = d_actions_shared.Actions;
 
             if (
                 n(initial_current_action) &&
@@ -232,3 +233,5 @@ export class Action {
             }
         }, 'cot_1062');
 }
+
+export const Action = Class.get_instance();

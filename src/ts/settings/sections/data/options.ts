@@ -5,12 +5,11 @@ import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { i_actions } from 'shared_clean/internal';
 import { d_sections } from 'settings/internal';
 
-export class Options {
-    private static i0: Options;
+class Class {
+    private static instance: Class;
 
-    public static i(): Options {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -106,9 +105,9 @@ export class Options {
                         main_action: action_options,
                     };
 
-                    (d_sections.Sections.i().sections as any).actions.inputs.actions.options =
+                    (d_sections.Sections.sections as any).actions.inputs.actions.options =
                         this.options;
-                    (d_sections.Sections.i().sections as any).actions.inputs.main_action.options =
+                    (d_sections.Sections.sections as any).actions.inputs.main_action.options =
                         this.options;
                 }
             },
@@ -116,3 +115,5 @@ export class Options {
         );
     };
 }
+
+export const Options = Class.get_instance();

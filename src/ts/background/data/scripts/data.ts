@@ -1,12 +1,11 @@
 import { t } from '@loftyshaky/shared/shared_clean';
 import { i_data } from 'shared_clean/internal';
 
-export class Data {
-    private static i0: Data;
+class Class {
+    private static instance: Class;
 
-    public static i(): Data {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -2764,3 +2763,5 @@ export class Data {
             };
         }, 'cot_1113');
 }
+
+export const Data = Class.get_instance();

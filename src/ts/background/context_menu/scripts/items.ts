@@ -1,12 +1,11 @@
 import { s_data } from '@loftyshaky/shared/shared_clean';
 import { i_actions, i_data } from 'shared_clean/internal';
 
-export class Items {
-    private static i0: Items;
+class Class {
+    private static instance: Class;
 
-    public static i(): Items {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -16,7 +15,7 @@ export class Items {
         err_async(async () => {
             await we.contextMenus.removeAll();
 
-            const settings: i_data.SettingsWrapped = await s_data.Cache.i().get_data();
+            const settings: i_data.SettingsWrapped = await s_data.Cache.get_data();
 
             const contexts_on_page: string[] = (settings.settings as i_data.Settings)
                 .enable_on_page_context_menu
@@ -38,3 +37,5 @@ export class Items {
             );
         }, 'cot_1063');
 }
+
+export const Items = Class.get_instance();

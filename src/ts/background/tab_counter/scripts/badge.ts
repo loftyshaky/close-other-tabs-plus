@@ -3,12 +3,11 @@ import { Tabs } from 'webextension-polyfill';
 import { s_data } from '@loftyshaky/shared/shared_clean';
 import { i_data } from 'shared_clean/internal';
 
-export class Badge {
-    private static i0: Badge;
+class Class {
+    private static instance: Class;
 
-    public static i(): Badge {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -16,7 +15,7 @@ export class Badge {
 
     public set_tab_count = (): Promise<void> =>
         err_async(async () => {
-            const settings: i_data.SettingsWrapped = await s_data.Cache.i().get_data();
+            const settings: i_data.SettingsWrapped = await s_data.Cache.get_data();
 
             if (settings.settings.tab_counter_is_visible) {
                 const tabs: Tabs.Tab[] = await we.tabs.query({ currentWindow: true });
@@ -33,3 +32,5 @@ export class Badge {
             await we.action.setBadgeTextColor({ color: 'white' });
         }, 'cot_1089');
 }
+
+export const Badge = Class.get_instance();

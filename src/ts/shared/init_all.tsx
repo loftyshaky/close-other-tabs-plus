@@ -16,12 +16,11 @@ import { s_css_vars, s_suffix } from 'shared_clean/internal';
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, @typescript-eslint/no-unused-vars
 declare let __webpack_public_path__: string;
 
-export class InitAll {
-    private static i0: InitAll;
+class Class {
+    private static instance: Class;
 
-    public static i(): InitAll {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -49,12 +48,12 @@ export class InitAll {
                                 x.bind(loading_screen_css, 'load', (): void =>
                                     err(() => {
                                         if (page === 'dependencies') {
-                                            s_theme.Main.i().set({
+                                            s_theme.Theme.set({
                                                 name: data.settings.options_page_theme,
                                             });
                                         }
 
-                                        d_loading_screen.Main.i().show();
+                                        d_loading_screen.Visibility.show();
 
                                         reslove();
                                     }, 'cot_1023'),
@@ -69,12 +68,12 @@ export class InitAll {
                 if (page === 'settings') {
                     const { d_data } = await import('settings/internal');
 
-                    await d_data.Settings.i().set_from_storage();
+                    await d_data.Settings.set_from_storage();
                 }
 
                 this.set_page_title();
 
-                s_css_vars.CssVars.i().set();
+                s_css_vars.CssVars.set();
 
                 const error_root: ShadowRoot = this.create_root({ prefix: 'error' }) as ShadowRoot;
                 const loading_screen_root: ShadowRoot = this.create_root({
@@ -154,16 +153,16 @@ export class InitAll {
                 err_async(async () => {
                     const { d_sections } = await import('settings/internal');
 
-                    d_sections.Options.i().update_action_options();
+                    d_sections.Options.update_action_options();
 
-                    d_inputs.InputWidth.i().calculate_for_all_sections({
-                        sections: d_sections.Sections.i().sections as i_inputs.Sections,
+                    d_inputs.InputWidth.calculate_for_all_sections({
+                        sections: d_sections.Sections.sections as i_inputs.Sections,
                     });
-                    d_inputs.InputWidth.i().set_max_width();
+                    d_inputs.InputWidth.set_max_width();
 
-                    d_loading_screen.Main.i().hide({ app_id: s_suffix.app_id });
+                    d_loading_screen.Visibility.hide({ app_id: s_suffix.app_id });
 
-                    s_tab_index.Main.i().bind_set_input_type_f();
+                    s_tab_index.TabIndex.bind_set_input_type_f();
                 }, 'cot_1029');
 
             if (n(this.settings_root)) {
@@ -174,7 +173,7 @@ export class InitAll {
                                 err(() => {
                                     const settings_css = x.css('settings_css', document.head);
 
-                                    s_theme.Main.i().set({
+                                    s_theme.Theme.set({
                                         name: data.settings.options_page_theme,
                                     });
 
@@ -195,7 +194,7 @@ export class InitAll {
 
             const on_css_load = (): Promise<void> =>
                 err_async(async () => {
-                    d_loading_screen.Main.i().hide({ app_id: s_suffix.app_id });
+                    d_loading_screen.Visibility.hide({ app_id: s_suffix.app_id });
                 }, 'cot_1032');
 
             if (n(this.dependencies_root)) {
@@ -209,9 +208,9 @@ export class InitAll {
                                         document.head,
                                     );
 
-                                    s_theme.Main.i().set({
+                                    s_theme.Theme.set({
                                         name: data.settings.options_page_theme,
-                                        additional_theme_callback: s_theme.Main.i().set,
+                                        additional_theme_callback: s_theme.Theme.set,
                                     });
 
                                     if (n(dependencies_css)) {
@@ -225,3 +224,5 @@ export class InitAll {
             }
         }, 'cot_1034');
 }
+
+export const InitAll = Class.get_instance();

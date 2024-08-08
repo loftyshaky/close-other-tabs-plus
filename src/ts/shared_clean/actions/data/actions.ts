@@ -1,12 +1,11 @@
 import { t, s_data } from '@loftyshaky/shared/shared_clean';
 import { i_data, i_actions } from 'shared_clean/internal';
 
-export class Actions {
-    private static i0: Actions;
+class Class {
+    private static instance: Class;
 
-    public static i(): Actions {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -69,7 +68,7 @@ export class Actions {
         from_cache?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
-            const session_settings: i_data.SettingsWrapped = await s_data.Cache.i().get_data();
+            const session_settings: i_data.SettingsWrapped = await s_data.Cache.get_data();
             const actions_are_in_cache: boolean =
                 n(session_settings) && n(session_settings.current_action);
             const settings_final = from_cache
@@ -167,3 +166,5 @@ export class Actions {
             return actions_without_indexed_action_name;
         }, 'cot_1054');
 }
+
+export const Actions = Class.get_instance();

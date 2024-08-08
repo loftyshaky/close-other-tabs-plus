@@ -5,12 +5,11 @@ import { t, s_theme } from '@loftyshaky/shared/shared';
 import { d_data as d_data_shared_clean, s_css_vars, i_data } from 'shared_clean/internal';
 import { d_data, d_optional_permissions } from 'settings/internal';
 
-export class Restore {
-    private static i0: Restore;
+class Class {
+    private static instance: Class;
 
-    public static i(): Restore {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -30,42 +29,43 @@ export class Restore {
                     settings,
                 });
 
-                await d_data.Manipulation.i().send_msg_to_update_settings({
+                await d_data.Manipulation.send_msg_to_update_settings({
                     settings: settings_final,
                     replace: true,
                     update_instantly: true,
                 });
-                await d_data_shared_clean.Settings.i().set_actions({ settings: settings_final });
+                await d_data_shared_clean.Settings.set_actions({ settings: settings_final });
 
-                s_theme.Main.i().set({
+                s_theme.Theme.set({
                     name: data.settings.options_page_theme,
                 });
-                s_css_vars.CssVars.i().set();
+                s_css_vars.CssVars.set();
             }
         }, 'cot_1016');
 
     public restore_back_up = ({ data_objs }: { data_objs: t.AnyRecord[] }): Promise<void> =>
         err_async(async () => {
             data_objs[0].settings = { ...data_objs[0].settings, ...this.get_unchanged_settings() };
+
             let settings: i_data.SettingsWrapped | undefined =
                 data_objs[0] as i_data.SettingsWrapped;
 
             settings = await this.set({ settings });
 
-            await d_data.Manipulation.i().send_msg_to_update_settings({
+            await d_data.Manipulation.send_msg_to_update_settings({
                 settings,
                 update_instantly: true,
                 transform: true,
                 replace: true,
             });
-            await d_data_shared_clean.Settings.i().set_actions({ settings });
+            await d_data_shared_clean.Settings.set_actions({ settings });
 
-            d_optional_permissions.Permissions.i().set_on_back_up_restore();
+            d_optional_permissions.Permissions.set_on_back_up_restore();
 
-            s_theme.Main.i().set({
+            s_theme.Theme.set({
                 name: data.settings.options_page_theme,
             });
-            s_css_vars.CssVars.i().set();
+            s_css_vars.CssVars.set();
         }, 'cot_1017');
 
     private set = ({ settings }: { settings?: i_data.SettingsWrapped } = {}): Promise<
@@ -81,7 +81,7 @@ export class Restore {
                     ...default_settings,
                     settings: {
                         ...default_settings.settings,
-                        ...this.get_unchanged_settings().settings,
+                        ...this.get_unchanged_settings(),
                     },
                 };
             } else if (n(settings)) {
@@ -106,11 +106,11 @@ export class Restore {
     private get_unchanged_settings = (): t.AnyRecord =>
         err(
             () => ({
-                settings: {
-                    current_section: data.settings.current_section,
-                    show_color_help: data.settings.show_color_help,
-                },
+                current_section: data.settings.current_section,
+                show_color_help: data.settings.show_color_help,
             }),
             'cot_1019',
         );
 }
+
+export const Restore = Class.get_instance();

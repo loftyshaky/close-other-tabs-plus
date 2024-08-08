@@ -2,12 +2,11 @@ import { i_inputs } from '@loftyshaky/shared/inputs';
 import { d_optional_permissions } from '@loftyshaky/shared/settings';
 import { i_actions } from 'shared_clean/internal';
 
-export class Permissions {
-    private static i0: Permissions;
+class Class {
+    private static instance: Class;
 
-    public static i(): Permissions {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -35,7 +34,7 @@ export class Permissions {
             );
 
             if ((is_tabs_permission_input || force) && !contains_permission) {
-                return d_optional_permissions.Main.i().set_permission({
+                return d_optional_permissions.Permission.set({
                     name: 'filter_lists',
                     optional_permission_checkbox_dict: this.optional_permission_checkbox_dict,
                     set_checkbox_val: false,
@@ -70,3 +69,5 @@ export class Permissions {
             );
         }, 'cot_1095');
 }
+
+export const Permissions = Class.get_instance();

@@ -4,12 +4,11 @@ import { i_data } from '@loftyshaky/shared/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { d_sections, s_sections } from 'settings/internal';
 
-export class Validation {
-    private static i0: Validation;
+class Class {
+    private static instance: Class;
 
-    public static i(): Validation {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -21,18 +20,18 @@ export class Validation {
         err(() => {
             this.input_is_valid = false;
             let input_is_invalid: boolean = true;
-            const val: i_data.Val = d_inputs.Val.i().access({ input }) as string;
+            const val: i_data.Val = d_inputs.Val.access({ input }) as string;
 
             if (input.name === 'action_name') {
                 input_is_invalid = val.trim() === '' || val.length < 1 || val.length > 80;
             } else if (input.name === 'action_position') {
-                const action_position_val: i_data.Val = d_inputs.Val.i().access({
+                const action_position_val: i_data.Val = d_inputs.Val.access({
                     input,
                 }) as number;
 
                 input_is_invalid =
                     action_position_val < 1 || action_position_val > data.actions.length + 1;
-            } else if (s_sections.Utils.i().is_textarea_input({ input_name: input.name })) {
+            } else if (s_sections.Utils.is_textarea_input({ input_name: input.name })) {
                 input_is_invalid = !(
                     /^[A-Za-z0-9-_.~!*'();:@&=+$,/?%#[\]]+$/.test(val) || val.trim() === ''
                 );
@@ -49,7 +48,7 @@ export class Validation {
         err(() => {
             (
                 Object.values(
-                    (d_sections.Sections.i().sections as any).actions.inputs,
+                    (d_sections.Sections.sections as any).actions.inputs,
                 ) as i_inputs.Input[]
             ).forEach((input: i_inputs.Input): void => {
                 err(() => {
@@ -62,3 +61,5 @@ export class Validation {
             });
         }, 'cot_1081');
 }
+
+export const Validation = Class.get_instance();

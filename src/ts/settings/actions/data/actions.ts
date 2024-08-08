@@ -1,9 +1,8 @@
-export class Actions {
-    private static i0: Actions;
+class Class {
+    private static instance: Class;
 
-    public static i(): Actions {
-        // eslint-disable-next-line no-return-assign
-        return this.i0 || (this.i0 = new this());
+    public static get_instance(): Class {
+        return this.instance || (this.instance = new this());
     }
 
     // eslint-disable-next-line no-useless-constructor, no-empty-function
@@ -20,3 +19,5 @@ export class Actions {
             }
         }, 'cot_1112');
 }
+
+export const Actions = Class.get_instance();
