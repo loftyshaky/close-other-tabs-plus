@@ -230,9 +230,6 @@ class Class {
                         name: 'links',
                         inputs: [
                             new o_inputs.Link({
-                                name: 'docs',
-                            }),
-                            new o_inputs.Link({
                                 name: 'privacy_policy',
                                 href: ext.msg('privacy_policy_link_href'),
                             }),
