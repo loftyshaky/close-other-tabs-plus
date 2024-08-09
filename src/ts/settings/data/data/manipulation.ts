@@ -16,12 +16,14 @@ class Class {
         settings,
         update_instantly = false,
         transform = false,
+        transform_force = false,
         replace = false,
         load_settings = false,
     }: {
         settings?: i_data.SettingsWrapped;
         update_instantly?: boolean;
         transform?: boolean;
+        transform_force?: boolean;
         replace?: boolean;
         load_settings?: boolean;
     }): Promise<void> =>
@@ -33,6 +35,7 @@ class Class {
                 settings,
                 update_instantly,
                 transform,
+                transform_force,
                 replace,
                 load_settings,
             });

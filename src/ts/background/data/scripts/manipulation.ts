@@ -3,7 +3,12 @@ import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
 
-import { s_data as s_data_loftyshaky, s_service_worker } from '@loftyshaky/shared/shared_clean';
+import {
+    o_schema,
+    s_data as s_data_loftyshaky,
+    d_schema,
+    s_service_worker,
+} from '@loftyshaky/shared/shared_clean';
 import { d_actions, i_data } from 'shared_clean/internal';
 import { s_context_menu, s_data, s_tab_counter } from 'background/internal';
 
@@ -23,6 +28,7 @@ class Class {
         mode = 'normal',
         settings,
         transform = false,
+        transform_force = false,
         replace = false,
         load_settings = false,
         test_actions = false,
@@ -31,6 +37,7 @@ class Class {
         mode?: 'normal' | 'set_from_storage';
         settings?: i_data.SettingsWrapped;
         transform?: boolean;
+        transform_force?: boolean;
         replace?: boolean;
         load_settings?: boolean;
         test_actions?: boolean;
@@ -53,7 +60,10 @@ class Class {
             }
 
             if (transform) {
-                settings_final = await this.transform({ data: settings_final });
+                settings_final = await this.transform({
+                    data: settings_final,
+                    force: transform_force,
+                });
             }
 
             const settings_were_transformed: boolean = !isEqual(settings_2, settings_final);
@@ -99,9 +109,21 @@ class Class {
         }, 'cot_1001');
 
     public update_settings_debounce = debounce(
-        (settings: i_data.SettingsWrapped, transform: boolean = false, replace: boolean = false) =>
+        (
+            settings: i_data.SettingsWrapped,
+            transform: boolean = false,
+            transform_force: boolean = false,
+            replace: boolean = false,
+            load_settings: boolean = false,
+        ) =>
             err_async(async () => {
-                await this.update_settings({ settings, transform, replace });
+                await this.update_settings({
+                    settings,
+                    transform,
+                    transform_force,
+                    replace,
+                    load_settings,
+                });
             }, 'cot_1002'),
         500,
     );
@@ -140,29 +162,34 @@ class Class {
 
     private transform = ({
         data,
+        force = false,
     }: {
         data: i_data.SettingsWrapped;
+        force?: boolean;
     }): Promise<i_data.SettingsWrapped> =>
-        err_async(
-            async () =>
-                /*
+        err_async(async () => {
             const transform_items: o_schema.TransformItem[] = [
                 new o_schema.TransformItem({
-                    new_key: 'test_val',
+                    old_key: 'persistent_service_worker',
                     new_val: true,
+                    update_existing_val: true,
                 }),
             ];
 
-            const updated_settings: i_data.Settings = await d_schema.Main.transform({
+            const updated_settings: i_data.Settings = await d_schema.Schema.transform({
                 data: data.settings,
                 transform_items,
+                force,
             });
 
+            updated_settings.version = ext.get_app_version();
+
             data.settings = updated_settings;
-               */
-                data,
-            'cot_1004',
-        );
+
+            await d_schema.Schema.replace({ data });
+
+            return data;
+        }, 'cot_1004');
 }
 
 export const Manipulation = Class.get_instance();

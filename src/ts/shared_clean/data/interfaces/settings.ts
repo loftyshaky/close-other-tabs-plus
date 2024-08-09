@@ -1,4 +1,5 @@
 export interface Settings {
+    version: string;
     current_section: string;
     options_page_theme: string;
     transition_duration: number;

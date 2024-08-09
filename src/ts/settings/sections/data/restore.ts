@@ -33,6 +33,7 @@ class Class {
                     settings: settings_final,
                     replace: true,
                     update_instantly: true,
+                    load_settings: true,
                 });
                 await d_data_shared_clean.Settings.set_actions({ settings: settings_final });
 
@@ -56,7 +57,9 @@ class Class {
                 settings,
                 update_instantly: true,
                 transform: true,
+                transform_force: true,
                 replace: true,
+                load_settings: true,
             });
             await d_data_shared_clean.Settings.set_actions({ settings });
 

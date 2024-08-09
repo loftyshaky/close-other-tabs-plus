@@ -11,15 +11,19 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
             if (n(msg.update_instantly) && msg.update_instantly) {
                 s_data.Manipulation.update_settings({
                     settings: msg.settings,
-                    load_settings: n(msg.load_settings) ? msg.load_settings : false,
                     transform: n(msg.transform) ? msg.transform : false,
+                    transform_force: n(msg.transform_force) ? msg.transform_force : false,
                     replace: n(msg.replace) ? msg.replace : false,
+                    load_settings: n(msg.load_settings) ? msg.load_settings : false,
                 });
             } else {
                 s_data.Manipulation.update_settings_debounce(
                     msg.settings,
+
                     n(msg.transform) ? msg.transform : false,
+                    n(msg.transform_force) ? msg.transform_force : false,
                     n(msg.replace) ? msg.replace : false,
+                    n(msg.load_settings) ? msg.load_settings : false,
                 );
             }
 

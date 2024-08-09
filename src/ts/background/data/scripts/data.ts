@@ -20,13 +20,14 @@ class Class {
         err(() => {
             this.defaults = {
                 settings: {
+                    version: ext.get_app_version(),
                     current_section: 'actions',
                     options_page_theme: 'aqua',
                     transition_duration: 200,
                     show_color_help: true,
                     developer_mode: false,
                     enable_cut_features: false,
-                    persistent_service_worker: false,
+                    persistent_service_worker: true,
                     offers_are_visible: true,
                     current_action_id: 'close_other_tabs',
                     main_action_id: 'close_other_tabs',
