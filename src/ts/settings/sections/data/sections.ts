@@ -236,15 +236,11 @@ class Class {
                                 name: 'privacy_policy',
                                 href: ext.msg('privacy_policy_link_href'),
                             }),
-                            ...(env.browser === 'edge'
-                                ? []
-                                : [
-                                      new o_inputs.Link({
-                                          name: 'rate',
-                                          browser: env.browser,
-                                          force_resolve: true,
-                                      }),
-                                  ]),
+                            new o_inputs.Link({
+                                name: 'rate',
+                                browser: env.browser,
+                                force_resolve: true,
+                            }),
                             ...(env.browser === 'edge'
                                 ? []
                                 : [
@@ -252,11 +248,10 @@ class Class {
                                           name: 'close_other_tabs_plusi1i',
                                           browser: 'chrome',
                                       }),
-                                      /* new o_inputs.Link({
+                                      new o_inputs.Link({
                                           name: 'close_other_tabs_plusi2i',
                                           browser: 'edge',
                                       }),
-*/
                                   ]),
                             new o_inputs.Link({
                                 name: 'github',
