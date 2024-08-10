@@ -21,6 +21,7 @@ class Class {
             this.defaults = {
                 settings: {
                     version: ext.get_app_version(),
+                    tabs_permission: false,
                     current_section: 'actions',
                     options_page_theme: 'aqua',
                     transition_duration: 200,

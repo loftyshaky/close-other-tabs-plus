@@ -33,6 +33,7 @@ class Class {
         load_settings = false,
         test_actions = false,
         storage_is_empty = false,
+        tabs_permission_granted = false,
     }: {
         mode?: 'normal' | 'set_from_storage';
         settings?: i_data.SettingsWrapped;
@@ -42,6 +43,7 @@ class Class {
         load_settings?: boolean;
         test_actions?: boolean;
         storage_is_empty?: boolean;
+        tabs_permission_granted?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
             const default_settings: i_data.SettingsWrapped = test_actions
@@ -64,6 +66,10 @@ class Class {
                     data: settings_final,
                     force: transform_force,
                 });
+            }
+
+            if (tabs_permission_granted) {
+                settings_final.settings.tabs_permission = tabs_permission_granted;
             }
 
             const settings_were_transformed: boolean = !isEqual(settings_2, settings_final);
@@ -173,6 +179,10 @@ class Class {
                     old_key: 'persistent_service_worker',
                     new_val: true,
                     update_existing_val: true,
+                }),
+                new o_schema.TransformItem({
+                    new_key: 'tabs_permission',
+                    new_val: false,
                 }),
             ];
 

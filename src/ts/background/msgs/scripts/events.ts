@@ -33,6 +33,7 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
                 load_settings: true,
                 replace: true,
                 test_actions: true,
+                tabs_permission_granted: msg.tabs_permission_granted,
             });
         } else if (msg_str === 'get_defaults') {
             return Promise.resolve(s_data.Data.defaults);

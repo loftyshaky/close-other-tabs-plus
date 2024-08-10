@@ -3,7 +3,7 @@ import { runInAction } from 'mobx';
 
 import { t, s_theme } from '@loftyshaky/shared/shared';
 import { d_data as d_data_shared_clean, s_css_vars, i_data } from 'shared_clean/internal';
-import { d_data, d_optional_permissions } from 'settings/internal';
+import { d_data, s_optional_permissions } from 'settings/internal';
 
 class Class {
     private static instance: Class;
@@ -47,9 +47,17 @@ class Class {
     public restore_back_up = ({ data_objs }: { data_objs: t.AnyRecord[] }): Promise<void> =>
         err_async(async () => {
             data_objs[0].settings = { ...data_objs[0].settings, ...this.get_unchanged_settings() };
-
             let settings: i_data.SettingsWrapped | undefined =
                 data_objs[0] as i_data.SettingsWrapped;
+
+            const tabs_permission: boolean =
+                await s_optional_permissions.Permissions.set_on_back_up_restore({
+                    tabs_permission: n(settings.settings.tabs_permission)
+                        ? settings.settings.tabs_permission
+                        : false,
+                });
+
+            settings.settings.tabs_permission = tabs_permission;
 
             settings = await this.set({ settings });
 
@@ -62,8 +70,6 @@ class Class {
                 load_settings: true,
             });
             await d_data_shared_clean.Settings.set_actions({ settings });
-
-            d_optional_permissions.Permissions.set_on_back_up_restore();
 
             s_theme.Theme.set({
                 name: data.settings.options_page_theme,

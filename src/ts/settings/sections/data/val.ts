@@ -2,7 +2,7 @@ import { t } from '@loftyshaky/shared/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { s_settings } from '@loftyshaky/shared/settings';
 import { s_css_vars } from 'shared_clean/internal';
-import { d_data, d_sections, d_optional_permissions, s_sections } from 'settings/internal';
+import { d_data, d_sections, s_optional_permissions, s_sections } from 'settings/internal';
 
 class Class {
     private static instance: Class;
@@ -18,15 +18,19 @@ class Class {
         err_async(
             async () => {
                 const raw_val = d_inputs.Val.access({ input });
-
                 let val: t.AnyUndefined;
+                let granted_tabs_permission: boolean = false;
 
                 if (
                     s_sections.Utils.is_textarea_input({ input_name: input.name }) ||
                     input.name === 'urls'
                 ) {
-                    const granted_tabs_permission: boolean =
-                        await d_optional_permissions.Permissions.set({ input });
+                    granted_tabs_permission =
+                        input.name === 'urls_after_action'
+                            ? true
+                            : await s_optional_permissions.Permissions.set({
+                                  input,
+                              });
 
                     if (input.name === 'urls') {
                         val = granted_tabs_permission ? raw_val : 'any_url';
@@ -78,6 +82,10 @@ class Class {
                         },
                         update_instantly: input.type === 'checkbox',
                     });
+                }
+
+                if (granted_tabs_permission && input.name !== 'urls_after_action') {
+                    await s_optional_permissions.Permissions.set_tabs_permission_setting();
                 }
             },
             'cot_1020',
