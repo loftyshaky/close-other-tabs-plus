@@ -30,9 +30,13 @@ class Class {
                             }
                         }, 'cot_1109');
 
+                    const new_tab_link =
+                        env.browser === 'edge'
+                            ? 'https://ntp.msn.com/edge/ntp'
+                            : 'chrome://new-tab-page';
                     const urls_to_open: string[] = [
                         ...action.urls_after_action,
-                        ...(action.open_new_tab_after_action ? ['chrome://new-tab-page'] : []),
+                        ...(action.open_new_tab_after_action ? [new_tab_link] : []),
                     ];
 
                     if (n(current_tab)) {
