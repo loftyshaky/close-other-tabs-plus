@@ -28,7 +28,7 @@ class Class {
 
     public set_color = (): Promise<void> =>
         err_async(async () => {
-            await we.action.setBadgeBackgroundColor({ color: '#249c3e' });
+            await we.action.setBadgeBackgroundColor({ color: '#2f86de' });
             await we.action.setBadgeTextColor({ color: 'white' });
         }, 'cot_1089');
 }
