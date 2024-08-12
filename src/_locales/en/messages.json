@@ -5,9 +5,6 @@
     "description": {
         "message": "Close/pin/unpin/group/ungroup multiple tabs at once, filtering them by a window, pin/group state or URL."
     },
-    "input_width_css": {
-        "message": "392px"
-    },
     "action_created_notification": {
         "message": "Action created."
     },
