@@ -93,21 +93,15 @@ class Class {
             await d_actions.Actions.set({ from_cache: true });
 
             const session = await we.storage.session.get('created_initial_context_menus_once');
-            l(
-                'session.created_initial_context_menus_once',
-                session.created_initial_context_menus_once,
-                mode,
-            );
+
             if (
                 mode === 'normal' ||
                 (mode === 'set_from_storage' &&
                     (!n(session.created_initial_context_menus_once) || env.browser === 'edge')) // I added this line env.browser === 'edge' because Edge may persist session when you reload the extension via reload button in the edge://extensions page and probably when updating the extension from the Egde store. This result's in context menus not being populated after reload. This is probably a bug in Edge because it doesn't happen in Chrome. When it's fixed I need to remove this line.
             ) {
-                l(1111);
                 await s_context_menu.Items.create_itmes();
 
                 if (mode === 'set_from_storage') {
-                    l(33);
                     await we.storage.session.set({ created_initial_context_menus_once: true });
                 }
             }
