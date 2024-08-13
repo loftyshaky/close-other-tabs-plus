@@ -303,7 +303,6 @@ class Class {
                                 found_url_of_any_hostname_except_current;
 
                             const url_blacklist: boolean =
-                                action.urls === 'current_hostname' ||
                                 !url_whitelist_is_empty ||
                                 (url_whitelist_is_empty &&
                                     (url_blacklist_is_empty || !found_url_of_blacklist));
