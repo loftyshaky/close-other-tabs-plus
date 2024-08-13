@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import {
     o_schema,
-    s_data as s_data_loftyshaky,
+    s_data as s_data_loftyshaky_shared_clean,
     d_schema,
     s_service_worker,
 } from '@loftyshaky/shared/shared_clean';
@@ -54,7 +54,7 @@ class Class {
 
             if (test_actions) {
                 const current_settings: i_data.SettingsWrapped =
-                    await s_data_loftyshaky.Cache.get_data();
+                    await s_data_loftyshaky_shared_clean.Cache.get_data();
                 current_settings.settings.current_action_id = s_data.Data.default_test_action_id;
                 current_settings.settings.main_action_id = s_data.Data.default_test_action_id;
 
@@ -80,7 +80,7 @@ class Class {
                 (mode === 'set_from_storage' && storage_is_empty)
             ) {
                 await ext.storage_set(settings_final, replace);
-                await s_data_loftyshaky.Cache.set_data({
+                await s_data_loftyshaky_shared_clean.Cache.set_data({
                     data: settings_final,
                     replace,
                     non_replaceable_keys: [
@@ -140,7 +140,8 @@ class Class {
     }: { transform?: boolean } = {}): Promise<void> =>
         err_async(async () => {
             if (!n(data.settings.enable_cut_features)) {
-                const settings: i_data.SettingsWrapped = await s_data_loftyshaky.Cache.get_data();
+                const settings: i_data.SettingsWrapped =
+                    await s_data_loftyshaky_shared_clean.Cache.get_data();
 
                 if (isEmpty(settings)) {
                     await this.update_settings({
