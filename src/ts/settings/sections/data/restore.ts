@@ -1,8 +1,9 @@
 import isEmpty from 'lodash/isEmpty';
 import { runInAction } from 'mobx';
 
+import { s_data } from '@loftyshaky/shared/shared_clean';
 import { t, s_theme } from '@loftyshaky/shared/shared';
-import { d_data as d_data_shared_clean, s_css_vars, i_data } from 'shared_clean/internal';
+import { d_actions, s_css_vars, i_data } from 'shared_clean/internal';
 import { d_data, s_optional_permissions } from 'settings/internal';
 
 class Class {
@@ -15,9 +16,7 @@ class Class {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public restore_defaults = ({
-        settings,
-    }: { settings?: i_data.SettingsWrapped } = {}): Promise<void> =>
+    public restore_defaults = ({ settings }: { settings?: i_data.Settings } = {}): Promise<void> =>
         err_async(async () => {
             // eslint-disable-next-line no-alert
             const confirmed_restore: boolean = globalThis.confirm(
@@ -25,7 +24,7 @@ class Class {
             );
 
             if (confirmed_restore) {
-                const settings_final: i_data.SettingsWrapped | undefined = await this.set({
+                const settings_final: i_data.Settings | undefined = await this.set({
                     settings,
                 });
 
@@ -34,11 +33,15 @@ class Class {
                     replace: true,
                     update_instantly: true,
                     load_settings: true,
+                    update_context_menus: true,
                 });
-                await d_data_shared_clean.Settings.set_actions({ settings: settings_final });
+
+                if (n(settings_final)) {
+                    await d_actions.Actions.set({ settings: settings_final });
+                }
 
                 s_theme.Theme.set({
-                    name: data.settings.options_page_theme,
+                    name: data.settings.prefs.options_page_theme,
                 });
                 s_css_vars.CssVars.set();
             }
@@ -46,62 +49,63 @@ class Class {
 
     public restore_back_up = ({ data_objs }: { data_objs: t.AnyRecord[] }): Promise<void> =>
         err_async(async () => {
-            data_objs[0].settings = { ...data_objs[0].settings, ...this.get_unchanged_settings() };
-            let settings: i_data.SettingsWrapped | undefined =
-                data_objs[0] as i_data.SettingsWrapped;
+            let settings: i_data.Settings | undefined = data_objs[0] as i_data.Settings;
+            settings = s_data.Settings.apply_unchanged_prefs({ settings });
 
             const tabs_permission: boolean =
                 await s_optional_permissions.Permissions.set_on_back_up_restore({
-                    tabs_permission: n(settings.settings.tabs_permission)
-                        ? settings.settings.tabs_permission
+                    tabs_permission: n(settings.prefs.tabs_permission)
+                        ? settings.prefs.tabs_permission
                         : false,
                 });
 
-            settings.settings.tabs_permission = tabs_permission;
+            settings.prefs.tabs_permission = tabs_permission;
 
             settings = await this.set({ settings });
 
             await d_data.Manipulation.send_msg_to_update_settings({
                 settings,
+                replace: true,
                 update_instantly: true,
                 transform: true,
                 transform_force: true,
-                replace: true,
                 load_settings: true,
+                update_context_menus: true,
             });
-            await d_data_shared_clean.Settings.set_actions({ settings });
+
+            if (n(settings)) {
+                await d_actions.Actions.set({ settings });
+            }
 
             s_theme.Theme.set({
-                name: data.settings.options_page_theme,
+                name: data.settings.prefs.options_page_theme,
             });
             s_css_vars.CssVars.set();
         }, 'cot_1017');
 
-    private set = ({ settings }: { settings?: i_data.SettingsWrapped } = {}): Promise<
-        i_data.SettingsWrapped | undefined
+    private set = ({ settings }: { settings?: i_data.Settings } = {}): Promise<
+        i_data.Settings | undefined
     > =>
         err_async(async () => {
-            let settings_final: i_data.SettingsWrapped | undefined;
+            let settings_final: i_data.Settings | undefined;
 
             if (isEmpty(settings)) {
-                const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
+                let default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
 
-                settings_final = {
-                    ...default_settings,
-                    settings: {
-                        ...default_settings.settings,
-                        ...this.get_unchanged_settings(),
-                    },
-                };
+                default_settings = s_data.Settings.apply_unchanged_prefs({
+                    settings: default_settings,
+                });
+
+                settings_final = default_settings;
             } else if (n(settings)) {
                 settings_final = settings;
             }
 
-            const set_inner = (): i_data.SettingsWrapped | undefined => {
+            const set_inner = (): i_data.Settings | undefined => {
                 runInAction(() =>
                     err(() => {
                         if (n(settings_final)) {
-                            data.settings = settings_final.settings;
+                            data.settings = settings_final;
                         }
                     }, 'cot_1132'),
                 );
@@ -111,15 +115,6 @@ class Class {
 
             return set_inner();
         }, 'cot_1018');
-
-    private get_unchanged_settings = (): t.AnyRecord =>
-        err(
-            () => ({
-                current_section: data.settings.current_section,
-                show_color_help: data.settings.show_color_help,
-            }),
-            'cot_1019',
-        );
 }
 
 export const Restore = Class.get_instance();

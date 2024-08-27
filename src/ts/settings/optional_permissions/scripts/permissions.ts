@@ -39,9 +39,9 @@ class Class {
 
     public set_tabs_permission_setting = (): Promise<void> =>
         err_async(async () => {
-            if (!data.settings.tabs_permission) {
+            if (!data.settings.prefs.tabs_permission) {
                 const contains_permission: boolean = await this.check_if_contains_tabs_permission();
-                data.settings.tabs_permission = contains_permission;
+                data.settings.prefs.tabs_permission = contains_permission;
 
                 if (contains_permission) {
                     d_data.Manipulation.send_msg_to_update_settings({

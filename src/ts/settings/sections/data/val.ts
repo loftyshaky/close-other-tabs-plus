@@ -1,6 +1,6 @@
 import { t } from '@loftyshaky/shared/shared';
 import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { s_settings } from '@loftyshaky/shared/settings';
+import { s_sections as s_sections_loftyshaky_settings } from '@loftyshaky/shared/settings';
 import { s_css_vars } from 'shared_clean/internal';
 import { d_data, d_sections, s_optional_permissions, s_sections } from 'settings/internal';
 
@@ -40,7 +40,7 @@ class Class {
                 } else if (n(raw_val)) {
                     val = input.name === 'transition_duration' ? +raw_val : raw_val;
 
-                    s_settings.Theme.change({
+                    s_sections_loftyshaky_settings.Theme.change({
                         input,
                         name: val as string,
                     });
@@ -53,7 +53,6 @@ class Class {
                     val: val_final,
                     input,
                 });
-
                 s_css_vars.CssVars.set();
 
                 if (n(input.val_accessor) && ['actions', 'main_action'].includes(input.name)) {
@@ -65,7 +64,8 @@ class Class {
 
                     await d_data.Manipulation.send_msg_to_update_settings({
                         settings: {
-                            settings: data.settings,
+                            ...data.settings,
+                            prefs: data.settings.prefs,
                         },
                         update_instantly: true,
                         load_settings: input.name === 'actions',
@@ -75,12 +75,17 @@ class Class {
                 if (!n(input.val_accessor) && input.name !== 'actions') {
                     await d_data.Manipulation.send_msg_to_update_settings({
                         settings: {
-                            settings: {
-                                ...data.settings,
+                            ...data.settings,
+                            prefs: {
+                                ...data.settings.prefs,
                                 ...{ [input.name]: val },
                             },
                         },
                         update_instantly: input.type === 'checkbox',
+                        update_context_menus: [
+                            'enable_action_context_menu',
+                            'enable_on_page_context_menu',
+                        ].includes(input.name),
                     });
                 }
 

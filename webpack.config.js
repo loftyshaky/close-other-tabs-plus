@@ -30,7 +30,7 @@ const dependencies_shared = new DependenciesShared({ app_root });
 
 const manifest = new Manifest({ app_root });
 const env_instance = new Env({ app_root });
-const locales = new Locales({ app_root });
+const locales = new Locales({ app_root, exclude_shared_locales: ['de'] });
 const dependencies = new Dependencies();
 
 const ext_id = 'hlholjomhedflehhonjahhgngeamabmm';

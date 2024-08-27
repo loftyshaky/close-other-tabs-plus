@@ -11,21 +11,21 @@ class Class {
     // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
-    public defaults: i_data.SettingsWrapped | t.EmptyRecord = {};
-    public test_actions: i_data.SettingsWrapped | t.EmptyRecord = {};
+    public defaults: i_data.Settings | t.EmptyRecord = {};
+    public test_actions: i_data.Settings | t.EmptyRecord = {};
     public default_test_action_id: string = 'close_other_tabs';
     public set_from_storage_run_prevented: boolean = false;
 
     public init_defaults = (): void =>
         err(() => {
             this.defaults = {
-                settings: {
+                prefs: {
                     version: ext.get_app_version(),
                     tabs_permission: false,
                     current_section: 'actions',
                     options_page_theme: 'aqua',
                     transition_duration: 200,
-                    show_color_help: true,
+                    color_help_is_visible: true,
                     developer_mode: false,
                     enable_cut_features: false,
                     persistent_service_worker: true,
@@ -2766,4 +2766,4 @@ class Class {
         }, 'cot_1113');
 }
 
-export const Data = Class.get_instance();
+export const Settings = Class.get_instance();

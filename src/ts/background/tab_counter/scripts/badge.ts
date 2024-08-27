@@ -1,8 +1,5 @@
 import { Tabs } from 'webextension-polyfill';
 
-import { s_data } from '@loftyshaky/shared/shared_clean';
-import { i_data } from 'shared_clean/internal';
-
 class Class {
     private static instance: Class;
 
@@ -15,9 +12,7 @@ class Class {
 
     public set_tab_count = (): Promise<void> =>
         err_async(async () => {
-            const settings: i_data.SettingsWrapped = await s_data.Cache.get_data();
-
-            if (settings.settings.tab_counter_is_visible) {
+            if (data.settings.prefs.tab_counter_is_visible) {
                 const tabs: Tabs.Tab[] = await we.tabs.query({ currentWindow: true });
 
                 await we.action.setBadgeText({ text: tabs.length.toString() });

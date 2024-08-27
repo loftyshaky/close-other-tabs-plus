@@ -1,4 +1,6 @@
-import { t, s_data } from '@loftyshaky/shared/shared_clean';
+import cloneDeep from 'lodash/cloneDeep';
+
+import { t } from '@loftyshaky/shared/shared_clean';
 import { i_data, i_actions } from 'shared_clean/internal';
 
 class Class {
@@ -16,11 +18,11 @@ class Class {
     private extract_current = ({
         settings,
     }: {
-        settings: i_data.SettingsWrapped;
+        settings: i_data.Settings;
     }): Promise<i_actions.Action> =>
         err_async(async () => {
             const current_action: i_actions.Action = settings[
-                settings.settings.current_action_id
+                settings.prefs.current_action_id
             ] as i_actions.Action;
 
             return current_action;
@@ -29,32 +31,25 @@ class Class {
     private extract_main = ({
         settings,
     }: {
-        settings: i_data.SettingsWrapped;
+        settings: i_data.Settings;
     }): Promise<i_actions.Action> =>
         err_async(async () => {
             const main_action: i_actions.Action = settings[
-                settings.settings.main_action_id
+                settings.prefs.main_action_id
             ] as i_actions.Action;
 
             return main_action;
         }, 'cot_1038');
 
-    private extract = ({
-        settings,
-    }: {
-        settings: i_data.SettingsWrapped;
-    }): Promise<i_actions.Action[]> =>
+    private extract = ({ settings }: { settings: i_data.Settings }): Promise<i_actions.Action[]> =>
         err_async(async () => {
-            delete settings.settings;
-            delete settings.current_action;
-            delete settings.main_action;
-            delete settings.actions;
-            delete settings.updating_settings;
-            delete settings.created_initial_context_menus_once;
+            const settings_clone = cloneDeep(settings);
+
+            delete settings_clone.prefs;
 
             const actions_data: i_actions.Action[] =
                 this.create_indexed_action_name_and_sort_actions({
-                    actions: Object.values(settings) as i_actions.Action[],
+                    actions: Object.values(settings_clone) as i_actions.Action[],
                 });
 
             return actions_data;
@@ -63,26 +58,24 @@ class Class {
     public set = ({
         settings,
         from_cache = false,
+        force = false,
     }: {
-        settings?: i_data.SettingsWrapped;
+        settings?: i_data.Settings;
         from_cache?: boolean;
+        force?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
-            const session_settings: i_data.SettingsWrapped = await s_data.Cache.get_data();
-            const actions_are_in_cache: boolean =
-                n(session_settings) && n(session_settings.current_action);
-            const settings_final = from_cache
-                ? session_settings
-                : settings || (await ext.storage_get());
+            const actions_are_in_cache: boolean = n(data.current_action);
+            const settings_for_extraction_of_actions = from_cache ? data.settings : settings;
 
             const current_action: i_actions.Action = await this.extract_current({
-                settings: settings_final,
+                settings: settings_for_extraction_of_actions,
             });
             const main_action: i_actions.Action = await this.extract_main({
-                settings: settings_final,
+                settings: settings_for_extraction_of_actions,
             });
             const actions: i_actions.Action[] = await this.extract({
-                settings: settings_final,
+                settings: settings_for_extraction_of_actions,
             });
 
             const { runInAction } =
@@ -102,7 +95,7 @@ class Class {
                 }, 'cot_1044'),
             );
 
-            if (!actions_are_in_cache) {
+            if (!actions_are_in_cache || force) {
                 await we.storage.session.set({ current_action, main_action, actions });
             }
 

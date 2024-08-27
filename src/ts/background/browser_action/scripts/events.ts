@@ -1,4 +1,4 @@
-import { s_data, s_actions } from 'background/internal';
+import { s_actions, s_data } from 'background/internal';
 
 we.action.onClicked.addListener(
     (): Promise<void> =>

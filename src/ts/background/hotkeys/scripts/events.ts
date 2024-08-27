@@ -1,5 +1,5 @@
 import { i_actions } from 'shared_clean/internal';
-import { s_data, s_actions } from 'background/internal';
+import { s_actions, s_data } from 'background/internal';
 
 we.commands.onCommand.addListener((command: string) =>
     err_async(async () => {

@@ -47,7 +47,7 @@ class Class {
                     );
 
                     data.actions.push({ ...data.current_action });
-                    data.settings.current_action_id = new_action.id;
+                    data.settings.prefs.current_action_id = new_action.id;
                     data.actions =
                         d_actions_shared.Actions.create_indexed_action_name_and_sort_actions({
                             actions: data.actions,
@@ -117,8 +117,8 @@ class Class {
 
                 const new_current_action_id: string = { ...data.current_action }.id;
 
-                data.settings.current_action_id = undefined;
-                data.settings.current_action_id = new_current_action_id;
+                data.settings.prefs.current_action_id = undefined;
+                data.settings.prefs.current_action_id = new_current_action_id;
                 d_actions_shared.Actions.initial_current_action = { ...data.current_action };
                 data.actions = d_actions_shared.Actions.create_indexed_action_name_and_sort_actions(
                     {
@@ -194,7 +194,7 @@ class Class {
 
                 this.update_main_action({ new_current_action_id });
 
-                data.settings.current_action_id = new_current_action_id;
+                data.settings.prefs.current_action_id = new_current_action_id;
                 d_actions_shared.Actions.initial_current_action = { ...data.current_action };
                 data.actions = d_actions_shared.Actions.create_indexed_action_name_and_sort_actions(
                     {
@@ -226,10 +226,10 @@ class Class {
 
             if (
                 n(initial_current_action) &&
-                initial_current_action.id === data.settings.main_action_id
+                initial_current_action.id === data.settings.prefs.main_action_id
             ) {
-                data.settings.main_action_id = undefined;
-                data.settings.main_action_id = new_current_action_id;
+                data.settings.prefs.main_action_id = undefined;
+                data.settings.prefs.main_action_id = new_current_action_id;
             }
         }, 'cot_1062');
 }

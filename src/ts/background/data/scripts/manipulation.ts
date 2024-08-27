@@ -1,7 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
-import isEmpty from 'lodash/isEmpty';
 
 import {
     o_schema,
@@ -27,110 +26,118 @@ class Class {
     public update_settings = ({
         mode = 'normal',
         settings,
+        update_context_menus = false,
+        replace = false,
         transform = false,
         transform_force = false,
-        replace = false,
         load_settings = false,
         test_actions = false,
-        storage_is_empty = false,
+        settings_are_filled = true,
         tabs_permission_granted = false,
     }: {
         mode?: 'normal' | 'set_from_storage';
-        settings?: i_data.SettingsWrapped;
+        settings?: i_data.Settings;
+        update_context_menus?: boolean;
+        replace?: boolean;
         transform?: boolean;
         transform_force?: boolean;
-        replace?: boolean;
         load_settings?: boolean;
         test_actions?: boolean;
-        storage_is_empty?: boolean;
+        settings_are_filled?: boolean;
         tabs_permission_granted?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
-            const default_settings: i_data.SettingsWrapped = test_actions
-                ? (s_data.Data.test_actions as i_data.SettingsWrapped)
-                : (s_data.Data.defaults as i_data.SettingsWrapped);
-            const settings_2: i_data.SettingsWrapped = n(settings) ? settings : default_settings;
-            let settings_final: i_data.SettingsWrapped = cloneDeep(settings_2);
+            const default_settings: i_data.Settings = test_actions
+                ? (s_data.Settings.test_actions as i_data.Settings)
+                : (s_data.Settings.defaults as i_data.Settings);
+            const settings_before: i_data.Settings = n(settings)
+                ? settings
+                : (default_settings as i_data.Settings);
+            let settings_after: i_data.Settings = cloneDeep(settings_before);
 
             if (test_actions) {
-                const current_settings: i_data.SettingsWrapped =
-                    await s_data_loftyshaky_shared_clean.Cache.get_data();
-                current_settings.settings.current_action_id = s_data.Data.default_test_action_id;
-                current_settings.settings.main_action_id = s_data.Data.default_test_action_id;
-
-                settings_final.settings = current_settings.settings;
+                data.settings.prefs.current_action_id = s_data.Settings.default_test_action_id;
+                data.settings.prefs.main_action_id = s_data.Settings.default_test_action_id;
+                settings_after.prefs = data.settings.prefs;
             }
 
             if (transform) {
-                settings_final = await this.transform({
-                    data: settings_final,
+                settings_after = await this.transform({
+                    settings: settings_after,
                     force: transform_force,
                 });
             }
 
             if (tabs_permission_granted) {
-                settings_final.settings.tabs_permission = tabs_permission_granted;
+                settings_after.prefs.tabs_permission = tabs_permission_granted;
             }
 
-            const settings_were_transformed: boolean = !isEqual(settings_2, settings_final);
+            const settings_were_transformed: boolean = !isEqual(settings_before, settings_after);
 
             if (
                 settings_were_transformed ||
                 mode === 'normal' ||
-                (mode === 'set_from_storage' && storage_is_empty)
+                (mode === 'set_from_storage' && !settings_are_filled)
             ) {
-                await ext.storage_set(settings_final, replace);
-                await s_data_loftyshaky_shared_clean.Cache.set_data({
-                    data: settings_final,
-                    replace,
-                    non_replaceable_keys: [
-                        'updating_settings',
-                        'created_initial_context_menus_once',
-                    ],
+                await s_data_loftyshaky_shared_clean.Cache.set_settings({
+                    settings: settings_after,
                 });
+                await ext.storage_set(settings_after, replace);
             }
 
-            await d_actions.Actions.set({ from_cache: true });
+            await this.react_to_settings_change({ mode, update_context_menus, load_settings });
+        }, 'cot_1001');
 
-            const session = await we.storage.session.get('created_initial_context_menus_once');
+    public react_to_settings_change = ({
+        mode = 'normal',
+        force_set_actions = false,
+        update_context_menus = false,
+        load_settings = false,
+    }: {
+        mode?: 'normal' | 'set_from_storage';
+        force_set_actions?: boolean;
+        update_context_menus?: boolean;
+        load_settings?: boolean;
+    } = {}): Promise<void> =>
+        err_async(async () => {
+            await d_actions.Actions.set({ from_cache: true, force: force_set_actions });
 
-            if (
-                mode === 'normal' ||
-                (mode === 'set_from_storage' &&
-                    (!n(session.created_initial_context_menus_once) || env.browser === 'edge')) // I added this line env.browser === 'edge' because Edge may persist session when you reload the extension via reload button in the edge://extensions page and probably when updating the extension from the Egde store. This result's in context menus not being populated after reload. This is probably a bug in Edge because it doesn't happen in Chrome. When it's fixed I need to remove this line.
-            ) {
+            if (mode === 'set_from_storage' || (mode === 'normal' && update_context_menus)) {
                 await s_context_menu.Items.create_itmes();
-
-                if (mode === 'set_from_storage') {
-                    await we.storage.session.set({ created_initial_context_menus_once: true });
-                }
             }
 
-            s_service_worker.ServiceWorker.make_persistent({ settings: settings_final });
+            s_service_worker.ServiceWorker.make_persistent();
             await s_tab_counter.Badge.set_tab_count();
-            await we.storage.session.set({ updating_settings: false });
+            await s_data_loftyshaky_shared_clean.Cache.set({
+                key: 'updating_settings',
+                val: false,
+            });
 
             if (load_settings) {
                 await ext.send_msg_resp({ msg: 'load_settings' });
             }
-        }, 'cot_1001');
+        }, 'cot_1138');
 
     public update_settings_debounce = debounce(
         (
-            settings: i_data.SettingsWrapped,
+            settings: i_data.Settings,
+            replace: boolean = false,
+            update_context_menus: boolean = false,
             transform: boolean = false,
             transform_force: boolean = false,
-            replace: boolean = false,
             load_settings: boolean = false,
         ) =>
             err_async(async () => {
                 await this.update_settings({
                     settings,
+                    replace,
+                    update_context_menus,
                     transform,
                     transform_force,
-                    replace,
                     load_settings,
                 });
+
+                ext.updating_storage = false;
             }, 'cot_1002'),
         500,
     );
@@ -139,44 +146,50 @@ class Class {
         transform = false,
     }: { transform?: boolean } = {}): Promise<void> =>
         err_async(async () => {
-            if (!n(data.settings.enable_cut_features)) {
-                const settings: i_data.SettingsWrapped =
-                    await s_data_loftyshaky_shared_clean.Cache.get_data();
-
-                if (isEmpty(settings)) {
-                    await this.update_settings({
-                        mode: 'set_from_storage',
-                        transform,
-                        storage_is_empty: true,
-                    });
-                } else if (transform) {
-                    await this.update_settings({
-                        mode: 'set_from_storage',
-                        settings,
-                        transform,
-                    });
-                }
+            if (!x.prefs_are_filled() && !x.settings_are_filled()) {
+                // Runs on extension install, when the settings object is empty. The settings object is first set in @loftyshaky/shared.
+                await this.update_settings({
+                    mode: 'set_from_storage',
+                    transform,
+                    settings_are_filled: false,
+                });
+            } else if (transform) {
+                await this.update_settings({
+                    mode: 'set_from_storage',
+                    settings: data.settings,
+                    transform,
+                });
             }
         }, 'cot_1003');
 
     public on_init_set_from_storage = (): Promise<void> =>
         err_async(async () => {
-            const session_data = await we.storage.session.get();
-
-            if (!n(session_data.updating_settings) || !session_data.updating_settings) {
+            if (!n(data.updating_settings) || !data.updating_settings) {
                 await this.set_from_storage({ transform: true });
             }
         }, 'cot_1117');
 
     private transform = ({
-        data,
+        settings,
         force = false,
     }: {
-        data: i_data.SettingsWrapped;
+        settings: i_data.Settings;
         force?: boolean;
-    }): Promise<i_data.SettingsWrapped> =>
+    }): Promise<i_data.Settings> =>
         err_async(async () => {
-            const transform_items: o_schema.TransformItem[] = [
+            const transform_items_settings: o_schema.TransformItem[] = [
+                new o_schema.TransformItem({
+                    new_key: 'prefs',
+                    new_val: settings.perfs,
+                }),
+            ];
+
+            const updated_settings = await d_schema.Schema.transform({
+                data_obj: settings,
+                transform_items: transform_items_settings,
+                force,
+            });
+            const transform_items_prefs: o_schema.TransformItem[] = [
                 new o_schema.TransformItem({
                     old_key: 'persistent_service_worker',
                     new_val: true,
@@ -186,21 +199,25 @@ class Class {
                     new_key: 'tabs_permission',
                     new_val: false,
                 }),
+                new o_schema.TransformItem({
+                    old_key: 'show_color_help',
+                    new_key: 'color_help_is_visible',
+                }),
             ];
 
-            const updated_settings: i_data.Settings = await d_schema.Schema.transform({
-                data: data.settings,
-                transform_items,
+            const updated_prefs = await d_schema.Schema.transform({
+                data_obj: updated_settings.prefs,
+                transform_items: transform_items_prefs,
                 force,
             });
 
-            updated_settings.version = ext.get_app_version();
+            updated_prefs.version = ext.get_app_version();
 
-            data.settings = updated_settings;
+            settings.prefs = updated_prefs;
 
-            await d_schema.Schema.replace({ data });
+            await d_schema.Schema.replace({ settings });
 
-            return data;
+            return settings;
         }, 'cot_1004');
 }
 

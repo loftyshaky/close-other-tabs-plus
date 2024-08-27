@@ -2,7 +2,7 @@ import { makeObservable, computed } from 'mobx';
 
 import { s_utils } from '@loftyshaky/shared/shared';
 import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { d_settings as d_settings_loftyshaky } from '@loftyshaky/shared/settings';
+import { d_sections as d_sections_loftyshaky } from '@loftyshaky/shared/settings';
 import { d_actions, d_data, d_sections } from 'settings/internal';
 
 class Class {
@@ -19,7 +19,9 @@ class Class {
     }
 
     public get current_section() {
-        return n(data.settings.current_section) ? data.settings.current_section : 'actions';
+        return n(data.settings.prefs.current_section)
+            ? data.settings.prefs.current_section
+            : 'actions';
     }
 
     public sections: o_inputs.Section[] | i_inputs.Sections = [];
@@ -31,20 +33,20 @@ class Class {
                     new o_inputs.Section({
                         name: 'actions',
                         include_help: true,
-                        alt_help_msg: 'actions_section_help_text',
+                        alt_help_msg: ext.msg(`actions_${env.browser}_section_help_text`),
                         inputs: [
                             new o_inputs.Select({
                                 name: 'actions',
                                 include_help: true,
                                 options: d_sections.Options.options,
-                                val_accessor: 'settings.current_action_id',
+                                val_accessor: 'settings.prefs.current_action_id',
                                 event_callback: d_sections.Val.change,
                             }),
                             new o_inputs.Select({
                                 name: 'main_action',
                                 include_help: true,
                                 options: d_sections.Options.options,
-                                val_accessor: 'settings.main_action_id',
+                                val_accessor: 'settings.prefs.main_action_id',
                                 event_callback: d_sections.Val.change,
                             }),
                             new o_inputs.Group({
@@ -213,7 +215,7 @@ class Class {
                         ],
                     }),
                 ],
-                ...d_settings_loftyshaky.Sections.make_shared_sections({
+                ...d_sections_loftyshaky.Sections.make_shared_sections({
                     download_back_up_callback: ext.storage_get,
                     upload_back_up_callback: d_sections.Restore.restore_back_up,
                     restore_defaults_callback: () => d_sections.Restore.restore_defaults(),
@@ -277,9 +279,6 @@ class Class {
             this.sections = s_utils.Utils.to_object({
                 arr: this.sections as o_inputs.Section[],
             });
-            this.sections.back_up.inputs = s_utils.Utils.to_object({
-                arr: this.sections.back_up.inputs as o_inputs.Section[],
-            });
             this.sections.restore.inputs = s_utils.Utils.to_object({
                 arr: this.sections.restore.inputs as o_inputs.Section[],
             });
@@ -302,13 +301,14 @@ class Class {
 
     public change_current_section_val = (): Promise<void> =>
         err_async(async () => {
-            data.settings.current_section = d_settings_loftyshaky.Sections.current_section;
+            data.settings.prefs.current_section = d_sections_loftyshaky.Sections.current_section;
 
             await d_data.Manipulation.send_msg_to_update_settings({
                 settings: {
-                    settings: {
-                        ...data.settings,
-                        ...{ current_section: d_settings_loftyshaky.Sections.current_section },
+                    ...data.settings,
+                    prefs: {
+                        ...data.settings.prefs,
+                        ...{ current_section: d_sections_loftyshaky.Sections.current_section },
                     },
                 },
             });

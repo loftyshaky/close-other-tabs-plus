@@ -1,5 +1,4 @@
-import { s_data } from '@loftyshaky/shared/shared_clean';
-import { i_actions, i_data } from 'shared_clean/internal';
+import { i_actions } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -15,16 +14,14 @@ class Class {
         err_async(async () => {
             await we.contextMenus.removeAll();
 
-            const settings: i_data.SettingsWrapped = await s_data.Cache.get_data();
-
-            const contexts_on_page: string[] = (settings.settings as i_data.Settings)
-                .enable_on_page_context_menu
-                ? ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio']
-                : [];
-            const contexts_action: string[] = (settings.settings as i_data.Settings)
-                .enable_action_context_menu
-                ? ['action']
-                : [];
+            const contexts_on_page: string[] =
+                'prefs' in data.settings && data.settings.prefs.enable_on_page_context_menu
+                    ? ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio']
+                    : [];
+            const contexts_action: string[] =
+                'prefs' in data.settings && data.settings.prefs.enable_action_context_menu
+                    ? ['action']
+                    : [];
 
             data.actions.forEach((action: i_actions.Action): void =>
                 err(() => {
