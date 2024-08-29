@@ -308,9 +308,10 @@ class Class {
                     ...data.settings,
                     prefs: {
                         ...data.settings.prefs,
-                        ...{ current_section: d_sections_loftyshaky.Sections.current_section },
+                        current_section: d_sections_loftyshaky.Sections.current_section,
                     },
                 },
+                update_instantly: true,
             });
         }, 'cot_1015');
 }

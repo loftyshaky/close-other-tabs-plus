@@ -21,6 +21,7 @@ class Class {
         transform = false,
         transform_force = false,
         load_settings = false,
+        restore_back_up = false,
     }: {
         settings?: i_data.Settings;
         replace?: boolean;
@@ -29,6 +30,7 @@ class Class {
         transform?: boolean;
         transform_force?: boolean;
         load_settings?: boolean;
+        restore_back_up?: boolean;
     }): Promise<void> =>
         err_async(async () => {
             await s_data.Cache.set({
@@ -36,7 +38,7 @@ class Class {
                 val: true,
             });
 
-            ext.send_msg({
+            await ext.send_msg_resp({
                 msg: 'update_settings',
                 settings,
                 replace,
@@ -45,6 +47,7 @@ class Class {
                 transform,
                 transform_force,
                 load_settings,
+                restore_back_up,
             });
         }, 'cot_1116');
 
@@ -74,7 +77,7 @@ class Class {
                     ...data.settings,
                     prefs: {
                         ...data.settings.prefs,
-                        ...{ developer_mode: data.settings.prefs.developer_mode },
+                        developer_mode: data.settings.prefs.developer_mode,
                     },
                 },
             });

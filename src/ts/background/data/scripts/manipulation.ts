@@ -34,6 +34,7 @@ class Class {
         test_actions = false,
         settings_are_filled = true,
         tabs_permission_granted = false,
+        restore_back_up = false,
     }: {
         mode?: 'normal' | 'set_from_storage';
         settings?: i_data.Settings;
@@ -45,6 +46,7 @@ class Class {
         test_actions?: boolean;
         settings_are_filled?: boolean;
         tabs_permission_granted?: boolean;
+        restore_back_up?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
             const default_settings: i_data.Settings = test_actions
@@ -66,6 +68,12 @@ class Class {
                     settings: settings_after,
                     force: transform_force,
                 });
+
+                if (restore_back_up) {
+                    settings_after = s_data_loftyshaky_shared_clean.Settings.apply_unchanged_prefs({
+                        settings: settings_after,
+                    });
+                }
             }
 
             if (tabs_permission_granted) {
@@ -85,7 +93,12 @@ class Class {
                 await ext.storage_set(settings_after, replace);
             }
 
-            await this.react_to_settings_change({ mode, update_context_menus, load_settings });
+            await this.react_to_settings_change({
+                mode,
+                update_context_menus,
+                load_settings,
+                restore_back_up,
+            });
         }, 'cot_1001');
 
     public react_to_settings_change = ({
@@ -93,11 +106,13 @@ class Class {
         force_set_actions = false,
         update_context_menus = false,
         load_settings = false,
+        restore_back_up = false,
     }: {
         mode?: 'normal' | 'set_from_storage';
         force_set_actions?: boolean;
         update_context_menus?: boolean;
         load_settings?: boolean;
+        restore_back_up?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
             await d_actions.Actions.set({ from_cache: true, force: force_set_actions });
@@ -114,7 +129,7 @@ class Class {
             });
 
             if (load_settings) {
-                await ext.send_msg_resp({ msg: 'load_settings' });
+                await ext.send_msg_resp({ msg: 'load_settings', restore_back_up });
             }
         }, 'cot_1138');
 
@@ -139,7 +154,7 @@ class Class {
 
                 ext.updating_storage = false;
             }, 'cot_1002'),
-        500,
+        250,
     );
 
     public set_from_storage = ({
@@ -177,24 +192,24 @@ class Class {
         force?: boolean;
     }): Promise<i_data.Settings> =>
         err_async(async () => {
+            const version = d_schema.Schema.get_version_legacy({ settings });
+
             const transform_items_settings: o_schema.TransformItem[] = [
                 new o_schema.TransformItem({
+                    old_key: 'settings',
                     new_key: 'prefs',
-                    new_val: settings.perfs,
+                    new_val: settings.settings,
                 }),
             ];
 
             const updated_settings = await d_schema.Schema.transform({
                 data_obj: settings,
+                version,
                 transform_items: transform_items_settings,
                 force,
             });
+
             const transform_items_prefs: o_schema.TransformItem[] = [
-                new o_schema.TransformItem({
-                    old_key: 'persistent_service_worker',
-                    new_val: true,
-                    update_existing_val: true,
-                }),
                 new o_schema.TransformItem({
                     new_key: 'tabs_permission',
                     new_val: false,
@@ -207,6 +222,7 @@ class Class {
 
             const updated_prefs = await d_schema.Schema.transform({
                 data_obj: updated_settings.prefs,
+                version,
                 transform_items: transform_items_prefs,
                 force,
             });

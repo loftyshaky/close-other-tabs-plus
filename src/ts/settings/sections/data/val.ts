@@ -78,7 +78,7 @@ class Class {
                             ...data.settings,
                             prefs: {
                                 ...data.settings.prefs,
-                                ...{ [input.name]: val },
+                                [input.name]: val,
                             },
                         },
                         update_instantly: input.type === 'checkbox',
