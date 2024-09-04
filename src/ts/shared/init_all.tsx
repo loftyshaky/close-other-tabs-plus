@@ -68,7 +68,7 @@ class Class {
                 if (page === 'settings') {
                     const { d_data } = await import('settings/internal');
 
-                    await d_data.Data.set_from_storage();
+                    await d_data.Settings.set_from_storage();
                 }
 
                 this.set_page_title();

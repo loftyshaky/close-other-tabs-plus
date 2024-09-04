@@ -1,5 +1,6 @@
-import { d_data } from '@loftyshaky/shared/shared';
-import { d_actions, i_data } from 'shared_clean/internal';
+import { s_theme, d_data } from '@loftyshaky/shared/shared';
+
+import { d_actions, s_css_vars, i_data } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -16,7 +17,12 @@ class Class {
             const settings: i_data.Settings = await d_data.Settings.set_from_storage();
 
             await d_actions.Actions.set({ settings });
+
+            s_theme.Theme.set({
+                name: data.settings.prefs.options_page_theme,
+            });
+            s_css_vars.CssVars.set();
         }, 'cot_1035');
 }
 
-export const Data = Class.get_instance();
+export const Settings = Class.get_instance();

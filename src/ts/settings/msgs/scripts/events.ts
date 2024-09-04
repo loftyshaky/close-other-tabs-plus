@@ -7,7 +7,7 @@ we.runtime.onMessage.addListener((msg: t.Msg): any =>
         const msg_str: string = msg.msg;
 
         if (msg_str === 'load_settings') {
-            return d_data.Data.set_from_storage()
+            return d_data.Settings.set_from_storage()
                 .then(() => {
                     d_actions.Actions.initial_current_action = { ...data.current_action };
 
