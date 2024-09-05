@@ -1,3 +1,5 @@
+import { runInAction } from 'mobx';
+
 import { i_inputs } from '@loftyshaky/shared/inputs';
 import { d_optional_permissions } from '@loftyshaky/shared/settings';
 import { d_data } from 'settings/internal';
@@ -9,7 +11,7 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    private optional_permission_checkbox_dict = {
+    public optional_permission_checkbox_dict = {
         filter_lists: { permissions: ['tabs'], origins: [] },
     };
 
@@ -55,19 +57,6 @@ class Class {
             }
         }, 'cot_1134');
 
-    public set_on_back_up_restore = ({
-        tabs_permission,
-    }: {
-        tabs_permission: boolean;
-    }): Promise<boolean> =>
-        err_async(async () => {
-            if (tabs_permission) {
-                return this.set({ force: true });
-            }
-
-            return this.check_if_contains_tabs_permission();
-        }, 'cot_1133');
-
     public check_if_contains_tabs_permission = (): Promise<boolean> =>
         err_async(
             async () =>
@@ -85,6 +74,25 @@ class Class {
                 }),
             'cot_1132',
         );
+
+    public change_tabs_permission = (): Promise<void> =>
+        err_async(async () => {
+            const permission_granted: boolean = await this.set_tabs_permission();
+
+            runInAction(() =>
+                err(() => {
+                    data.settings.prefs.tabs_permission = permission_granted;
+                }, 'cot_1142'),
+            );
+
+            d_data.Manipulation.send_msg_to_update_settings({
+                settings: {
+                    ...data.settings,
+                    prefs: data.settings.prefs,
+                },
+                update_instantly: true,
+            });
+        }, 'cot_1141');
 }
 
 export const Permissions = Class.get_instance();

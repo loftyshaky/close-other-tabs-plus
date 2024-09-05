@@ -3,7 +3,7 @@ import { makeObservable, computed } from 'mobx';
 import { s_utils } from '@loftyshaky/shared/shared';
 import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
 import { d_sections as d_sections_loftyshaky } from '@loftyshaky/shared/settings';
-import { d_actions, d_data, d_sections } from 'settings/internal';
+import { d_actions, d_data, d_sections, s_optional_permissions } from 'settings/internal';
 
 class Class {
     private static instance: Class;
@@ -215,6 +215,17 @@ class Class {
                         ],
                     }),
                 ],
+                new o_inputs.Section({
+                    name: 'permissions',
+                    inputs: [
+                        new o_inputs.Checkbox({
+                            name: 'tabs_permission',
+                            alt_msg: ext.msg(`tabs_permission_${env.browser}_label_text`),
+                            event_callback:
+                                s_optional_permissions.Permissions.change_tabs_permission,
+                        }),
+                    ],
+                }),
                 ...d_sections_loftyshaky.Sections.make_shared_sections({
                     download_back_up_callback: ext.storage_get,
                     upload_back_up_callback: d_sections.Restore.restore_back_up,

@@ -1,5 +1,8 @@
+import { runInAction } from 'mobx';
+
 import { s_data } from '@loftyshaky/shared/shared_clean';
 import { t, s_theme } from '@loftyshaky/shared/shared';
+import { d_optional_permissions } from '@loftyshaky/shared/settings';
 import { d_actions, s_css_vars } from 'shared_clean/internal';
 import { d_data, s_optional_permissions } from 'settings/internal';
 
@@ -60,14 +63,24 @@ class Class {
 
     public restore_back_up_react = (): Promise<void> =>
         err_async(async () => {
+            await d_optional_permissions.Permission.show_enable_permissions_notification({
+                permissions: [
+                    {
+                        name: 'tabs',
+                        permission:
+                            s_optional_permissions.Permissions.optional_permission_checkbox_dict
+                                .filter_lists,
+                    },
+                ],
+            });
             const tabs_permission: boolean =
-                await s_optional_permissions.Permissions.set_on_back_up_restore({
-                    tabs_permission: n(data.settings.prefs.tabs_permission)
-                        ? data.settings.prefs.tabs_permission
-                        : false,
-                });
+                await s_optional_permissions.Permissions.check_if_contains_tabs_permission();
 
-            data.settings.prefs.tabs_permission = tabs_permission;
+            runInAction(() =>
+                err(() => {
+                    data.settings.prefs.tabs_permission = tabs_permission;
+                }, 'cot_1131'),
+            );
 
             await d_data.Manipulation.send_msg_to_update_settings({
                 settings: data.settings,
