@@ -45,7 +45,10 @@ class Class {
 
                 if (contains_permission) {
                     d_data.Manipulation.send_msg_to_update_settings({
-                        settings: data,
+                        settings: {
+                            ...data.settings,
+                            prefs: data.settings.prefs,
+                        },
                         update_instantly: true,
                     });
                 }
