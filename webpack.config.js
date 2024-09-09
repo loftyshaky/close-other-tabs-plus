@@ -18,7 +18,7 @@ const { Manifest } = require('./js/manifest');
 const { Dependencies } = require('./js/dependencies');
 
 const reloader = new Reloader({
-    port: 7223,
+    port: 7224,
 });
 
 reloader.watch();
