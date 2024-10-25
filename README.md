@@ -1,4 +1,4 @@
-A browser extension that enables you to close/pin/unpin/group/ungroup multiple tabs at once, filtering them by a window, pin/group state or URL.
+A browser extension that enables you to close/pin/unpin/group/ungroup multiple tabs at once, filtering them by a window, pin/group state, or URL.
 
 ## Links
 

@@ -3,7 +3,7 @@
         "message": "Close Other Tabs+"
     },
     "description": {
-        "message": "Close/pin/unpin/group/ungroup multiple tabs at once, filtering them by a window, pin/group state or URL."
+        "message": "Close/pin/unpin/group/ungroup multiple tabs at once, filtering them by a window, pin/group state, or URL."
     },
     "action_created_notification": {
         "message": "Action created."
