@@ -258,13 +258,13 @@
         "message": "Specifies the position of an action within the context menus."
     },
     "window_url_comparison_help_text": {
-        "message": "If unchecked, the URL of the active tab in the CURRENT window will be used as the basis for comparison instead.\n\nExample:\nYou have two windows open, each with four tabs: two with facebook.com and two with reddit.com. In the first window, facebook.com is the active tab, while in the second window, it's reddit.com. You're using the \"Close\" action with the \"All windows\", \"Other tabs\", and \"Current domain\" settings.\n\nIf unchecked: Non-active facebook.com tabs will be closed in both windows.\n\nIf checked: The non-active facebook.com tab will be closed in the first window, while in the second window, it'll be the non-active reddit.com tab."
+        "message": "If unchecked, the URL of the active tab in the CURRENT window will be used as the basis for comparison instead.\n\nExample:\nYou have two windows open, each with four tabs: two with facebook.com and two with reddit.com. In the first window, facebook.com is the active tab, while in the second window, it's reddit.com. You're using the \"Close\" action with the \"All windows,\" \"Other tabs,\" and \"Current domain\" settings.\n\nIf unchecked: Non-active facebook.com tabs will be closed in both windows.\n\nIf checked: The non-active facebook.com tab will be closed in the first window, while in the second window, it'll be the non-active reddit.com tab."
     },
     "url_whitelist_help_text": {
-        "message": "Specifies which URLs or URL segments to perform an action on. Overrides the effect of \"Affect tabs by URL: Current URL/Current domain/Current hostname\". Overrides the effect of the \"URL blacklist\".\n\nSeparate multiple URLs with commas."
+        "message": "Specifies which URLs or URL segments to perform an action on. Overrides the effect of \"Affect tabs by URL: Current URL/Current domain/Current hostname.\" Overrides the effect of the \"URL blacklist.\"\n\nSeparate multiple URLs with commas."
     },
     "url_blacklist_help_text": {
-        "message": "Separate URLs with commas. Specifies which URLs or URL segments to perform an action on. Overrides the effect of \"Affect tabs by URL: Current URL/Current domain/Current hostname\". The effect is canceled out by \"URL whitelist\".\n\nSeparate multiple URLs with commas."
+        "message": "Separate URLs with commas. Specifies which URLs or URL segments to perform an action on. Overrides the effect of \"Affect tabs by URL: Current URL/Current domain/Current hostname.\" The effect is canceled out by \"URL whitelist.\"\n\nSeparate multiple URLs with commas."
     },
     "urls_after_action_help_text": {
         "message": "Separate multiple URLs with commas."
