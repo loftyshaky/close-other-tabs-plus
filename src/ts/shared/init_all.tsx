@@ -65,12 +65,6 @@ class Class {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 __webpack_public_path__ = we.runtime.getURL('');
 
-                if (page === 'settings') {
-                    const { d_data } = await import('settings/internal');
-
-                    await d_data.Settings.set_from_storage();
-                }
-
                 this.set_page_title();
 
                 s_css_vars.CssVars.set();

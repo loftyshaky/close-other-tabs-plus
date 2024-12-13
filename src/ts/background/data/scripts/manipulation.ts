@@ -32,7 +32,7 @@ class Class {
         transform_force = false,
         load_settings = false,
         test_actions = false,
-        settings_are_filled = true,
+        prefs_are_filled = true,
         tabs_permission_granted = false,
         restore_back_up = false,
     }: {
@@ -44,7 +44,7 @@ class Class {
         transform_force?: boolean;
         load_settings?: boolean;
         test_actions?: boolean;
-        settings_are_filled?: boolean;
+        prefs_are_filled?: boolean;
         tabs_permission_granted?: boolean;
         restore_back_up?: boolean;
     } = {}): Promise<void> =>
@@ -85,7 +85,7 @@ class Class {
             if (
                 settings_were_transformed ||
                 mode === 'normal' ||
-                (mode === 'set_from_storage' && !settings_are_filled)
+                (mode === 'set_from_storage' && !prefs_are_filled)
             ) {
                 await s_data_loftyshaky_shared_clean.Cache.set_settings({
                     settings: settings_after,
@@ -161,12 +161,12 @@ class Class {
         transform = false,
     }: { transform?: boolean } = {}): Promise<void> =>
         err_async(async () => {
-            if (!x.prefs_are_filled() && !x.settings_are_filled()) {
-                // Runs on extension install, when the settings object is empty. The settings object is first set in @loftyshaky/shared.
+            if (!x.prefs_are_filled() && !x.found_old_settings()) {
+                // Runs on extension install, when the prefs object is empty. The prefs object is first set in @loftyshaky/shared.
                 await this.update_settings({
                     mode: 'set_from_storage',
                     transform,
-                    settings_are_filled: false,
+                    prefs_are_filled: false,
                 });
             } else if (transform) {
                 await this.update_settings({
