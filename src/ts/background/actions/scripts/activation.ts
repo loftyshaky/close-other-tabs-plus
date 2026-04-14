@@ -86,10 +86,13 @@ class Class {
                 const href_of_current_tab: string = s_actions.Tabs.get_href_of_tab({
                     tab: current_tab,
                 });
-                const domain_of_current_tab: string = s_actions.Tabs.get_domain_of_tab({
+                const root_domain_of_current_tab: string = s_actions.Tabs.get_root_domain_of_tab({
                     tab: current_tab,
                 });
-                const hostname_of_current_tab: string = s_actions.Tabs.get_hostname_of_tab({
+                const subdomains_of_current_tab: string = s_actions.Tabs.get_subdomains_of_tab({
+                    tab: current_tab,
+                });
+                const port_of_current_tab: string = s_actions.Tabs.get_port_of_tab({
                     tab: current_tab,
                 });
                 const current_tab_is_grouped: boolean = (current_tab as any).groupId !== -1;
@@ -111,37 +114,116 @@ class Class {
                                 url_2: string;
                             }): boolean => err(() => url_1 === url_2, 'cot_1118');
 
+                            const url_cond_inner = ({
+                                key_comparison_1 = '',
+                                key_comparison_2 = '',
+                                cond,
+                                cond_comparison_1 = false,
+                                cond_comparison_2 = false,
+                            }: {
+                                key_comparison_1?: string;
+                                key_comparison_2?: string;
+                                cond: boolean;
+                                cond_comparison_1?: boolean;
+                                cond_comparison_2?: boolean;
+                            }): boolean =>
+                                err(
+                                    () =>
+                                        cond &&
+                                        (key_comparison_1 === '' ||
+                                            !action[key_comparison_1] ||
+                                            (action[key_comparison_1] && cond_comparison_1)) &&
+                                        (key_comparison_2 === '' ||
+                                            !action[key_comparison_2] ||
+                                            (action[key_comparison_2] && cond_comparison_2)),
+                                    'cot_1145',
+                                );
+
                             const url_cond_current = ({
                                 key,
+                                key_comparison_1 = '',
+                                key_comparison_2 = '',
                                 cond_1,
                                 cond_2,
+                                cond_comparison_1_1 = false,
+                                cond_comparison_1_2 = false,
+                                cond_comparison_2_1 = false,
+                                cond_comparison_2_2 = false,
                             }: {
                                 key: string;
+                                key_comparison_1?: string;
+                                key_comparison_2?: string;
                                 cond_1: boolean;
                                 cond_2: boolean;
+                                cond_comparison_1_1?: boolean;
+                                cond_comparison_1_2?: boolean;
+                                cond_comparison_2_1?: boolean;
+                                cond_comparison_2_2?: boolean;
                             }): boolean =>
                                 err(
                                     () =>
                                         action.urls === key &&
-                                        ((!action.window_url_comparison && cond_1) ||
-                                            (action.window_url_comparison && cond_2) ||
+                                        ((!action.window_url_comparison &&
+                                            url_cond_inner({
+                                                key_comparison_1,
+                                                key_comparison_2,
+                                                cond: cond_1,
+                                                cond_comparison_1: cond_comparison_1_1,
+                                                cond_comparison_2: cond_comparison_2_1,
+                                            })) ||
+                                            (action.window_url_comparison &&
+                                                url_cond_inner({
+                                                    key_comparison_1,
+                                                    key_comparison_2,
+                                                    cond: cond_2,
+                                                    cond_comparison_1: cond_comparison_1_2,
+                                                    cond_comparison_2: cond_comparison_2_2,
+                                                })) ||
                                             found_url_of_whitelist),
                                     'cot_1119',
                                 );
+
                             const url_cond_any_except = ({
                                 key,
+                                key_comparison_1 = '',
+                                key_comparison_2 = '',
                                 cond_1,
                                 cond_2,
+                                cond_comparison_1_1 = false,
+                                cond_comparison_1_2 = false,
+                                cond_comparison_2_1 = false,
+                                cond_comparison_2_2 = false,
                             }: {
                                 key: string;
+                                key_comparison_1?: string;
+                                key_comparison_2?: string;
                                 cond_1: boolean;
                                 cond_2: boolean;
+                                cond_comparison_1_1?: boolean;
+                                cond_comparison_1_2?: boolean;
+                                cond_comparison_2_1?: boolean;
+                                cond_comparison_2_2?: boolean;
                             }): boolean =>
                                 err(
                                     () =>
                                         action.urls === key &&
-                                        ((!action.window_url_comparison && !cond_1) ||
-                                            (action.window_url_comparison && !cond_2)),
+                                        ((!action.window_url_comparison &&
+                                            !url_cond_inner({
+                                                key_comparison_1,
+                                                key_comparison_2,
+                                                cond: cond_1,
+                                                cond_comparison_1: cond_comparison_1_1,
+                                                cond_comparison_2: cond_comparison_2_1,
+                                            })) ||
+                                            (action.window_url_comparison &&
+                                                !url_cond_inner({
+                                                    key_comparison_1,
+                                                    key_comparison_2,
+                                                    cond: cond_2,
+                                                    cond_comparison_1: cond_comparison_1_2,
+                                                    cond_comparison_2: cond_comparison_2_2,
+                                                })) ||
+                                            found_url_of_whitelist),
 
                                     'cot_1120',
                                 );
@@ -156,20 +238,27 @@ class Class {
                                 s_actions.Tabs.get_href_of_tab({
                                     tab: current_tab_of_current_window,
                                 });
-                            const domain_of_this_tab: string = s_actions.Tabs.get_domain_of_tab({
-                                tab,
-                            });
-                            const domain_of_current_tab_of_current_window: string =
-                                s_actions.Tabs.get_domain_of_tab({
+                            const root_domain_of_this_tab: string =
+                                s_actions.Tabs.get_root_domain_of_tab({
+                                    tab,
+                                });
+                            const root_domain_of_current_tab_of_current_window: string =
+                                s_actions.Tabs.get_root_domain_of_tab({
                                     tab: current_tab_of_current_window,
                                 });
-                            const hostname_of_this_tab: string = s_actions.Tabs.get_hostname_of_tab(
-                                {
+                            const subdomains_of_this_tab: string =
+                                s_actions.Tabs.get_subdomains_of_tab({
                                     tab,
-                                },
-                            );
-                            const hostname_of_current_tab_of_current_window: string =
-                                s_actions.Tabs.get_hostname_of_tab({
+                                });
+                            const subdomains_of_current_tab_of_current_window: string =
+                                s_actions.Tabs.get_subdomains_of_tab({
+                                    tab: current_tab_of_current_window,
+                                });
+                            const port_of_this_tab: string = s_actions.Tabs.get_port_of_tab({
+                                tab,
+                            });
+                            const port_of_current_tab_of_current_window: string =
+                                s_actions.Tabs.get_port_of_tab({
                                     tab: current_tab_of_current_window,
                                 });
                             const href_of_this_tab_is_the_same_as_url_1: boolean =
@@ -182,26 +271,36 @@ class Class {
                                     url_1: href_of_this_tab,
                                     url_2: href_of_current_tab_of_current_window,
                                 });
-                            const domain_of_this_tab_is_the_same_as_url_1: boolean =
+                            const root_domain_of_this_tab_is_the_same_as_url_1: boolean =
                                 url_cond_comparison({
-                                    url_1: domain_of_this_tab,
-                                    url_2: domain_of_current_tab,
+                                    url_1: root_domain_of_this_tab,
+                                    url_2: root_domain_of_current_tab,
                                 });
-                            const domain_of_this_tab_is_the_same_as_url_2: boolean =
+                            const root_domain_of_this_tab_is_the_same_as_url_2: boolean =
                                 url_cond_comparison({
-                                    url_1: domain_of_this_tab,
-                                    url_2: domain_of_current_tab_of_current_window,
+                                    url_1: root_domain_of_this_tab,
+                                    url_2: root_domain_of_current_tab_of_current_window,
                                 });
-                            const hostname_of_this_tab_is_the_same_as_url_1: boolean =
+                            const subdomains_of_this_tab_is_the_same_as_url_1: boolean =
                                 url_cond_comparison({
-                                    url_1: hostname_of_this_tab,
-                                    url_2: hostname_of_current_tab,
-                                }); // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab
-                            const hostname_of_this_tab_is_the_same_as_url_2: boolean =
+                                    url_1: subdomains_of_this_tab,
+                                    url_2: subdomains_of_current_tab,
+                                }); // subdomains_of_this_tab_is_the_same_as_subdomains_of_current_tab
+                            const subdomains_of_this_tab_is_the_same_as_url_2: boolean =
                                 url_cond_comparison({
-                                    url_1: hostname_of_this_tab,
-                                    url_2: hostname_of_current_tab_of_current_window,
-                                }); // hostname_of_this_tab_is_the_same_as_hostname_of_current_tab_of_current_window
+                                    url_1: subdomains_of_this_tab,
+                                    url_2: subdomains_of_current_tab_of_current_window,
+                                }); // subdomains_of_this_tab_is_the_same_as_subdomains_of_current_tab_of_current_window
+                            const port_of_this_tab_is_the_same_as_url_1: boolean =
+                                url_cond_comparison({
+                                    url_1: port_of_this_tab,
+                                    url_2: port_of_current_tab,
+                                });
+                            const port_of_this_tab_is_the_same_as_url_2: boolean =
+                                url_cond_comparison({
+                                    url_1: port_of_this_tab,
+                                    url_2: port_of_current_tab_of_current_window,
+                                });
                             const url_whitelist_is_empty: boolean =
                                 action.url_whitelist.length === 0;
                             const url_blacklist_is_empty: boolean =
@@ -227,27 +326,82 @@ class Class {
                                     cond_1: href_of_this_tab_is_the_same_as_url_1,
                                     cond_2: href_of_this_tab_is_the_same_as_url_2,
                                 });
-                            const found_domain_of_current_hostname: boolean = url_cond_current({
-                                key: 'current_domain',
-                                cond_1: domain_of_this_tab_is_the_same_as_url_1,
-                                cond_2: domain_of_this_tab_is_the_same_as_url_2,
+                            const found_url_of_root_domain: boolean = url_cond_current({
+                                key: 'current_root_domain',
+                                key_comparison_1: 'include_subdomain_in_comparison',
+                                key_comparison_2: 'include_port_in_comparison',
+                                cond_1: root_domain_of_this_tab_is_the_same_as_url_1,
+                                cond_2: root_domain_of_this_tab_is_the_same_as_url_2,
+                                cond_comparison_1_1: subdomains_of_this_tab_is_the_same_as_url_1,
+                                cond_comparison_1_2: subdomains_of_this_tab_is_the_same_as_url_2,
+                                cond_comparison_2_1: port_of_this_tab_is_the_same_as_url_1,
+                                cond_comparison_2_2: port_of_this_tab_is_the_same_as_url_2,
                             });
-                            const found_url_of_any_domain_except_current: boolean =
+                            const found_url_of_any_root_domain_except_current: boolean =
                                 url_cond_any_except({
-                                    key: 'any_domain_except_current',
-                                    cond_1: domain_of_this_tab_is_the_same_as_url_1,
-                                    cond_2: domain_of_this_tab_is_the_same_as_url_2,
+                                    key: 'any_root_domain_except_current',
+                                    key_comparison_1: 'include_subdomain_in_comparison',
+                                    key_comparison_2: 'include_port_in_comparison',
+                                    cond_1: root_domain_of_this_tab_is_the_same_as_url_1,
+                                    cond_2: root_domain_of_this_tab_is_the_same_as_url_2,
+                                    cond_comparison_1_1:
+                                        subdomains_of_this_tab_is_the_same_as_url_1,
+                                    cond_comparison_1_2:
+                                        subdomains_of_this_tab_is_the_same_as_url_2,
+                                    cond_comparison_2_1: port_of_this_tab_is_the_same_as_url_1,
+                                    cond_comparison_2_2: port_of_this_tab_is_the_same_as_url_2,
                                 });
-                            const found_url_of_current_hostname: boolean = url_cond_current({
-                                key: 'current_hostname',
-                                cond_1: hostname_of_this_tab_is_the_same_as_url_1,
-                                cond_2: hostname_of_this_tab_is_the_same_as_url_2,
+                            const found_url_of_current_subdomain: boolean = url_cond_current({
+                                key: 'current_subdomain',
+                                key_comparison_1: 'include_root_domain_in_comparison',
+                                key_comparison_2: 'include_port_in_comparison',
+                                cond_1: subdomains_of_this_tab_is_the_same_as_url_1,
+                                cond_2: subdomains_of_this_tab_is_the_same_as_url_2,
+                                cond_comparison_1_1: root_domain_of_this_tab_is_the_same_as_url_1,
+                                cond_comparison_1_2: root_domain_of_this_tab_is_the_same_as_url_2,
+                                cond_comparison_2_1: port_of_this_tab_is_the_same_as_url_1,
+                                cond_comparison_2_2: port_of_this_tab_is_the_same_as_url_2,
                             });
-                            const found_url_of_any_hostname_except_current: boolean =
+                            const found_url_of_any_subdomain_except_current: boolean =
                                 url_cond_any_except({
-                                    key: 'any_hostname_except_current',
-                                    cond_1: hostname_of_this_tab_is_the_same_as_url_1,
-                                    cond_2: hostname_of_this_tab_is_the_same_as_url_2,
+                                    key: 'any_subdomain_except_current',
+                                    key_comparison_1: 'include_root_domain_in_comparison',
+                                    key_comparison_2: 'include_port_in_comparison',
+                                    cond_1: subdomains_of_this_tab_is_the_same_as_url_1,
+                                    cond_2: subdomains_of_this_tab_is_the_same_as_url_2,
+                                    cond_comparison_1_1:
+                                        root_domain_of_this_tab_is_the_same_as_url_1,
+                                    cond_comparison_1_2:
+                                        root_domain_of_this_tab_is_the_same_as_url_2,
+                                    cond_comparison_2_1: port_of_this_tab_is_the_same_as_url_1,
+                                    cond_comparison_2_2: port_of_this_tab_is_the_same_as_url_2,
+                                });
+                            const found_url_of_current_port: boolean = url_cond_current({
+                                key: 'current_port',
+                                key_comparison_1: 'include_root_domain_in_comparison',
+                                key_comparison_2: 'include_subdomain_in_comparison',
+                                cond_1: port_of_this_tab_is_the_same_as_url_1,
+                                cond_2: port_of_this_tab_is_the_same_as_url_2,
+                                cond_comparison_1_1: root_domain_of_this_tab_is_the_same_as_url_1,
+                                cond_comparison_1_2: root_domain_of_this_tab_is_the_same_as_url_2,
+                                cond_comparison_2_1: subdomains_of_this_tab_is_the_same_as_url_1,
+                                cond_comparison_2_2: subdomains_of_this_tab_is_the_same_as_url_2,
+                            });
+                            const found_url_of_any_port_except_current: boolean =
+                                url_cond_any_except({
+                                    key: 'any_port_except_current',
+                                    key_comparison_1: 'include_root_domain_in_comparison',
+                                    key_comparison_2: 'include_subdomain_in_comparison',
+                                    cond_1: port_of_this_tab_is_the_same_as_url_1,
+                                    cond_2: port_of_this_tab_is_the_same_as_url_2,
+                                    cond_comparison_1_1:
+                                        root_domain_of_this_tab_is_the_same_as_url_1,
+                                    cond_comparison_1_2:
+                                        root_domain_of_this_tab_is_the_same_as_url_2,
+                                    cond_comparison_2_1:
+                                        subdomains_of_this_tab_is_the_same_as_url_1,
+                                    cond_comparison_2_2:
+                                        subdomains_of_this_tab_is_the_same_as_url_2,
                                 });
 
                             const windows_to_affect: boolean =
@@ -289,18 +443,17 @@ class Class {
 
                             const urls: boolean =
                                 action.urls === 'any_url' ||
-                                found_domain_of_current_hostname ||
-                                found_url_of_any_domain_except_current ||
-                                found_url_of_current_hostname ||
-                                found_url_of_any_hostname_except_current ||
+                                found_url_of_root_domain ||
+                                found_url_of_any_root_domain_except_current ||
+                                found_url_of_current_subdomain ||
+                                found_url_of_any_subdomain_except_current ||
+                                found_url_of_current_port ||
+                                found_url_of_any_port_except_current ||
                                 found_url_of_current_href ||
                                 found_url_of_any_href_except_current;
 
                             const url_whitelist: boolean =
-                                url_whitelist_is_empty ||
-                                found_url_of_whitelist ||
-                                found_url_of_current_hostname ||
-                                found_url_of_any_hostname_except_current;
+                                url_whitelist_is_empty || found_url_of_whitelist || urls;
 
                             const url_blacklist: boolean =
                                 !url_whitelist_is_empty ||

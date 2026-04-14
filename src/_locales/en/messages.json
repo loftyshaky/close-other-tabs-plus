@@ -122,6 +122,15 @@
     "urls_label_text": {
         "message": "Affect tabs by URL"
     },
+    "include_root_domain_in_comparison_label_text": {
+        "message": "Include root domain in comparison"
+    },
+    "include_subdomain_in_comparison_label_text": {
+        "message": "Include subdomain in comparison"
+    },
+    "include_port_in_comparison_label_text": {
+        "message": "Include port in comparison"
+    },
     "window_url_comparison_label_text": {
         "message": "Use the URL in the active tab of each window as the basis for comparison"
     },
@@ -224,17 +233,23 @@
     "any_url_except_current_option_text": {
         "message": "Any URL except current"
     },
-    "current_domain_option_text": {
-        "message": "Current domain"
+    "current_root_domain_option_text": {
+        "message": "Current root domain"
     },
-    "any_domain_except_current_option_text": {
-        "message": "Any domain except current"
+    "current_subdomain_option_text": {
+        "message": "Current subdomain"
     },
-    "current_hostname_option_text": {
-        "message": "Current hostname"
+    "current_port_option_text": {
+        "message": "Current port"
     },
-    "any_hostname_except_current_option_text": {
-        "message": "Any hostname except current"
+    "any_root_domain_except_current_option_text": {
+        "message": "Any root domain except current"
+    },
+    "any_subdomain_except_current_option_text": {
+        "message": "Any subdomain except current"
+    },
+    "any_port_except_current_option_text": {
+        "message": "Any port except current"
     },
     "actions_chrome_section_help_text": {
         "message": "Here, you can define which actions appear in the context menus. Each action can close, pin, unpin, group, or ungroup tabs. The extension icon context menu can contain up to six actions, while the \"on page\" context menu can accommodate as many actions as you need.\n\nTo create a new action, first select any action from the \"Actions\" dropdown. The settings for the chosen action will populate the fields under the Create/Update/Delete action buttons. Edit these settings, then click the \"Create action\" button. The new action will then appear in the \"Actions\" dropdown.\n\nTo update an action, first select it from the \"Actions\" dropdown. The settings for the chosen action will populate the fields under the Create/Update/Delete action buttons. Edit these settings, then click the \"Update action\" button.\n\nTo delete an action, select it from the \"Actions\" dropdown and click the \"Delete action\" button.\n\nTo assign a hotkey to an action, follow these steps:\n1. Open the extension settings and go to the \"Actions\" section.\n2. Expand the \"Actions\" dropdown and note the index of the action to which you want to assign a hotkey.\n3. Go to chrome://extensions/shortcuts, locate Close Other Tabs+, and assign a hotkey to Action X, where X is the index of your chosen action."
@@ -261,10 +276,10 @@
         "message": "If unchecked, the URL of the active tab in the CURRENT window will be used as the basis for comparison instead.\n\nExample:\nYou have two windows open, each with four tabs: two with facebook.com and two with reddit.com. In the first window, facebook.com is the active tab, while in the second window, it's reddit.com. You're using the \"Close\" action with the \"All windows,\" \"Other tabs,\" and \"Current domain\" settings.\n\nIf unchecked: Non-active facebook.com tabs will be closed in both windows.\n\nIf checked: The non-active facebook.com tab will be closed in the first window, while in the second window, it'll be the non-active reddit.com tab."
     },
     "url_whitelist_help_text": {
-        "message": "Specifies which URLs or URL segments to perform an action on. Overrides the effect of \"Affect tabs by URL: Current URL/Current domain/Current hostname.\" Overrides the effect of the \"URL blacklist.\"\n\nSeparate multiple URLs with commas."
+        "message": "Specifies which URLs or URL segments to perform an action on. Overrides the effect of \"Affect tabs by URL\" Overrides the effect of the \"URL blacklist.\"\n\nSeparate multiple URLs with commas."
     },
     "url_blacklist_help_text": {
-        "message": "Separate URLs with commas. Specifies which URLs or URL segments to perform an action on. Overrides the effect of \"Affect tabs by URL: Current URL/Current domain/Current hostname.\" The effect is canceled out by \"URL whitelist.\"\n\nSeparate multiple URLs with commas."
+        "message": "Specifies which URLs or URL segments to NOT perform an action on. Overrides the effect of \"Affect tabs by URL\" The effect is canceled out by \"URL whitelist.\"\n\nSeparate multiple URLs with commas."
     },
     "urls_after_action_help_text": {
         "message": "Separate multiple URLs with commas."

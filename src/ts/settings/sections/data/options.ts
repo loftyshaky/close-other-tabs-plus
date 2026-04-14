@@ -62,16 +62,22 @@ class Class {
                         name: 'any_url_except_current',
                     }),
                     new o_inputs.Option({
-                        name: 'current_domain',
+                        name: 'current_root_domain',
                     }),
                     new o_inputs.Option({
-                        name: 'any_domain_except_current',
+                        name: 'any_root_domain_except_current',
                     }),
                     new o_inputs.Option({
-                        name: 'current_hostname',
+                        name: 'current_subdomain',
                     }),
                     new o_inputs.Option({
-                        name: 'any_hostname_except_current',
+                        name: 'any_subdomain_except_current',
+                    }),
+                    new o_inputs.Option({
+                        name: 'current_port',
+                    }),
+                    new o_inputs.Option({
+                        name: 'any_port_except_current',
                     }),
                 ],
                 in_which_windows_to_open_tabs: [

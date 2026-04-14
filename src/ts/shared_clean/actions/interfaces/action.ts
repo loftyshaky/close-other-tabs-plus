@@ -10,6 +10,9 @@ export interface Action {
     pinned_tabs: string;
     grouped_tabs: string;
     urls: string;
+    include_root_domain_in_comparison: boolean;
+    include_subdomain_in_comparison: boolean;
+    include_port_in_comparison: boolean;
     window_url_comparison: boolean;
     url_whitelist: string[];
     url_blacklist: string[];

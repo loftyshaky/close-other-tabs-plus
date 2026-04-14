@@ -46,16 +46,33 @@ class Class {
     public get_href_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
         err(() => (n(tab.url) ? new URL(tab.url).href : ''), 'cot_1074');
 
-    public get_hostname_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
-        err(() => (n(tab.url) ? new URL(tab.url).hostname : ''), 'cot_1075');
-
-    public get_domain_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
+    public get_root_domain_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
         err(() => {
-            const parsed = psl.parse(this.get_hostname_of_tab({ tab }));
+            const hostname: string = n(tab.url) ? new URL(tab.url).hostname : '';
+            const parsed = psl.parse(this.get_host_of_tab({ tab }));
             const { domain } = parsed as ParsedDomain;
+            const hostname_is_ip_address: boolean =
+                /^[0-9a-fA-F:.]+$/.test(hostname) && !/^[a-zA-Z]+$/.test(hostname);
+            const domain_final: string | null =
+                hostname === 'localhost' || hostname_is_ip_address ? hostname : domain;
 
-            return n(tab.url) && n(domain) ? domain : '';
+            return n(tab.url) && n(domain_final) ? domain_final : '';
         }, 'cot_1121');
+
+    public get_subdomains_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
+        err(() => {
+            const root_domain: string = this.get_root_domain_of_tab({ tab });
+            const parsed = psl.parse(this.get_host_of_tab({ tab }));
+            const { subdomain } = parsed as ParsedDomain;
+
+            return n(subdomain) ? subdomain : '';
+        }, 'cot_1075');
+
+    public get_port_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
+        err(() => (n(tab.url) ? new URL(tab.url).port : ''), 'cot_1143');
+
+    private get_host_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
+        err(() => (n(tab.url) ? new URL(tab.url).host : ''), 'cot_1144');
 }
 
 export const Tabs = Class.get_instance();

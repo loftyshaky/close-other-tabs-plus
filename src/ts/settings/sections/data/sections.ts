@@ -137,6 +137,60 @@ class Class {
                                 event_callback: d_sections.Val.change,
                             }),
                             new o_inputs.Checkbox({
+                                name: 'include_root_domain_in_comparison',
+                                val_accessor: 'current_action.include_root_domain_in_comparison',
+                                parent: 'urls',
+                                is_enabled_conds: [
+                                    {
+                                        input_name: 'urls',
+                                        val_accessor: 'current_action.urls',
+                                        pass_vals: [
+                                            'current_subdomain',
+                                            'any_subdomain_except_current',
+                                            'current_port',
+                                            'any_port_except_current',
+                                        ],
+                                    },
+                                ],
+                                event_callback: d_sections.Val.change,
+                            }),
+                            new o_inputs.Checkbox({
+                                name: 'include_subdomain_in_comparison',
+                                val_accessor: 'current_action.include_subdomain_in_comparison',
+                                parent: 'urls',
+                                is_enabled_conds: [
+                                    {
+                                        input_name: 'urls',
+                                        val_accessor: 'current_action.urls',
+                                        pass_vals: [
+                                            'current_root_domain',
+                                            'any_root_domain_except_current',
+                                            'current_port',
+                                            'any_port_except_current',
+                                        ],
+                                    },
+                                ],
+                                event_callback: d_sections.Val.change,
+                            }),
+                            new o_inputs.Checkbox({
+                                name: 'include_port_in_comparison',
+                                val_accessor: 'current_action.include_port_in_comparison',
+                                parent: 'urls',
+                                is_enabled_conds: [
+                                    {
+                                        input_name: 'urls',
+                                        val_accessor: 'current_action.urls',
+                                        pass_vals: [
+                                            'current_root_domain',
+                                            'any_root_domain_except_current',
+                                            'current_subdomain',
+                                            'any_subdomain_except_current',
+                                        ],
+                                    },
+                                ],
+                                event_callback: d_sections.Val.change,
+                            }),
+                            new o_inputs.Checkbox({
                                 name: 'window_url_comparison',
                                 include_help: true,
                                 val_accessor: 'current_action.window_url_comparison',
@@ -148,10 +202,12 @@ class Class {
                                         pass_vals: [
                                             'current_url',
                                             'any_url_except_current',
-                                            'current_domain',
-                                            'any_domain_except_current',
-                                            'current_hostname',
-                                            'any_hostname_except_current',
+                                            'current_root_domain',
+                                            'any_root_domain_except_current',
+                                            'current_subdomain',
+                                            'any_subdomain_except_current',
+                                            'current_port',
+                                            'any_port_except_current',
                                         ],
                                     },
                                 ],

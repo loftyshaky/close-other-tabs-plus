@@ -8,7 +8,7 @@ import {
     d_schema,
     s_service_worker,
 } from '@loftyshaky/shared/shared_clean';
-import { d_actions, i_data } from 'shared_clean/internal';
+import { d_actions, i_actions, i_data } from 'shared_clean/internal';
 import { s_context_menu, s_data, s_tab_counter } from 'background/internal';
 
 class Class {
@@ -115,7 +115,10 @@ class Class {
         restore_back_up?: boolean;
     } = {}): Promise<void> =>
         err_async(async () => {
-            await d_actions.Actions.set({ from_cache: true, force: force_set_actions });
+            await d_actions.Actions.set({
+                from_cache: true,
+                force: force_set_actions,
+            });
 
             if (mode === 'set_from_storage' || (mode === 'normal' && update_context_menus)) {
                 await s_context_menu.Items.create_itmes();
@@ -129,7 +132,10 @@ class Class {
             });
 
             if (load_settings) {
-                await ext.send_msg_resp({ msg: 'load_settings', restore_back_up });
+                await ext.send_msg_resp({
+                    msg: 'load_settings',
+                    restore_back_up,
+                });
             }
         }, 'cot_1138');
 
@@ -226,6 +232,63 @@ class Class {
                 transform_items: transform_items_prefs,
                 force,
             });
+
+            const transform_items_actions: o_schema.TransformItem[] = [
+                new o_schema.TransformItem({
+                    new_key: 'include_root_domain_in_comparison',
+                    new_val: false,
+                }),
+                new o_schema.TransformItem({
+                    new_key: 'include_subdomain_in_comparison',
+                    new_val: true,
+                }),
+                new o_schema.TransformItem({
+                    new_key: 'include_port_in_comparison',
+                    new_val: false,
+                }),
+            ];
+
+            await Promise.all(
+                Object.entries(settings).map(
+                    async ([key, action]: [
+                        string,
+                        i_data.Prefs | i_actions.Action,
+                    ]): Promise<void> =>
+                        err_async(async () => {
+                            if (key !== 'prefs') {
+                                const updated_action: i_actions.Action =
+                                    await d_schema.Schema.transform({
+                                        data_obj: action,
+                                        version,
+                                        transform_items: transform_items_actions,
+                                        force,
+                                    });
+
+                                if ((action as i_actions.Action).urls === 'current_domain') {
+                                    updated_action.urls = 'current_root_domain';
+                                    updated_action.include_subdomain_in_comparison = false;
+                                } else if (
+                                    (action as i_actions.Action).urls ===
+                                    'any_domain_except_current'
+                                ) {
+                                    updated_action.urls = 'any_root_domain_except_current';
+                                    updated_action.include_subdomain_in_comparison = false;
+                                } else if (
+                                    (action as i_actions.Action).urls === 'current_hostname'
+                                ) {
+                                    updated_action.urls = 'current_root_domain';
+                                } else if (
+                                    (action as i_actions.Action).urls ===
+                                    'any_hostname_except_current'
+                                ) {
+                                    updated_action.urls = 'any_root_domain_except_current';
+                                }
+
+                                settings[key] = updated_action;
+                            }
+                        }, 'cot_1146'),
+                ),
+            );
 
             updated_prefs.version = ext.get_app_version();
 
