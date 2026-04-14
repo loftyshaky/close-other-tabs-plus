@@ -441,19 +441,24 @@ class Class {
                                     is_grouped &&
                                     !is_in_current_group);
 
-                            const urls: boolean =
-                                action.urls === 'any_url' ||
+                            const found_website_url: boolean =
                                 found_url_of_root_domain ||
                                 found_url_of_any_root_domain_except_current ||
                                 found_url_of_current_subdomain ||
                                 found_url_of_any_subdomain_except_current ||
                                 found_url_of_current_port ||
-                                found_url_of_any_port_except_current ||
+                                found_url_of_any_port_except_current;
+
+                            const urls: boolean =
+                                action.urls === 'any_url' ||
+                                found_website_url ||
                                 found_url_of_current_href ||
                                 found_url_of_any_href_except_current;
 
                             const url_whitelist: boolean =
-                                url_whitelist_is_empty || found_url_of_whitelist || urls;
+                                found_website_url ||
+                                url_whitelist_is_empty ||
+                                found_url_of_whitelist;
 
                             const url_blacklist: boolean =
                                 !url_whitelist_is_empty ||
