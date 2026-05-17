@@ -52,6 +52,7 @@ class Class {
                             new o_inputs.Group({
                                 name: 'action_btns',
                                 include_help: true,
+                                label_is_visible: false,
                                 event_callback: () => undefined,
                                 inputs: [
                                     new o_inputs.Btn({
