@@ -1,5 +1,7 @@
+import type { t } from '@loftyshaky/shared/shared_clean';
+
 export interface Action {
-    [key: string]: any;
+    [key: string]: t.Any;
 
     id: string;
     name: string;

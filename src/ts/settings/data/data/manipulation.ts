@@ -1,7 +1,8 @@
 import keyBy from 'lodash/keyBy';
 
 import { s_data } from '@loftyshaky/shared/shared_clean';
-import { d_actions, i_data } from 'shared_clean/internal';
+import type { i_data } from 'shared_clean/internal';
+import { d_actions } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -10,8 +11,10 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
+
+    public is_internal_storage_write: boolean = false;
+    private is_internal_storage_write_timeout: number = 0;
 
     public send_msg_to_update_settings = ({
         settings,
@@ -33,6 +36,10 @@ class Class {
         restore_back_up?: boolean;
     }): Promise<void> =>
         err_async(async () => {
+            clearTimeout(this.is_internal_storage_write_timeout);
+
+            this.is_internal_storage_write = true;
+
             await s_data.Cache.set({
                 key: 'updating_settings',
                 val: true,
@@ -49,6 +56,10 @@ class Class {
                 load_settings,
                 restore_back_up,
             });
+
+            this.is_internal_storage_write_timeout = setTimeout(() => {
+                this.is_internal_storage_write = false;
+            }, 500);
         }, 'cot_1116');
 
     public update_settings = (): Promise<void> =>
@@ -56,10 +67,10 @@ class Class {
             // Used when creating/updating/deleting action.
             await this.send_msg_to_update_settings({
                 settings: {
-                    prefs: data.settings.prefs,
+                    prefs: x.to_plain(data.settings.prefs),
                     ...keyBy(
                         d_actions.Actions.remove_indexed_action_name({
-                            actions: data.actions,
+                            actions: x.to_plain(data.actions),
                         }),
                         'id',
                     ),
@@ -72,11 +83,13 @@ class Class {
 
     public enable_developer_mode_save_callback = (): Promise<void> =>
         err_async(async () => {
+            const storage_settings: i_data.Settings = (await ext.storage_get()) as i_data.Settings;
+
             await this.send_msg_to_update_settings({
                 settings: {
-                    ...data.settings,
+                    ...storage_settings,
                     prefs: {
-                        ...data.settings.prefs,
+                        ...x.to_plain(data.settings.prefs),
                         developer_mode: data.settings.prefs.developer_mode,
                     },
                 },

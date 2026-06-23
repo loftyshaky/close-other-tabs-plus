@@ -1,8 +1,11 @@
-import { t } from '@loftyshaky/shared/shared';
-import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
+import type { i_inputs } from '@loftyshaky/shared/inputs';
+import { d_inputs } from '@loftyshaky/shared/inputs';
 import { s_sections as s_sections_loftyshaky_settings } from '@loftyshaky/shared/settings';
-import { s_css_vars } from 'shared_clean/internal';
+import type { t } from '@loftyshaky/shared/shared';
+import { s_theme } from '@loftyshaky/shared/shared_clean';
 import { d_data, d_sections, s_optional_permissions, s_sections } from 'settings/internal';
+import type { i_data } from 'shared_clean/internal';
+import { s_css_vars } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -11,7 +14,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public change = ({ input }: { input: i_inputs.Input }): Promise<void> =>
@@ -46,6 +48,10 @@ class Class {
                     });
                 }
 
+                if (granted_tabs_permission && input.name !== 'urls_after_action') {
+                    await s_optional_permissions.Permissions.set_tabs_permission_setting();
+                }
+
                 const val_final =
                     n(val) && val !== '' && input.name === 'action_position' ? +val : val;
 
@@ -56,6 +62,9 @@ class Class {
                 s_css_vars.CssVars.set();
 
                 if (n(input.val_accessor) && ['actions', 'main_action'].includes(input.name)) {
+                    const storage_settings: i_data.Settings =
+                        (await ext.storage_get()) as i_data.Settings;
+
                     if (input.name === 'actions') {
                         d_sections.Validation.input_is_valid = true;
 
@@ -64,8 +73,8 @@ class Class {
 
                     await d_data.Manipulation.send_msg_to_update_settings({
                         settings: {
-                            ...data.settings,
-                            prefs: data.settings.prefs,
+                            ...storage_settings,
+                            prefs: x.to_plain(data.settings.prefs),
                         },
                         update_instantly: true,
                         load_settings: input.name === 'actions',
@@ -73,11 +82,14 @@ class Class {
                 }
 
                 if (!n(input.val_accessor) && input.name !== 'actions') {
+                    const storage_settings: i_data.Settings =
+                        (await ext.storage_get()) as i_data.Settings;
+
                     await d_data.Manipulation.send_msg_to_update_settings({
                         settings: {
-                            ...data.settings,
+                            ...storage_settings,
                             prefs: {
-                                ...data.settings.prefs,
+                                ...x.to_plain(data.settings.prefs),
                                 [input.name]: val,
                             },
                         },
@@ -89,8 +101,10 @@ class Class {
                     });
                 }
 
-                if (granted_tabs_permission && input.name !== 'urls_after_action') {
-                    await s_optional_permissions.Permissions.set_tabs_permission_setting();
+                if (input.name === 'options_page_theme') {
+                    await s_theme.Theme.set({
+                        name: data.settings.prefs.options_page_theme,
+                    });
                 }
             },
             'cot_1020',

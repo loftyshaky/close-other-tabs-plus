@@ -1,9 +1,11 @@
 import isEmpty from 'lodash/isEmpty';
 import { reaction } from 'mobx';
 
-import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
-import { i_actions } from 'shared_clean/internal';
+import type { i_inputs } from '@loftyshaky/shared/inputs';
+import { o_inputs } from '@loftyshaky/shared/inputs';
+import type { t } from '@loftyshaky/shared/shared_clean';
 import { d_sections } from 'settings/internal';
+import type { i_actions } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -12,7 +14,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public options: i_inputs.Options = {};
@@ -26,13 +27,22 @@ class Class {
                     new o_inputs.Option({ name: 'close' }),
                     new o_inputs.Option({ name: 'pin' }),
                     new o_inputs.Option({ name: 'unpin' }),
-                    new o_inputs.Option({ name: 'group' }),
-                    new o_inputs.Option({ name: 'ungroup' }),
+                    ...(env.browser === 'yandex'
+                        ? []
+                        : [
+                              new o_inputs.Option({ name: 'group' }),
+                              new o_inputs.Option({ name: 'ungroup' }),
+                          ]),
                 ],
                 windows_to_affect: [
                     new o_inputs.Option({ name: 'current_window' }),
                     new o_inputs.Option({ name: 'all_windows' }),
                     new o_inputs.Option({ name: 'other_windows' }),
+                ],
+                workspaces_to_affect: [
+                    new o_inputs.Option({ name: 'current_workspace' }),
+                    new o_inputs.Option({ name: 'all_workspaces' }),
+                    new o_inputs.Option({ name: 'other_workspaces' }),
                 ],
                 tabs_to_affect: [
                     new o_inputs.Option({ name: 'current_tab' }),
@@ -111,10 +121,11 @@ class Class {
                         main_action: action_options,
                     };
 
-                    (d_sections.Sections.sections as any).actions.inputs.actions.options =
+                    (d_sections.Sections.sections as t.AnyRecord).actions.inputs.actions.options =
                         this.options;
-                    (d_sections.Sections.sections as any).actions.inputs.main_action.options =
-                        this.options;
+                    (
+                        d_sections.Sections.sections as t.AnyRecord
+                    ).actions.inputs.main_action.options = this.options;
                 }
             },
             { fireImmediately: true },

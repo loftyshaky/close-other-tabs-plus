@@ -1,15 +1,16 @@
 import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 
 import {
+    d_schema,
     o_schema,
     s_data as s_data_loftyshaky_shared_clean,
-    d_schema,
     s_service_worker,
 } from '@loftyshaky/shared/shared_clean';
-import { d_actions, i_actions, i_data } from 'shared_clean/internal';
-import { s_context_menu, s_data, s_tab_counter } from 'background/internal';
+import { s_context_menu, s_data as s_data_background, s_tab_counter } from 'background/internal';
+import type { i_actions, i_data } from 'shared_clean/internal';
+import { d_actions, s_data } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -18,7 +19,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public set_from_storage_run_prevented: boolean = false;
@@ -50,16 +50,18 @@ class Class {
     } = {}): Promise<void> =>
         err_async(async () => {
             const default_settings: i_data.Settings = test_actions
-                ? (s_data.Settings.test_actions as i_data.Settings)
-                : (s_data.Settings.defaults as i_data.Settings);
+                ? (s_data_background.Settings.test_actions as i_data.Settings)
+                : (s_data_background.Settings.defaults as i_data.Settings);
             const settings_before: i_data.Settings = n(settings)
                 ? settings
                 : (default_settings as i_data.Settings);
             let settings_after: i_data.Settings = cloneDeep(settings_before);
 
             if (test_actions) {
-                data.settings.prefs.current_action_id = s_data.Settings.default_test_action_id;
-                data.settings.prefs.main_action_id = s_data.Settings.default_test_action_id;
+                data.settings.prefs.current_action_id =
+                    s_data_background.Settings.default_test_action_id;
+                data.settings.prefs.main_action_id =
+                    s_data_background.Settings.default_test_action_id;
                 settings_after.prefs = data.settings.prefs;
             }
 
@@ -70,7 +72,7 @@ class Class {
                 });
 
                 if (restore_back_up) {
-                    settings_after = s_data_loftyshaky_shared_clean.Settings.apply_unchanged_prefs({
+                    settings_after = s_data.Settings.apply_unchanged_prefs({
                         settings: settings_after,
                     });
                 }
@@ -124,7 +126,7 @@ class Class {
                 await s_context_menu.Items.create_itmes();
             }
 
-            s_service_worker.ServiceWorker.make_persistent();
+            void s_service_worker.ServiceWorker.make_persistent();
             await s_tab_counter.Badge.set_tab_count();
             await s_data_loftyshaky_shared_clean.Cache.set({
                 key: 'updating_settings',
@@ -246,6 +248,10 @@ class Class {
                     new_key: 'include_port_in_comparison',
                     new_val: false,
                 }),
+                new o_schema.TransformItem({
+                    new_key: 'workspaces_to_affect',
+                    new_val: 'current_workspace',
+                }),
             ];
 
             await Promise.all(
@@ -257,12 +263,12 @@ class Class {
                         err_async(async () => {
                             if (key !== 'prefs') {
                                 const updated_action: i_actions.Action =
-                                    await d_schema.Schema.transform({
+                                    (await d_schema.Schema.transform({
                                         data_obj: action,
                                         version,
                                         transform_items: transform_items_actions,
                                         force,
-                                    });
+                                    })) as i_actions.Action;
 
                                 if ((action as i_actions.Action).urls === 'current_domain') {
                                     updated_action.urls = 'current_root_domain';
@@ -292,7 +298,7 @@ class Class {
 
             updated_prefs.version = ext.get_app_version();
 
-            settings.prefs = updated_prefs;
+            settings.prefs = updated_prefs as i_actions.Action;
 
             await d_schema.Schema.replace({ settings });
 

@@ -1,5 +1,5 @@
-import { i_actions } from 'shared_clean/internal';
 import { s_actions, s_data } from 'background/internal';
+import type { i_actions } from 'shared_clean/internal';
 
 we.commands.onCommand.addListener((command: string) =>
     err_async(async () => {
@@ -9,7 +9,7 @@ we.commands.onCommand.addListener((command: string) =>
         const hotkey_action: i_actions.Action = data.actions[command_i];
 
         if (n(hotkey_action)) {
-            s_actions.Activation.activate({ action: hotkey_action });
+            void s_actions.Activation.activate({ action: hotkey_action });
         }
     }, 'cot_1129'),
 );

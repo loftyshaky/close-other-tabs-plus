@@ -7,7 +7,7 @@ export const init = (): Promise<void> =>
         s_data.Settings.init_test_actions();
         await s_data_loftyshaky_shared_clean.Cache.set_data();
 
-        s_tab_counter.Badge.set_color();
+        void s_tab_counter.Badge.set_color();
 
         await s_data.Manipulation.on_init_set_from_storage();
     }, 'cot_1005');

@@ -1,8 +1,9 @@
 import maxBy from 'lodash/maxBy';
-import { makeObservable, action } from 'mobx';
+import { action, makeObservable } from 'mobx';
 
-import { d_actions as d_actions_shared, i_actions } from 'shared_clean/internal';
 import { d_actions, d_data, d_sections } from 'settings/internal';
+import type { i_actions } from 'shared_clean/internal';
+import { d_actions as d_actions_shared } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -55,7 +56,7 @@ class Class {
                     d_actions_shared.Actions.initial_current_action = {
                         ...data.current_action,
                     };
-                    d_data.Manipulation.update_settings();
+                    void d_data.Manipulation.update_settings();
 
                     show_notification({
                         error_msg_key: 'action_created_notification',
@@ -125,7 +126,7 @@ class Class {
                         actions: data.actions,
                     },
                 );
-                d_data.Manipulation.update_settings();
+                void d_data.Manipulation.update_settings();
 
                 show_notification({
                     error_msg_key: 'action_updated_notification',
@@ -205,7 +206,7 @@ class Class {
                 if (n(initial_current_action)) {
                     await ext.storage_remove([initial_current_action.id]);
 
-                    d_data.Manipulation.update_settings();
+                    void d_data.Manipulation.update_settings();
 
                     show_notification({
                         error_msg_key: 'action_deleted_notification',

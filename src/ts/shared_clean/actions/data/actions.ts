@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { t } from '@loftyshaky/shared/shared_clean';
-import { i_data, i_actions } from 'shared_clean/internal';
+import type { t } from '@loftyshaky/shared/shared_clean';
+import type { i_actions, i_data } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -10,7 +10,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public initial_current_action: i_actions.Action | undefined;

@@ -1,4 +1,6 @@
-import { i_actions } from 'shared_clean/internal';
+import type { Menus } from 'webextension-polyfill';
+
+import type { i_actions } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -7,18 +9,17 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public create_itmes = (): Promise<void> =>
         err_async(async () => {
             await we.contextMenus.removeAll();
 
-            const contexts_on_page: string[] =
+            const contexts_on_page: Menus.ContextType[] =
                 'prefs' in data.settings && data.settings.prefs.enable_on_page_context_menu
                     ? ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio']
                     : [];
-            const contexts_action: string[] =
+            const contexts_action: Menus.ContextType[] =
                 'prefs' in data.settings && data.settings.prefs.enable_action_context_menu
                     ? ['action']
                     : [];

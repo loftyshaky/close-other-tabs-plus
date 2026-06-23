@@ -1,5 +1,5 @@
-import { t } from '@loftyshaky/shared/shared_clean';
-import { i_data } from 'shared_clean/internal';
+import type { t } from '@loftyshaky/shared/shared_clean';
+import type { i_data } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -8,7 +8,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public defaults: i_data.Settings | t.EmptyRecord = {};
@@ -18,6 +17,8 @@ class Class {
 
     public init_defaults = (): void =>
         err(() => {
+            const grouped_tabs: string =
+                env.browser === 'yandex' ? 'current_group' : 'grouped_and_ungrouped';
             this.defaults = {
                 prefs: {
                     version: ext.get_app_version(),
@@ -42,9 +43,10 @@ class Class {
                     position: 1,
                     type: 'close',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'other_tabs',
                     pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -62,9 +64,10 @@ class Class {
                     position: 2,
                     type: 'close',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'tabs_to_right',
                     pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -82,9 +85,10 @@ class Class {
                     position: 3,
                     type: 'close',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'tabs_to_left',
                     pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -102,9 +106,10 @@ class Class {
                     position: 4,
                     type: 'close',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'other_tabs',
                     pinned_tabs: 'pinned_and_unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -122,6 +127,7 @@ class Class {
                     position: 5,
                     type: 'close',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'all_tabs',
                     pinned_tabs: 'unpinned',
                     grouped_tabs: 'current_group',
@@ -142,6 +148,7 @@ class Class {
                     position: 6,
                     type: 'close',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'all_tabs',
                     pinned_tabs: 'unpinned',
                     grouped_tabs: 'any_group_except_current',
@@ -162,6 +169,7 @@ class Class {
                     position: 7,
                     type: 'close',
                     windows_to_affect: 'other_windows',
+                    workspaces_to_affect: 'all_workspaces',
                     tabs_to_affect: 'all_tabs',
                     pinned_tabs: 'pinned_and_unpinned',
                     grouped_tabs: 'grouped_and_ungrouped',
@@ -182,6 +190,7 @@ class Class {
                     position: 8,
                     type: 'close',
                     windows_to_affect: 'all_windows',
+                    workspaces_to_affect: 'all_workspaces',
                     tabs_to_affect: 'all_tabs',
                     pinned_tabs: 'pinned_and_unpinned',
                     grouped_tabs: 'grouped_and_ungrouped',
@@ -202,9 +211,10 @@ class Class {
                     position: 9,
                     type: 'pin',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'all_tabs',
                     pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -222,9 +232,10 @@ class Class {
                     position: 10,
                     type: 'pin',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'tabs_to_right',
                     pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -242,9 +253,10 @@ class Class {
                     position: 11,
                     type: 'pin',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'tabs_to_left',
                     pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -262,9 +274,10 @@ class Class {
                     position: 12,
                     type: 'unpin',
                     windows_to_affect: 'current_window',
+                    workspaces_to_affect: 'current_workspace',
                     tabs_to_affect: 'all_tabs',
                     pinned_tabs: 'pinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
+                    grouped_tabs,
                     urls: 'any_url',
                     include_root_domain_in_comparison: false,
                     include_subdomain_in_comparison: true,
@@ -276,86 +289,106 @@ class Class {
                     urls_after_action: [],
                     in_which_windows_to_open_tabs: 'current_window',
                 },
-                group_all_tabs: {
-                    id: 'group_all_tabs',
-                    name: ext.msg('group_all_tabs_default_action_name_text'),
-                    position: 13,
-                    type: 'group',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'all_tabs',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'ungrouped',
-                    urls: 'any_url',
-                    include_root_domain_in_comparison: false,
-                    include_subdomain_in_comparison: true,
-                    include_port_in_comparison: false,
-                    window_url_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                group_tabs_to_the_right: {
-                    id: 'group_tabs_to_the_right',
-                    name: ext.msg('group_tabs_to_the_right_default_action_name_text'),
-                    position: 14,
-                    type: 'group',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'tabs_to_right',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'ungrouped',
-                    urls: 'any_url',
-                    include_root_domain_in_comparison: false,
-                    include_subdomain_in_comparison: true,
-                    include_port_in_comparison: false,
-                    window_url_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                group_tabs_to_the_left: {
-                    id: 'group_tabs_to_the_left',
-                    name: ext.msg('group_tabs_to_the_left_default_action_name_text'),
-                    position: 15,
-                    type: 'group',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'tabs_to_left',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'ungrouped',
-                    urls: 'any_url',
-                    include_root_domain_in_comparison: false,
-                    include_subdomain_in_comparison: true,
-                    include_port_in_comparison: false,
-                    window_url_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
-                ungroup_all_tabs: {
-                    id: 'ungroup_all_tabs',
-                    name: ext.msg('ungroup_all_tabs_default_action_name_text'),
-                    position: 16,
-                    type: 'ungroup',
-                    windows_to_affect: 'current_window',
-                    tabs_to_affect: 'all_tabs',
-                    pinned_tabs: 'unpinned',
-                    grouped_tabs: 'grouped_and_ungrouped',
-                    urls: 'any_url',
-                    include_root_domain_in_comparison: false,
-                    include_subdomain_in_comparison: true,
-                    include_port_in_comparison: false,
-                    window_url_comparison: false,
-                    url_whitelist: [],
-                    url_blacklist: [],
-                    open_new_tab_after_action: false,
-                    urls_after_action: [],
-                    in_which_windows_to_open_tabs: 'current_window',
-                },
+                ...(env.browser === 'yandex'
+                    ? {}
+                    : {
+                          group_all_tabs: {
+                              id: 'group_all_tabs',
+                              name: ext.msg('group_all_tabs_default_action_name_text'),
+                              position: 13,
+                              type: 'group',
+                              windows_to_affect: 'current_window',
+                              workspaces_to_affect: 'current_workspace',
+                              tabs_to_affect: 'all_tabs',
+                              pinned_tabs: 'unpinned',
+                              grouped_tabs: 'ungrouped',
+                              urls: 'any_url',
+                              include_root_domain_in_comparison: false,
+                              include_subdomain_in_comparison: true,
+                              include_port_in_comparison: false,
+                              window_url_comparison: false,
+                              url_whitelist: [],
+                              url_blacklist: [],
+                              open_new_tab_after_action: false,
+                              urls_after_action: [],
+                              in_which_windows_to_open_tabs: 'current_window',
+                          },
+                      }),
+                ...(env.browser === 'yandex'
+                    ? {}
+                    : {
+                          group_tabs_to_the_right: {
+                              id: 'group_tabs_to_the_right',
+                              name: ext.msg('group_tabs_to_the_right_default_action_name_text'),
+                              position: 14,
+                              type: 'group',
+                              windows_to_affect: 'current_window',
+                              workspaces_to_affect: 'current_workspace',
+                              tabs_to_affect: 'tabs_to_right',
+                              pinned_tabs: 'unpinned',
+                              grouped_tabs: 'ungrouped',
+                              urls: 'any_url',
+                              include_root_domain_in_comparison: false,
+                              include_subdomain_in_comparison: true,
+                              include_port_in_comparison: false,
+                              window_url_comparison: false,
+                              url_whitelist: [],
+                              url_blacklist: [],
+                              open_new_tab_after_action: false,
+                              urls_after_action: [],
+                              in_which_windows_to_open_tabs: 'current_window',
+                          },
+                      }),
+                ...(env.browser === 'yandex'
+                    ? {}
+                    : {
+                          group_tabs_to_the_left: {
+                              id: 'group_tabs_to_the_left',
+                              name: ext.msg('group_tabs_to_the_left_default_action_name_text'),
+                              position: 15,
+                              type: 'group',
+                              windows_to_affect: 'current_window',
+                              workspaces_to_affect: 'current_workspace',
+                              tabs_to_affect: 'tabs_to_left',
+                              pinned_tabs: 'unpinned',
+                              grouped_tabs: 'ungrouped',
+                              urls: 'any_url',
+                              include_root_domain_in_comparison: false,
+                              include_subdomain_in_comparison: true,
+                              include_port_in_comparison: false,
+                              window_url_comparison: false,
+                              url_whitelist: [],
+                              url_blacklist: [],
+                              open_new_tab_after_action: false,
+                              urls_after_action: [],
+                              in_which_windows_to_open_tabs: 'current_window',
+                          },
+                      }),
+                ...(env.browser === 'yandex'
+                    ? {}
+                    : {
+                          ungroup_all_tabs: {
+                              id: 'ungroup_all_tabs',
+                              name: ext.msg('ungroup_all_tabs_default_action_name_text'),
+                              position: 16,
+                              type: 'ungroup',
+                              windows_to_affect: 'current_window',
+                              workspaces_to_affect: 'current_workspace',
+                              tabs_to_affect: 'all_tabs',
+                              pinned_tabs: 'unpinned',
+                              grouped_tabs: 'grouped_and_ungrouped',
+                              urls: 'any_url',
+                              include_root_domain_in_comparison: false,
+                              include_subdomain_in_comparison: true,
+                              include_port_in_comparison: false,
+                              window_url_comparison: false,
+                              url_whitelist: [],
+                              url_blacklist: [],
+                              open_new_tab_after_action: false,
+                              urls_after_action: [],
+                              in_which_windows_to_open_tabs: 'current_window',
+                          },
+                      }),
             };
         }, 'cot_1000');
 
@@ -762,7 +795,7 @@ class Class {
                     urls_after_action: [],
                     in_which_windows_to_open_tabs: 'current_window',
                 },
-                // eslint-disable-next-line max-len
+                //
                 close_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis:
                     {
                         id: 'close_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis',
@@ -1184,7 +1217,7 @@ class Class {
                     urls_after_action: [],
                     in_which_windows_to_open_tabs: 'current_window',
                 },
-                // eslint-disable-next-line max-len
+                //
                 pin_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis:
                     {
                         id: 'pin_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis',
@@ -1566,7 +1599,7 @@ class Class {
                     urls_after_action: [],
                     in_which_windows_to_open_tabs: 'current_window',
                 },
-                // eslint-disable-next-line max-len
+                //
                 unpin_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis:
                     {
                         id: 'unpin_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis',
@@ -1988,7 +2021,7 @@ class Class {
                     urls_after_action: [],
                     in_which_windows_to_open_tabs: 'current_window',
                 },
-                // eslint-disable-next-line max-len
+                //
                 group_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis:
                     {
                         id: 'group_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis',
@@ -2411,7 +2444,7 @@ class Class {
                         urls_after_action: [],
                         in_which_windows_to_open_tabs: 'current_window',
                     },
-                // eslint-disable-next-line max-len
+                //
                 ungroup_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis:
                     {
                         id: 'ungroup_other_tabs_all_windows_any_root_domain_plus_subdomain_except_current_each_window_basis',

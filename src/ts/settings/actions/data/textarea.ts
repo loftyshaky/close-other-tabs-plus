@@ -1,9 +1,10 @@
-import reject from 'lodash/reject';
-import map from 'lodash/map';
-import trim from 'lodash/trim';
 import isEmpty from 'lodash/isEmpty';
-import { makeObservable, action } from 'mobx';
+import map from 'lodash/map';
+import reject from 'lodash/reject';
+import trim from 'lodash/trim';
+import { action, makeObservable } from 'mobx';
 
+import type { t } from '@loftyshaky/shared/shared_clean';
 import { s_sections } from 'settings/internal';
 
 class Class {
@@ -21,9 +22,9 @@ class Class {
 
     public transfrom_textarea_input_into_arrays = (): void =>
         err(() => {
-            const current_action_updates: any = {};
+            const current_action_updates: t.AnyRecord = {};
 
-            Object.entries(data.current_action).forEach(([key, val]: any) => {
+            Object.entries(data.current_action).forEach(([key, val]: t.Any) => {
                 if (s_sections.Utils.is_textarea_input({ input_name: key })) {
                     const arr_val: string[] = n(val.split) ? val.split(',') : val;
 

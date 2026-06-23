@@ -1,7 +1,9 @@
-import { Windows, Tabs as TabsType } from 'webextension-polyfill';
-import psl, { ParsedDomain } from 'psl';
+import type { ParsedDomain } from 'psl';
+import type { Tabs as TabsType } from 'webextension-polyfill';
 
-import { i_tabs } from 'background/internal';
+import psl from 'psl';
+
+import type { t } from '@loftyshaky/shared/shared_clean';
 
 class Class {
     private static instance: Class;
@@ -10,7 +12,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public get_all = (): Promise<TabsType.Tab[]> =>
@@ -20,27 +21,25 @@ class Class {
             return tabs;
         }, 'cot_1066');
 
-    public get_current_tabs = (): Promise<i_tabs.CurrentTabs> =>
-        err_async(async () => {
-            const windows: Windows.Window[] = await we.windows.getAll();
-            const current_tabs: i_tabs.CurrentTabs = {};
-
-            windows.forEach(
-                (window: Windows.Window): Promise<void> =>
-                    err_async(async () => {
-                        const tabs: TabsType.Tab[] = await we.tabs.query({ windowId: window.id });
-
-                        const current_tab: TabsType.Tab | undefined = tabs.find(
-                            (tab: TabsType.Tab): boolean => tab.active,
-                        );
-
-                        if (n(window.id) && n(current_tab)) {
-                            current_tabs[window.id] = current_tab;
-                        }
-                    }, 'cot_1073'),
+    public get_current_tab_of_current_window_and_workspace = ({
+        tabs,
+        tab,
+    }: {
+        tabs: TabsType.Tab[];
+        tab: TabsType.Tab;
+    }): TabsType.Tab | undefined =>
+        err(() => {
+            return tabs.find((tab_2: TabsType.Tab): boolean =>
+                err(
+                    () =>
+                        tab_2.active &&
+                        tab_2.windowId === tab.windowId &&
+                        (env.browser === 'opera'
+                            ? (tab_2 as t.Any).workspaceId === (tab as t.Any).workspaceId
+                            : true),
+                    'cot_1073',
+                ),
             );
-
-            return current_tabs;
         }, 'cot_1072');
 
     public get_href_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
@@ -61,7 +60,6 @@ class Class {
 
     public get_subdomains_of_tab = ({ tab }: { tab: TabsType.Tab }): string =>
         err(() => {
-            const root_domain: string = this.get_root_domain_of_tab({ tab });
             const parsed = psl.parse(this.get_host_of_tab({ tab }));
             const { subdomain } = parsed as ParsedDomain;
 

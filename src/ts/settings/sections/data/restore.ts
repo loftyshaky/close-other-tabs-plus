@@ -1,10 +1,11 @@
 import { runInAction } from 'mobx';
 
-import { s_data } from '@loftyshaky/shared/shared_clean';
-import { t, s_theme } from '@loftyshaky/shared/shared';
 import { d_optional_permissions } from '@loftyshaky/shared/settings';
-import { d_actions, s_css_vars } from 'shared_clean/internal';
+import type { t } from '@loftyshaky/shared/shared';
+import { s_theme } from '@loftyshaky/shared/shared';
 import { d_data, s_optional_permissions } from 'settings/internal';
+import type { i_data } from 'shared_clean/internal';
+import { d_actions, s_css_vars, s_data } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -13,12 +14,11 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public restore_defaults = (): Promise<void> =>
         err_async(async () => {
-            // eslint-disable-next-line no-alert
+            //
             const confirmed_restore: boolean = globalThis.confirm(
                 ext.msg('restore_defaults_confirm'),
             );
@@ -26,7 +26,7 @@ class Class {
             if (confirmed_restore) {
                 const default_settings = await ext.send_msg_resp({ msg: 'get_defaults' });
                 const default_settings_final = s_data.Settings.apply_unchanged_prefs({
-                    settings: default_settings,
+                    settings: default_settings as i_data.Settings,
                 });
 
                 await d_data.Manipulation.send_msg_to_update_settings({
@@ -40,7 +40,7 @@ class Class {
                 if (n(default_settings_final)) {
                     await d_actions.Actions.set({ settings: default_settings_final });
                 }
-                s_theme.Theme.set({
+                void s_theme.Theme.set({
                     name: data.settings.prefs.options_page_theme,
                 });
                 s_css_vars.CssVars.set();
@@ -73,8 +73,9 @@ class Class {
                     },
                 ],
             });
+
             const tabs_permission: boolean =
-                await s_optional_permissions.Permissions.check_if_contains_tabs_permission();
+                s_optional_permissions.Permissions.contains_permission.filter_lists;
 
             runInAction(() =>
                 err(() => {
@@ -83,11 +84,11 @@ class Class {
             );
 
             await d_data.Manipulation.send_msg_to_update_settings({
-                settings: data.settings,
+                settings: x.to_plain(data.settings),
                 update_instantly: true,
             });
 
-            s_theme.Theme.set({
+            void s_theme.Theme.set({
                 name: data.settings.prefs.options_page_theme,
             });
             s_css_vars.CssVars.set();

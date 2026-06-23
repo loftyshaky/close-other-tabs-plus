@@ -12,5 +12,3 @@ export * as s_actions from 'background/actions/scripts';
 export * as s_context_menu from 'background/context_menu/scripts';
 export * as s_data from 'background/data/scripts';
 export * as s_tab_counter from 'background/tab_counter/scripts';
-
-export * as i_tabs from 'background/tabs/interfaces';

@@ -7,7 +7,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public create_test_actions = (): Promise<void> =>
@@ -22,7 +21,7 @@ class Class {
                         force: true,
                     });
 
-                ext.send_msg({
+                void ext.send_msg({
                     msg: 'create_test_actions',
                     tabs_permission_granted,
                 });

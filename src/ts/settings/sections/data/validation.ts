@@ -1,7 +1,9 @@
 import { runInAction } from 'mobx';
 
-import { i_data } from '@loftyshaky/shared/shared';
-import { d_inputs, i_inputs } from '@loftyshaky/shared/inputs';
+import type { i_inputs } from '@loftyshaky/shared/inputs';
+import { d_inputs } from '@loftyshaky/shared/inputs';
+import type { i_data } from '@loftyshaky/shared/shared';
+import type { t } from '@loftyshaky/shared/shared_clean';
 import { d_sections, s_sections } from 'settings/internal';
 
 class Class {
@@ -11,7 +13,6 @@ class Class {
         return this.instance || (this.instance = new this());
     }
 
-    // eslint-disable-next-line no-useless-constructor, no-empty-function
     private constructor() {}
 
     public input_is_valid: boolean = true;
@@ -48,7 +49,7 @@ class Class {
         err(() => {
             (
                 Object.values(
-                    (d_sections.Sections.sections as any).actions.inputs,
+                    (d_sections.Sections.sections as t.AnyRecord).actions.inputs,
                 ) as i_inputs.Input[]
             ).forEach((input: i_inputs.Input): void => {
                 err(() => {

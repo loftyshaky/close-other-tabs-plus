@@ -1,9 +1,11 @@
-import { makeObservable, computed } from 'mobx';
+import { computed, makeObservable, runInAction } from 'mobx';
 
-import { s_utils } from '@loftyshaky/shared/shared';
-import { o_inputs, i_inputs } from '@loftyshaky/shared/inputs';
+import type { i_inputs } from '@loftyshaky/shared/inputs';
+import { o_inputs } from '@loftyshaky/shared/inputs';
 import { d_sections as d_sections_loftyshaky } from '@loftyshaky/shared/settings';
+import { s_utils } from '@loftyshaky/shared/shared';
 import { d_actions, d_data, d_sections, s_optional_permissions } from 'settings/internal';
+import type { i_data } from 'shared_clean/internal';
 
 class Class {
     private static instance: Class;
@@ -29,249 +31,264 @@ class Class {
     public init = (): void =>
         err(() => {
             this.sections = [
-                ...[
-                    new o_inputs.Section({
-                        name: 'actions',
-                        include_help: true,
-                        alt_help_msg: ext.msg(`actions_${env.browser}_section_help_text`),
-                        inputs: [
-                            new o_inputs.Select({
-                                name: 'actions',
-                                include_help: true,
-                                options: d_sections.Options.options,
-                                val_accessor: 'settings.prefs.current_action_id',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Select({
-                                name: 'main_action',
-                                include_help: true,
-                                options: d_sections.Options.options,
-                                val_accessor: 'settings.prefs.main_action_id',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Group({
-                                name: 'action_btns',
-                                include_help: true,
-                                label_is_visible: false,
-                                event_callback: () => undefined,
-                                inputs: [
-                                    new o_inputs.Btn({
-                                        name: 'create_action',
-                                        event_callback: d_actions.Action.create,
-                                    }),
-                                    new o_inputs.Btn({
-                                        name: 'update_action',
-                                        event_callback: d_actions.Action.update,
-                                    }),
-                                    new o_inputs.Btn({
-                                        name: 'delete_action',
-                                        event_callback: d_actions.Action.delete,
-                                    }),
-                                ],
-                            }),
-                            new o_inputs.Hr({
-                                name: 'hr_1',
-                            }),
-                            new o_inputs.Text({
-                                name: 'action_name',
-                                include_help: true,
-                                val_accessor: 'current_action.name',
-                                event_callback: d_sections.Val.change,
-                                warn_state_checker: d_sections.Validation.validate_input,
-                            }),
-                            new o_inputs.Text({
-                                name: 'action_position',
-                                include_help: true,
-                                text_type: 'number',
-                                val_accessor: 'current_action.position',
-                                event_callback: d_sections.Val.change,
-                                warn_state_checker: d_sections.Validation.validate_input,
-                            }),
-                            new o_inputs.Select({
-                                name: 'action_type',
-                                options: d_sections.Options.options,
-                                val_accessor: 'current_action.type',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Select({
-                                name: 'windows_to_affect',
-                                options: d_sections.Options.options,
-                                val_accessor: 'current_action.windows_to_affect',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Select({
-                                name: 'tabs_to_affect',
-                                options: d_sections.Options.options,
-                                val_accessor: 'current_action.tabs_to_affect',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Select({
-                                name: 'pinned_tabs',
-                                options: d_sections.Options.options,
-                                val_accessor: 'current_action.pinned_tabs',
-                                is_enabled_conds: [
-                                    {
-                                        input_name: 'action_type',
-                                        val_accessor: 'current_action.type',
-                                        pass_vals: ['close', 'pin', 'group', 'ungroup'],
-                                    },
-                                ],
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Select({
-                                name: 'grouped_tabs',
-                                options: d_sections.Options.options,
-                                val_accessor: 'current_action.grouped_tabs',
-                                is_enabled_conds: [
-                                    {
-                                        input_name: 'action_type',
-                                        val_accessor: 'current_action.type',
-                                        pass_vals: ['close', 'pin', 'group', 'ungroup'],
-                                    },
-                                ],
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Select({
-                                name: 'urls',
-                                options: d_sections.Options.options,
-                                val_accessor: 'current_action.urls',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Checkbox({
-                                name: 'include_root_domain_in_comparison',
-                                val_accessor: 'current_action.include_root_domain_in_comparison',
-                                parent: 'urls',
-                                is_enabled_conds: [
-                                    {
-                                        input_name: 'urls',
-                                        val_accessor: 'current_action.urls',
-                                        pass_vals: [
-                                            'current_subdomain',
-                                            'any_subdomain_except_current',
-                                            'current_port',
-                                            'any_port_except_current',
-                                        ],
-                                    },
-                                ],
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Checkbox({
-                                name: 'include_subdomain_in_comparison',
-                                val_accessor: 'current_action.include_subdomain_in_comparison',
-                                parent: 'urls',
-                                is_enabled_conds: [
-                                    {
-                                        input_name: 'urls',
-                                        val_accessor: 'current_action.urls',
-                                        pass_vals: [
-                                            'current_root_domain',
-                                            'any_root_domain_except_current',
-                                            'current_port',
-                                            'any_port_except_current',
-                                        ],
-                                    },
-                                ],
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Checkbox({
-                                name: 'include_port_in_comparison',
-                                val_accessor: 'current_action.include_port_in_comparison',
-                                parent: 'urls',
-                                is_enabled_conds: [
-                                    {
-                                        input_name: 'urls',
-                                        val_accessor: 'current_action.urls',
-                                        pass_vals: [
-                                            'current_root_domain',
-                                            'any_root_domain_except_current',
-                                            'current_subdomain',
-                                            'any_subdomain_except_current',
-                                        ],
-                                    },
-                                ],
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Checkbox({
-                                name: 'window_url_comparison',
-                                include_help: true,
-                                val_accessor: 'current_action.window_url_comparison',
-                                parent: 'urls',
-                                is_enabled_conds: [
-                                    {
-                                        input_name: 'urls',
-                                        val_accessor: 'current_action.urls',
-                                        pass_vals: [
-                                            'current_url',
-                                            'any_url_except_current',
-                                            'current_root_domain',
-                                            'any_root_domain_except_current',
-                                            'current_subdomain',
-                                            'any_subdomain_except_current',
-                                            'current_port',
-                                            'any_port_except_current',
-                                        ],
-                                    },
-                                ],
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Textarea({
-                                name: 'url_whitelist',
-                                include_help: true,
-                                val_accessor: 'current_action.url_whitelist',
-                                event_callback: d_sections.Val.change,
-                                warn_state_checker: d_sections.Validation.validate_input,
-                            }),
-                            new o_inputs.Textarea({
-                                name: 'url_blacklist',
-                                include_help: true,
-                                val_accessor: 'current_action.url_blacklist',
-                                event_callback: d_sections.Val.change,
-                                warn_state_checker: d_sections.Validation.validate_input,
-                            }),
-                            new o_inputs.Checkbox({
-                                name: 'open_new_tab_after_action',
-                                val_accessor: 'current_action.open_new_tab_after_action',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Textarea({
-                                name: 'urls_after_action',
-                                include_help: true,
-                                val_accessor: 'current_action.urls_after_action',
-                                event_callback: d_sections.Val.change,
-                                warn_state_checker: d_sections.Validation.validate_input,
-                            }),
-                            new o_inputs.Select({
-                                name: 'in_which_windows_to_open_tabs',
-                                options: d_sections.Options.options,
-                                val_accessor: 'current_action.in_which_windows_to_open_tabs',
-                                event_callback: d_sections.Val.change,
-                            }),
-                        ],
-                    }),
-                    new o_inputs.Section({
-                        name: 'tab_counter',
-                        inputs: [
-                            new o_inputs.Checkbox({
-                                name: 'tab_counter_is_visible',
-                                include_help: true,
-                                event_callback: d_sections.Val.change,
-                            }),
-                        ],
-                    }),
-                    new o_inputs.Section({
-                        name: 'context_menus',
-                        inputs: [
-                            new o_inputs.Checkbox({
-                                name: 'enable_action_context_menu',
-                                event_callback: d_sections.Val.change,
-                            }),
-                            new o_inputs.Checkbox({
-                                name: 'enable_on_page_context_menu',
-                                event_callback: d_sections.Val.change,
-                            }),
-                        ],
-                    }),
-                ],
+                new o_inputs.Section({
+                    name: 'actions',
+                    include_help: true,
+                    alt_help_msg: ext.msg(`actions_${env.browser}_section_help_text`),
+                    inputs: [
+                        new o_inputs.Select({
+                            name: 'actions',
+                            include_help: true,
+                            options: d_sections.Options.options,
+                            val_accessor: 'settings.prefs.current_action_id',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Select({
+                            name: 'main_action',
+                            include_help: true,
+                            options: d_sections.Options.options,
+                            val_accessor: 'settings.prefs.main_action_id',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Group({
+                            name: 'action_btns',
+                            include_help: true,
+                            label_is_visible: false,
+                            event_callback: () => undefined,
+                            inputs: [
+                                new o_inputs.Btn({
+                                    name: 'create_action',
+                                    event_callback: d_actions.Action.create,
+                                }),
+                                new o_inputs.Btn({
+                                    name: 'update_action',
+                                    event_callback: d_actions.Action.update,
+                                }),
+                                new o_inputs.Btn({
+                                    name: 'delete_action',
+                                    event_callback: d_actions.Action.delete,
+                                }),
+                            ],
+                        }),
+                        new o_inputs.Hr({
+                            name: 'hr_1',
+                        }),
+                        new o_inputs.Text({
+                            name: 'action_name',
+                            include_help: true,
+                            val_accessor: 'current_action.name',
+                            event_callback: d_sections.Val.change,
+                            warn_state_checker: d_sections.Validation.validate_input,
+                        }),
+                        new o_inputs.Text({
+                            name: 'action_position',
+                            include_help: true,
+                            text_type: 'number',
+                            val_accessor: 'current_action.position',
+                            event_callback: d_sections.Val.change,
+                            warn_state_checker: d_sections.Validation.validate_input,
+                        }),
+                        new o_inputs.Select({
+                            name: 'action_type',
+                            options: d_sections.Options.options,
+                            val_accessor: 'current_action.type',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Select({
+                            name: 'windows_to_affect',
+                            options: d_sections.Options.options,
+                            val_accessor: 'current_action.windows_to_affect',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        ...(env.browser === 'opera'
+                            ? [
+                                  new o_inputs.Select({
+                                      name: 'workspaces_to_affect',
+                                      options: d_sections.Options.options,
+                                      val_accessor: 'current_action.workspaces_to_affect',
+                                      event_callback: d_sections.Val.change,
+                                  }),
+                              ]
+                            : []),
+                        new o_inputs.Select({
+                            name: 'tabs_to_affect',
+                            options: d_sections.Options.options,
+                            val_accessor: 'current_action.tabs_to_affect',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Select({
+                            name: 'pinned_tabs',
+                            options: d_sections.Options.options,
+                            val_accessor: 'current_action.pinned_tabs',
+                            is_enabled_conds: [
+                                {
+                                    input_name: 'action_type',
+                                    val_accessor: 'current_action.type',
+                                    pass_vals: ['close', 'group', 'ungroup'],
+                                },
+                            ],
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Select({
+                            name: 'grouped_tabs',
+                            options: d_sections.Options.options,
+                            val_accessor: 'current_action.grouped_tabs',
+                            is_enabled_conds: [
+                                {
+                                    input_name: 'action_type',
+                                    val_accessor: 'current_action.type',
+                                    pass_vals: [
+                                        'close',
+                                        'pin',
+                                        'group',
+                                        'ungroup',
+                                        ...(env.browser === 'yandex' ? ['unpin'] : []),
+                                    ],
+                                },
+                            ],
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Select({
+                            name: 'urls',
+                            options: d_sections.Options.options,
+                            val_accessor: 'current_action.urls',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Checkbox({
+                            name: 'include_root_domain_in_comparison',
+                            val_accessor: 'current_action.include_root_domain_in_comparison',
+                            parent: 'urls',
+                            is_enabled_conds: [
+                                {
+                                    input_name: 'urls',
+                                    val_accessor: 'current_action.urls',
+                                    pass_vals: [
+                                        'current_subdomain',
+                                        'any_subdomain_except_current',
+                                        'current_port',
+                                        'any_port_except_current',
+                                    ],
+                                },
+                            ],
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Checkbox({
+                            name: 'include_subdomain_in_comparison',
+                            val_accessor: 'current_action.include_subdomain_in_comparison',
+                            parent: 'urls',
+                            is_enabled_conds: [
+                                {
+                                    input_name: 'urls',
+                                    val_accessor: 'current_action.urls',
+                                    pass_vals: [
+                                        'current_root_domain',
+                                        'any_root_domain_except_current',
+                                        'current_port',
+                                        'any_port_except_current',
+                                    ],
+                                },
+                            ],
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Checkbox({
+                            name: 'include_port_in_comparison',
+                            val_accessor: 'current_action.include_port_in_comparison',
+                            parent: 'urls',
+                            is_enabled_conds: [
+                                {
+                                    input_name: 'urls',
+                                    val_accessor: 'current_action.urls',
+                                    pass_vals: [
+                                        'current_root_domain',
+                                        'any_root_domain_except_current',
+                                        'current_subdomain',
+                                        'any_subdomain_except_current',
+                                    ],
+                                },
+                            ],
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Checkbox({
+                            name: 'window_url_comparison',
+                            include_help: true,
+                            val_accessor: 'current_action.window_url_comparison',
+                            parent: 'urls',
+                            is_enabled_conds: [
+                                {
+                                    input_name: 'urls',
+                                    val_accessor: 'current_action.urls',
+                                    pass_vals: [
+                                        'current_url',
+                                        'any_url_except_current',
+                                        'current_root_domain',
+                                        'any_root_domain_except_current',
+                                        'current_subdomain',
+                                        'any_subdomain_except_current',
+                                        'current_port',
+                                        'any_port_except_current',
+                                    ],
+                                },
+                            ],
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Textarea({
+                            name: 'url_whitelist',
+                            include_help: true,
+                            val_accessor: 'current_action.url_whitelist',
+                            event_callback: d_sections.Val.change,
+                            warn_state_checker: d_sections.Validation.validate_input,
+                        }),
+                        new o_inputs.Textarea({
+                            name: 'url_blacklist',
+                            include_help: true,
+                            val_accessor: 'current_action.url_blacklist',
+                            event_callback: d_sections.Val.change,
+                            warn_state_checker: d_sections.Validation.validate_input,
+                        }),
+                        new o_inputs.Checkbox({
+                            name: 'open_new_tab_after_action',
+                            val_accessor: 'current_action.open_new_tab_after_action',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Textarea({
+                            name: 'urls_after_action',
+                            include_help: true,
+                            val_accessor: 'current_action.urls_after_action',
+                            event_callback: d_sections.Val.change,
+                            warn_state_checker: d_sections.Validation.validate_input,
+                        }),
+                        new o_inputs.Select({
+                            name: 'in_which_windows_to_open_tabs',
+                            options: d_sections.Options.options,
+                            val_accessor: 'current_action.in_which_windows_to_open_tabs',
+                            event_callback: d_sections.Val.change,
+                        }),
+                    ],
+                }),
+                new o_inputs.Section({
+                    name: 'tab_counter',
+                    inputs: [
+                        new o_inputs.Checkbox({
+                            name: 'tab_counter_is_visible',
+                            include_help: true,
+                            event_callback: d_sections.Val.change,
+                        }),
+                    ],
+                }),
+                new o_inputs.Section({
+                    name: 'context_menus',
+                    inputs: [
+                        new o_inputs.Checkbox({
+                            name: 'enable_action_context_menu',
+                            event_callback: d_sections.Val.change,
+                        }),
+                        new o_inputs.Checkbox({
+                            name: 'enable_on_page_context_menu',
+                            event_callback: d_sections.Val.change,
+                        }),
+                    ],
+                }),
+
                 new o_inputs.Section({
                     name: 'permissions',
                     inputs: [
@@ -285,7 +302,7 @@ class Class {
                 }),
                 ...d_sections_loftyshaky.Sections.make_shared_sections({
                     download_back_up_callback: ext.storage_get,
-                    upload_back_up_callback: d_sections.Restore.restore_back_up,
+                    upload_back_up_save_callback: d_sections.Restore.restore_back_up,
                     restore_defaults_callback: () => d_sections.Restore.restore_defaults(),
                     input_change_val_callback: d_sections.Val.change,
                     admin_inputs: [
@@ -295,53 +312,51 @@ class Class {
                         }),
                     ],
                 }),
-                ...[
-                    new o_inputs.Section({
-                        name: 'links',
-                        inputs: [
-                            new o_inputs.Link({
-                                name: 'privacy_policy',
-                                href: ext.msg('privacy_policy_link_href'),
-                            }),
-                            new o_inputs.Link({
-                                name: 'rate',
-                                browser: env.browser,
-                                force_resolve: true,
-                            }),
-                            ...(env.browser === 'edge'
-                                ? []
-                                : [
-                                      new o_inputs.Link({
-                                          name: 'close_other_tabs_plusi1i',
-                                          browser: 'chrome',
-                                      }),
-                                      new o_inputs.Link({
-                                          name: 'close_other_tabs_plusi2i',
-                                          browser: 'edge',
-                                      }),
-                                  ]),
-                            new o_inputs.Link({
-                                name: 'github',
-                            }),
-                            new o_inputs.Link({
-                                name: 'facebook_page',
-                                href: ext.msg('facebook_page_link_href'),
-                            }),
-                            new o_inputs.Link({
-                                name: 'support_page',
-                                href: ext.msg('support_page_link_href'),
-                            }),
-                            ...(env.browser === 'edge'
-                                ? []
-                                : [
-                                      new o_inputs.Link({
-                                          name: 'dependencies',
-                                          href: ext.msg('dependencies_link_href'),
-                                      }),
-                                  ]),
-                        ],
-                    }),
-                ],
+                new o_inputs.Section({
+                    name: 'links',
+                    inputs: [
+                        new o_inputs.Link({
+                            name: 'privacy_policy',
+                            href: ext.msg('privacy_policy_link_href'),
+                        }),
+                        new o_inputs.Link({
+                            name: 'rate',
+                            browser: env.browser,
+                            force_resolve: true,
+                        }),
+                        ...(env.browser === 'edge'
+                            ? []
+                            : [
+                                  new o_inputs.Link({
+                                      name: 'close_other_tabs_plusi1i',
+                                      browser: 'chrome',
+                                  }),
+                                  new o_inputs.Link({
+                                      name: 'close_other_tabs_plusi2i',
+                                      browser: 'edge',
+                                  }),
+                              ]),
+                        new o_inputs.Link({
+                            name: 'github',
+                        }),
+                        new o_inputs.Link({
+                            name: 'facebook_page',
+                            href: ext.msg('facebook_page_link_href'),
+                        }),
+                        new o_inputs.Link({
+                            name: 'support_page',
+                            href: ext.msg('support_page_link_href'),
+                        }),
+                        ...(env.browser === 'edge'
+                            ? []
+                            : [
+                                  new o_inputs.Link({
+                                      name: 'dependencies',
+                                      href: ext.msg('dependencies_link_href'),
+                                  }),
+                              ]),
+                    ],
+                }),
             ];
 
             this.sections = s_utils.Utils.to_object({
@@ -369,13 +384,20 @@ class Class {
 
     public change_current_section_val = (): Promise<void> =>
         err_async(async () => {
-            data.settings.prefs.current_section = d_sections_loftyshaky.Sections.current_section;
+            const storage_settings: i_data.Settings = (await ext.storage_get()) as i_data.Settings;
+
+            runInAction(() =>
+                err(() => {
+                    data.settings.prefs.current_section =
+                        d_sections_loftyshaky.Sections.current_section;
+                }, 'cot_1144'),
+            );
 
             await d_data.Manipulation.send_msg_to_update_settings({
                 settings: {
-                    ...data.settings,
+                    ...storage_settings,
                     prefs: {
-                        ...data.settings.prefs,
+                        ...x.to_plain(data.settings.prefs),
                         current_section: d_sections_loftyshaky.Sections.current_section,
                     },
                 },

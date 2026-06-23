@@ -1,7 +1,7 @@
-import { Menus } from 'webextension-polyfill';
+import type { Menus } from 'webextension-polyfill';
 
-import { i_actions } from 'shared_clean/internal';
 import { s_actions, s_data } from 'background/internal';
+import type { i_actions } from 'shared_clean/internal';
 
 we.contextMenus.onClicked.addListener(
     (info: Menus.OnClickData): Promise<void> =>
@@ -13,7 +13,7 @@ we.contextMenus.onClicked.addListener(
             });
 
             if (n(action)) {
-                s_actions.Activation.activate({ action });
+                void s_actions.Activation.activate({ action });
             }
         }, 'cot_1128'),
 );
