@@ -127,8 +127,9 @@ class Class {
                     tab: current_tab,
                 });
                 const current_tab_is_grouped: boolean =
-                    (current_tab as Tabs.Tab).groupId !== -1 ||
-                    ((current_tab as t.Any).spaceId && (current_tab as t.Any).spaceId !== -1); // spaceId is a property in Yandex browser.
+                    env.browser === 'yandex'
+                        ? (current_tab as t.Any).spaceId && (current_tab as t.Any).spaceId !== -1
+                        : (current_tab as Tabs.Tab).groupId !== -1; // spaceId is a property in Yandex browser.
 
                 const tabs_to_activate: Tabs.Tab[] = tabs.filter((tab: Tabs.Tab): boolean =>
                     err(() => {
@@ -141,11 +142,14 @@ class Class {
                         const is_grouped_space: boolean =
                             n((current_tab as t.Any).spaceId) &&
                             (current_tab as t.Any).spaceId !== -1;
+                        const is_grouped_final: boolean =
+                            env.browser === 'yandex' ? is_grouped_space : is_grouped;
                         const is_in_current_group: boolean =
-                            (is_grouped &&
-                                (tab as Tabs.Tab).groupId === (current_tab as Tabs.Tab).groupId) ||
-                            (is_grouped_space &&
-                                (tab as t.Any).spaceId === (current_tab as t.Any).spaceId);
+                            env.browser === 'yandex'
+                                ? is_grouped_space &&
+                                  (tab as t.Any).spaceId === (current_tab as t.Any).spaceId
+                                : is_grouped &&
+                                  (tab as Tabs.Tab).groupId === (current_tab as Tabs.Tab).groupId;
 
                         if (n(tab.windowId)) {
                             const url_cond_comparison = ({
@@ -503,15 +507,13 @@ class Class {
                                 const grouped_tabs: boolean =
                                     (env.browser === 'yandex' ? false : action.type === 'unpin') ||
                                     action.grouped_tabs === 'grouped_and_ungrouped' ||
-                                    (action.grouped_tabs === 'grouped' &&
-                                        (is_grouped || is_grouped_space)) ||
-                                    (action.grouped_tabs === 'ungrouped' &&
-                                        (!is_grouped || !is_grouped_space)) ||
+                                    (action.grouped_tabs === 'grouped' && is_grouped_final) ||
+                                    (action.grouped_tabs === 'ungrouped' && !is_grouped_final) ||
                                     (action.grouped_tabs === 'current_group' &&
                                         is_in_current_group) ||
                                     (action.grouped_tabs === 'any_group_except_current' &&
                                         current_tab_is_grouped &&
-                                        (is_grouped || is_grouped_space) &&
+                                        is_grouped_final &&
                                         !is_in_current_group);
 
                                 const found_website_url: boolean =
