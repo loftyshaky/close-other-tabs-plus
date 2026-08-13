@@ -1,5 +1,7 @@
 # Закрыть другие вкладки+
 
+<a href="https://github.com/loftyshaky/close-other-tabs-plus/tags"><img src="https://img.shields.io/github/v/tag/loftyshaky/close-other-tabs-plus?label=Version&color=blue" alt="Version"></a> <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-orange.svg" alt="License: MIT"></a> <img src="https://img.shields.io/github/downloads/loftyshaky/close-other-tabs-plus/total?label=Downloads%20&color=green" alt="GitHub all releases"> <img src="https://img.shields.io/github/downloads/loftyshaky/close-other-tabs-plus/latest/total?sort=date&label=Downloads@Latest&color=green" alt="GitHub Release">
+
 Браузерное расширение, позволяющее закрывать/закреплять/откреплять/группировать/разгруппировать несколько вкладок сразу, фильтруя их по различным свойствам.
 
 ## Ссылки
