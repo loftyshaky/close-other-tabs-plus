@@ -329,14 +329,14 @@
     "github_link_text": {
         "message": "😼 Close Other Tabs+ on GitHub"
     },
+    "github_link_href": {
+        "message": "https://github.com/loftyshaky/close-other-tabs-plus"
+    },
     "rate_chrome_link_href": {
         "message": "https://chromewebstore.google.com/detail/higiahnfphokonkjalljdfgjhafdjbil/reviews"
     },
     "rate_edge_link_href": {
         "message": "https://microsoftedge.microsoft.com/addons/detail/hlgemamghlognmbmipcoapjgkngbbjko"
-    },
-    "github_link_href": {
-        "message": "https://github.com/loftyshaky/close-other-tabs-plus"
     },
     "rate_opera_link_href": {
         "message": "https://opera.com"
