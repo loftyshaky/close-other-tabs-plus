@@ -30,6 +30,7 @@ class Class {
                     developer_mode: false,
                     enable_cut_features: false,
                     persistent_service_worker: true,
+                    detect_infinite_loops: false,
                     offers_are_visible: true,
                     current_action_id: 'close_other_tabs',
                     main_action_id: 'close_other_tabs',

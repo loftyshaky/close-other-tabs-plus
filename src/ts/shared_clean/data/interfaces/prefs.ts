@@ -8,6 +8,7 @@ export interface Prefs {
     developer_mode: boolean;
     enable_cut_features: boolean;
     persistent_service_worker: boolean;
+    detect_infinite_loops: boolean;
     offers_are_visible: boolean;
     current_action_id: string;
     main_action_id: string;

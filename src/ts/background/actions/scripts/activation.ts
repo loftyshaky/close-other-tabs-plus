@@ -2,7 +2,7 @@ import type { Tabs, Windows } from 'webextension-polyfill';
 
 import reject from 'lodash/reject';
 
-import { s_links } from '@loftyshaky/shared/shared_clean';
+import { d_error, s_links } from '@loftyshaky/shared/shared_clean';
 import type { i_error, t } from '@loftyshaky/shared/shared_clean';
 import { s_actions } from 'background/internal';
 import type { i_actions } from 'shared_clean/internal';
@@ -22,8 +22,12 @@ class Class {
                 err_async(async () => {
                     const open_urls_inner = ({ window_id }: { window_id: number }): Promise<void> =>
                         err_async(async () => {
-                            //
                             for (const url of urls_to_open) {
+                                d_error.Error.print_error_code({
+                                    error_code: 'cot_1109',
+                                    loop: true,
+                                });
+
                                 await we.tabs.create({
                                     windowId: window_id,
                                     url,
@@ -57,6 +61,11 @@ class Class {
                             ];
 
                             for (const window of windows_current_last) {
+                                d_error.Error.print_error_code({
+                                    error_code: 'cot_1099',
+                                    loop: true,
+                                });
+
                                 const is_current_window: boolean =
                                     window.id === current_tab.windowId;
 
