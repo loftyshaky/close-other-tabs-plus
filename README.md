@@ -21,4 +21,4 @@ In Yandex Browser, every tab belongs to a group — even if it's just the main (
 1. `git clone https://github.com/loftyshaky/close-other-tabs-plus`
 2. `cd` into the cloned repository
 3. `npm install`
-4. `npm run prod_test` (Chrome) / `npm run prod_test_edge` (Edge) / `npm run prod_test_opera` (Opera) / `npm run prod_test_yandex` (Yandex Browser) / `npm run prod_test_firefox` (Firefox)
+4. `npm run prod_test` (Chrome) / `npm run prod_test_edge` (Edge) / `npm run prod_test_opera` (Opera) / `npm run prod_test_brave` (Brave) / `npm run prod_test_yandex` (Yandex Browser) / `npm run prod_test_firefox` (Firefox)
