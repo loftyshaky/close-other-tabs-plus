@@ -1,4 +1,4 @@
-import { runInAction } from 'mobx';
+import clone from 'lodash/clone';
 
 import { d_optional_permissions } from '@loftyshaky/shared/settings';
 import type { t } from '@loftyshaky/shared/shared';
@@ -15,6 +15,8 @@ class Class {
     }
 
     private constructor() {}
+
+    private settings_clone: i_data.Settings | undefined;
 
     public restore_defaults = (): Promise<void> =>
         err_async(async () => {
@@ -49,8 +51,14 @@ class Class {
 
     public restore_back_up = ({ data_objs }: { data_objs: t.AnyRecord[] }): Promise<void> =>
         err_async(async () => {
+            this.settings_clone = clone(data_objs[0]);
+
+            const settings = s_data.Settings.apply_unchanged_prefs({
+                settings: data_objs[0] as i_data.Settings,
+            });
+
             await d_data.Manipulation.send_msg_to_update_settings({
-                settings: data_objs[0],
+                settings: settings,
                 replace: true,
                 update_instantly: true,
                 transform: true,
@@ -63,25 +71,19 @@ class Class {
 
     public restore_back_up_react = (): Promise<void> =>
         err_async(async () => {
-            await d_optional_permissions.Permission.show_enable_permissions_notification({
-                permissions: [
-                    {
-                        name: 'tabs',
-                        permission:
-                            s_optional_permissions.Permissions.optional_permission_checkbox_dict
-                                .filter_lists,
-                    },
-                ],
-            });
-
-            const tabs_permission: boolean =
-                s_optional_permissions.Permissions.contains_permission.filter_lists;
-
-            runInAction(() =>
-                err(() => {
-                    data.settings.prefs.tabs_permission = tabs_permission;
-                }, 'cot_1131'),
-            );
+            if (n(this.settings_clone) && this.settings_clone.prefs.tabs_permission) {
+                await d_optional_permissions.Permission.show_enable_permissions_notification({
+                    permissions: [
+                        {
+                            name: 'tabs',
+                            permission:
+                                s_optional_permissions.Permissions.optional_permission_checkbox_dict
+                                    .filter_lists,
+                        },
+                    ],
+                    settings: this.settings_clone,
+                });
+            }
 
             await d_data.Manipulation.send_msg_to_update_settings({
                 settings: x.to_plain(data.settings),

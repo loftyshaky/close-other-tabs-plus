@@ -15,6 +15,9 @@ class Class {
             () =>
                 s_data.Settings.apply_unchanged_prefs({
                     settings,
+                    additional_unchanged_prefs: {
+                        tabs_permission: data.settings.prefs.tabs_permission,
+                    },
                 }),
             'cnt_1530',
         );
