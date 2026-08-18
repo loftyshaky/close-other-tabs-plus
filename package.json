@@ -1,6 +1,6 @@
 {
     "name": "close-other-tabs-plus",
-    "version": "1.5.1",
+    "version": "1.6.0",
     "scripts": {
         "dev": "cross-env env=ext browser=chrome test=true vite build --mode development",
         "prod": "cross-env env=ext browser=chrome test=false vite build --mode production",
